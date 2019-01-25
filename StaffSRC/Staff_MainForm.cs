@@ -18,7 +18,7 @@ using System.Windows.Forms;
 using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
 using System.Security.Principal;
-
+using StaffSRC.Properties;
 
 namespace StaffSRC
 {
@@ -26,8 +26,7 @@ namespace StaffSRC
     {
         public DataSet dataSet = new DataSet();
         public DataTable dataTable = new DataTable();
-       /* public string connectionString = @"Server=192.168.20.83\SPORTAPP;Database=106_staff;User Id=root;Password=1234";*/
-        public string querry, connectionString = @"Server=192.168.20.97\ASRK_TEST;Database=staff_106;User Id=root;Password=1234", tableName = "[staff_106].[dbo].[staff]", personnelNumber, factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, solutionNumber, sentDate, verificationDate;
+        public string querry, connectionString, tableName, personnelNumber, factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, solutionNumber, sentDate, verificationDate;
         public int index, sent, overdue, conservation, storage;
         public bool gan_station;
 
@@ -73,11 +72,21 @@ namespace StaffSRC
             progressBar1.Visible = false;
             Setting_button.Enabled = false;
 
-           
-           // Заполняем таблицу из MS SQL
+            // загрузка настроек 
+            connectionString = Settings.Default["connectionString"].ToString();
+            tableName = Settings.Default["tableName"].ToString();
+        }
+
+        //-----------------------------------
+        // При первом отображении формы
+        //-----------------------------------
+        private void Staff_MainForm_Shown(object sender, EventArgs e)
+        {
+            // Заполняем таблицу из MS SQL
             DataGridView_Load();
         }
-        
+
+
         //----------------------------------------------------------------------------
         // Загрузка данных в DataGridView
         //----------------------------------------------------------------------------
@@ -101,21 +110,22 @@ namespace StaffSRC
             {
                 string message = "Не удалось подклюиться к базе данных.";                                       // Формировани текста окна ошибки
                 string caption = "Ошибка";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-                result = MessageBox.Show(message, caption, buttons);                                            // Вывод диалогового окна
-                if (result == System.Windows.Forms.DialogResult.OK)
-                    Application.Exit();
-                /*string message = "Не удалось подклюиться к базе данных.";                                       // Формировани текста окна ошибки
-                string caption = "Ошибка";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;                                            // Формирование кнопок Да/Нет
                 DialogResult result;                                                                            // В какую переменную вывести 
                 result = MessageBox.Show(message, caption, buttons);                                            // Вывод диалогового окна
                 if (result == System.Windows.Forms.DialogResult.Yes)                                            // Если нажмем кнопку Да
                 {
                     Options Option = new Options();                                                             // Открыть окно настроек
+                    Option.Owner = this;
                     Option.Show();
-                }*/
+                    return;
+                }
+                if (result == System.Windows.Forms.DialogResult.No)
+                {
+                    Application.Exit();
+                    return;
+                }
+
             }
 
             dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor

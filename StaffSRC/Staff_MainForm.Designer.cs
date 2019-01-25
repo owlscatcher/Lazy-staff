@@ -66,6 +66,9 @@
             this.test_radioButton = new System.Windows.Forms.RadioButton();
             this.PrintPdf_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.notgan_label = new System.Windows.Forms.Label();
+            this.gan_label = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.allDevides_label = new System.Windows.Forms.Label();
             this.storage_label = new System.Windows.Forms.Label();
             this.seporatingLine_label = new System.Windows.Forms.Label();
@@ -75,9 +78,6 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.gan_label = new System.Windows.Forms.Label();
-            this.notgan_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -288,6 +288,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
             // 
+            // notgan_label
+            // 
+            this.notgan_label.AutoSize = true;
+            this.notgan_label.Location = new System.Drawing.Point(9, 113);
+            this.notgan_label.Name = "notgan_label";
+            this.notgan_label.Size = new System.Drawing.Size(99, 13);
+            this.notgan_label.TabIndex = 12;
+            this.notgan_label.Text = "Приборов не ГАН:";
+            // 
+            // gan_label
+            // 
+            this.gan_label.AutoSize = true;
+            this.gan_label.Location = new System.Drawing.Point(9, 100);
+            this.gan_label.Name = "gan_label";
+            this.gan_label.Size = new System.Drawing.Size(84, 13);
+            this.gan_label.TabIndex = 11;
+            this.gan_label.Text = "Приборов ГАН:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 126);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(127, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "____________________";
+            // 
             // allDevides_label
             // 
             this.allDevides_label.AutoSize = true;
@@ -417,33 +444,6 @@
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 126);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "____________________";
-            // 
-            // gan_label
-            // 
-            this.gan_label.AutoSize = true;
-            this.gan_label.Location = new System.Drawing.Point(9, 100);
-            this.gan_label.Name = "gan_label";
-            this.gan_label.Size = new System.Drawing.Size(84, 13);
-            this.gan_label.TabIndex = 11;
-            this.gan_label.Text = "Приборов ГАН:";
-            // 
-            // notgan_label
-            // 
-            this.notgan_label.AutoSize = true;
-            this.notgan_label.Location = new System.Drawing.Point(9, 113);
-            this.notgan_label.Name = "notgan_label";
-            this.notgan_label.Size = new System.Drawing.Size(99, 13);
-            this.notgan_label.TabIndex = 12;
-            this.notgan_label.Text = "Приборов не ГАН:";
-            // 
             // Staff_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,6 +455,7 @@
             this.Name = "Staff_MainForm";
             this.Text = "Приборы УРБ зд. 106 (v1.1.2 от 11/10/2018)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();

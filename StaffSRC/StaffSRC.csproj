@@ -97,6 +97,9 @@
     <EmbeddedResource Include="Change_device.resx">
       <DependentUpon>Change_device.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Staff_MainForm.resx">
       <DependentUpon>Staff_MainForm.cs</DependentUpon>
     </EmbeddedResource>
