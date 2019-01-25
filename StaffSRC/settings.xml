@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <network>
+    
+    <tableName>
+      tableName = "[staff_106].[dbo].[staff]"
+    </tableName>
+    
+    <connectionString>
+      Server=192.168.20.97\ASRK_TEST;Database=staff_106;User Id=root;Password=1234
+    </connectionString>
+    
+  </network>
+</settings>
