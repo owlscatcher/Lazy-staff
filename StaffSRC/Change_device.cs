@@ -26,6 +26,7 @@ namespace StaffSRC
                 deviceLocation_textBox.Text = "склад";
             else
                 deviceLocation_textBox.Text = "";
+
         }
 
         //------------------------------------------

@@ -108,8 +108,8 @@
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.search_textBox);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(1542, 846);
-            this.splitContainer1.SplitterDistance = 192;
+            this.splitContainer1.Size = new System.Drawing.Size(1370, 749);
+            this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
             // 
             // groupBox3
@@ -123,7 +123,7 @@
             this.groupBox3.Controls.Add(this.Marker_button);
             this.groupBox3.Location = new System.Drawing.Point(5, 330);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(183, 164);
+            this.groupBox3.Size = new System.Drawing.Size(161, 164);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Опции";
@@ -134,7 +134,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DeleteDevice_Button.Location = new System.Drawing.Point(0, 77);
             this.DeleteDevice_Button.Name = "DeleteDevice_Button";
-            this.DeleteDevice_Button.Size = new System.Drawing.Size(179, 23);
+            this.DeleteDevice_Button.Size = new System.Drawing.Size(157, 23);
             this.DeleteDevice_Button.TabIndex = 13;
             this.DeleteDevice_Button.Text = "Удалить устройство";
             this.DeleteDevice_Button.UseVisualStyleBackColor = true;
@@ -146,7 +146,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Setting_button.Location = new System.Drawing.Point(0, 19);
             this.Setting_button.Name = "Setting_button";
-            this.Setting_button.Size = new System.Drawing.Size(179, 23);
+            this.Setting_button.Size = new System.Drawing.Size(157, 23);
             this.Setting_button.TabIndex = 11;
             this.Setting_button.Text = "Настройки";
             this.Setting_button.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uimInfo_button.Location = new System.Drawing.Point(0, 106);
             this.uimInfo_button.Name = "uimInfo_button";
-            this.uimInfo_button.Size = new System.Drawing.Size(179, 23);
+            this.uimInfo_button.Size = new System.Drawing.Size(157, 23);
             this.uimInfo_button.TabIndex = 9;
             this.uimInfo_button.Text = "Справка по УИМ2-2";
             this.uimInfo_button.UseVisualStyleBackColor = true;
@@ -169,7 +169,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddDevice_button.Location = new System.Drawing.Point(0, 48);
             this.AddDevice_button.Name = "AddDevice_button";
-            this.AddDevice_button.Size = new System.Drawing.Size(179, 23);
+            this.AddDevice_button.Size = new System.Drawing.Size(157, 23);
             this.AddDevice_button.TabIndex = 10;
             this.AddDevice_button.Text = "Добавить устройство";
             this.AddDevice_button.UseVisualStyleBackColor = true;
@@ -181,7 +181,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Marker_button.Location = new System.Drawing.Point(0, 135);
             this.Marker_button.Name = "Marker_button";
-            this.Marker_button.Size = new System.Drawing.Size(179, 23);
+            this.Marker_button.Size = new System.Drawing.Size(157, 23);
             this.Marker_button.TabIndex = 2;
             this.Marker_button.Text = "Принудительная маркеровка";
             this.Marker_button.UseVisualStyleBackColor = true;
@@ -191,18 +191,18 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(5, 629);
+            this.progressBar1.Location = new System.Drawing.Point(5, 532);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(179, 10);
+            this.progressBar1.Size = new System.Drawing.Size(157, 10);
             this.progressBar1.TabIndex = 8;
             // 
             // ExportToXml_button
             // 
             this.ExportToXml_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportToXml_button.Location = new System.Drawing.Point(5, 645);
+            this.ExportToXml_button.Location = new System.Drawing.Point(5, 548);
             this.ExportToXml_button.Name = "ExportToXml_button";
-            this.ExportToXml_button.Size = new System.Drawing.Size(179, 23);
+            this.ExportToXml_button.Size = new System.Drawing.Size(157, 23);
             this.ExportToXml_button.TabIndex = 7;
             this.ExportToXml_button.Text = "Экспортировать в Excel";
             this.ExportToXml_button.UseVisualStyleBackColor = true;
@@ -218,7 +218,7 @@
             this.groupBox2.Controls.Add(this.PrintPdf_button);
             this.groupBox2.Location = new System.Drawing.Point(3, 208);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(185, 116);
+            this.groupBox2.Size = new System.Drawing.Size(163, 116);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Настройка печати";
@@ -262,7 +262,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PrintPdf_button.Location = new System.Drawing.Point(2, 88);
             this.PrintPdf_button.Name = "PrintPdf_button";
-            this.PrintPdf_button.Size = new System.Drawing.Size(179, 23);
+            this.PrintPdf_button.Size = new System.Drawing.Size(157, 23);
             this.PrintPdf_button.TabIndex = 1;
             this.PrintPdf_button.Text = "Печать предъявления";
             this.PrintPdf_button.UseVisualStyleBackColor = true;
@@ -281,9 +281,9 @@
             this.groupBox1.Controls.Add(this.overdue_label);
             this.groupBox1.Controls.Add(this.sent_label);
             this.groupBox1.Controls.Add(this.conservation_label);
-            this.groupBox1.Location = new System.Drawing.Point(3, 674);
+            this.groupBox1.Location = new System.Drawing.Point(3, 577);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(185, 169);
+            this.groupBox1.Size = new System.Drawing.Size(163, 169);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
@@ -411,7 +411,7 @@
             treeNode10,
             treeNode11,
             treeNode14});
-            this.treeView1.Size = new System.Drawing.Size(186, 199);
+            this.treeView1.Size = new System.Drawing.Size(164, 199);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -421,7 +421,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.search_textBox.Location = new System.Drawing.Point(3, 3);
             this.search_textBox.Name = "search_textBox";
-            this.search_textBox.Size = new System.Drawing.Size(1340, 20);
+            this.search_textBox.Size = new System.Drawing.Size(1190, 20);
             this.search_textBox.TabIndex = 2;
             this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
             // 
@@ -439,7 +439,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1340, 817);
+            this.dataGridView1.Size = new System.Drawing.Size(1190, 720);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
@@ -449,7 +449,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1542, 846);
+            this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
