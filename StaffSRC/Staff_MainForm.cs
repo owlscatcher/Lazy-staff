@@ -83,7 +83,8 @@ namespace StaffSRC
         private void Staff_MainForm_Shown(object sender, EventArgs e)
         {
             // Заполняем таблицу из MS SQL
-            DataGridView_Load();
+            Thread dataGridUpdate = new Thread(DataGridView_Load);
+            dataGridUpdate.Start();
         }
 
 

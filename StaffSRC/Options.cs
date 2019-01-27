@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,7 +35,8 @@ namespace StaffSRC
             Settings.Default.Save();
             TableName_TextBox.Text = Settings.Default["tableName"].ToString();
 
-            main.DataGridView_Load();
+            Thread dataGridUpdate = new Thread(main.DataGridView_Load);
+            dataGridUpdate.Start();
 
             Close();
         }
