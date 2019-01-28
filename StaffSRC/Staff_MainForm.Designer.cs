@@ -150,6 +150,7 @@
             this.Setting_button.TabIndex = 11;
             this.Setting_button.Text = "Настройки";
             this.Setting_button.UseVisualStyleBackColor = true;
+            this.Setting_button.Click += new System.EventHandler(this.Setting_button_Click);
             // 
             // uimInfo_button
             // 
@@ -453,7 +454,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Приборы УРБ зд. 106 (v1.1.2 от 11/10/2018)";
+            this.Text = "Приборы УРБ зд. 106 (v1.1.28 от 28/01/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);

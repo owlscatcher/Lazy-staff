@@ -25,7 +25,7 @@ namespace StaffSRC.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=192.168.20.97\\ASRK_TEST;Database=staff_106;User Id=root;Password=1234")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=localhost\\SPORTAPP;Database=staff_106;User Id=root;Password=1234")]
         public string connectionString {
             get {
                 return ((string)(this["connectionString"]));
@@ -44,6 +44,30 @@ namespace StaffSRC.Properties {
             }
             set {
                 this["tableName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[staff_106].[dbo].[uim_info]")]
+        public string tableNameUIM {
+            get {
+                return ((string)(this["tableNameUIM"]));
+            }
+            set {
+                this["tableNameUIM"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[staff_106.[dbo].[room_info]")]
+        public string tableNameRoom {
+            get {
+                return ((string)(this["tableNameRoom"]));
+            }
+            set {
+                this["tableNameRoom"] = value;
             }
         }
     }

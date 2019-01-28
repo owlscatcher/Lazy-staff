@@ -3,10 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="connectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server=192.168.20.97\ASRK_TEST;Database=staff_106;User Id=root;Password=1234</Value>
+      <Value Profile="(Default)">Server=localhost\SPORTAPP;Database=staff_106;User Id=root;Password=1234</Value>
     </Setting>
     <Setting Name="tableName" Type="System.String" Scope="User">
       <Value Profile="(Default)">[staff_106].[dbo].[staff]</Value>
+    </Setting>
+    <Setting Name="tableNameUIM" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[staff_106].[dbo].[uim_info]</Value>
+    </Setting>
+    <Setting Name="tableNameRoom" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[staff_106.[dbo].[room_info]</Value>
     </Setting>
   </Settings>
 </SettingsFile>

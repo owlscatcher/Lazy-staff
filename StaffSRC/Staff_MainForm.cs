@@ -56,6 +56,16 @@ namespace StaffSRC
             PDF();
         }
 
+        //-----------------------------------
+        // кнопка НАСТРОЙКИ
+        //-----------------------------------
+        private void Setting_button_Click(object sender, EventArgs e)
+        {
+            Options Option = new Options();                                                             // Открыть окно настроек
+            Option.Owner = this;
+            Option.Show();
+        }
+
         public Staff_MainForm()
         {
             InitializeComponent();
@@ -70,7 +80,6 @@ namespace StaffSRC
 
             test_radioButton.Checked = true;
             progressBar1.Visible = false;
-            Setting_button.Enabled = false;
 
             // загрузка настроек 
             connectionString = Settings.Default["connectionString"].ToString();
@@ -118,7 +127,10 @@ namespace StaffSRC
                 {
                     Options Option = new Options();                                                             // Открыть окно настроек
                     Option.Owner = this;
-                    Option.Show();
+                    Invoke((MethodInvoker)delegate
+                    {
+                        Option.Show();
+                    });
                     return;
                 }
                 if (result == System.Windows.Forms.DialogResult.No)
@@ -132,54 +144,58 @@ namespace StaffSRC
             dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor
             dataTable = dataSet.Tables["Monitor"].Copy();
             connection.Close();                                                                                 // закрываем соединение
-            dataGridView1.DataSource = dataTable;                                                               // заводим источик данный
-            //dataGridView1.DataMember = "Monitor";                                                             // создаем DataMemder
 
-            // настройка вида отображаемых колонок           
-            dataGridView1.Columns[0].HeaderText = "Таб. №";
-            dataGridView1.Columns[0].MinimumWidth = 30;
-           
-            dataGridView1.Columns[1].HeaderText = "Завод. №";
-            dataGridView1.Columns[1].MinimumWidth = 30;
+            Invoke((MethodInvoker)delegate
+            {
+                dataGridView1.DataSource = dataTable;                                                               // заводим источик данный
+                                                                                                                    //dataGridView1.DataMember = "Monitor";                                                             // создаем DataMemder
 
-            dataGridView1.Columns[2].HeaderText = "Тип устройства";
-            dataGridView1.Columns[2].MinimumWidth = 40;
+                // настройка вида отображаемых колонок           
+                dataGridView1.Columns[0].HeaderText = "Таб. №";
+                dataGridView1.Columns[0].MinimumWidth = 30;
 
-            dataGridView1.Columns[3].HeaderText = "Год выпуска";
-            dataGridView1.Columns[3].MinimumWidth = 40;
+                dataGridView1.Columns[1].HeaderText = "Завод. №";
+                dataGridView1.Columns[1].MinimumWidth = 30;
 
-            dataGridView1.Columns[4].HeaderText = "Дата отправки";
+                dataGridView1.Columns[2].HeaderText = "Тип устройства";
+                dataGridView1.Columns[2].MinimumWidth = 40;
 
-            dataGridView1.Columns[5].HeaderText = "Дата ГП";
+                dataGridView1.Columns[3].HeaderText = "Год выпуска";
+                dataGridView1.Columns[3].MinimumWidth = 40;
 
-            dataGridView1.Columns[6].HeaderText = "Расположение";
-            dataGridView1.Columns[6].MinimumWidth = 50;
+                dataGridView1.Columns[4].HeaderText = "Дата отправки";
 
-            dataGridView1.Columns[7].HeaderText = "Продление";
-            dataGridView1.Columns[7].MinimumWidth = 55;
+                dataGridView1.Columns[5].HeaderText = "Дата ГП";
 
-            dataGridView1.Columns[8].HeaderText = "Тех. решение";
-            dataGridView1.Columns[8].MinimumWidth = 60;
+                dataGridView1.Columns[6].HeaderText = "Расположение";
+                dataGridView1.Columns[6].MinimumWidth = 50;
 
-            dataGridView1.Columns[9].HeaderText = "Консервация";
-            dataGridView1.Columns[9].MinimumWidth = 60;
-            dataGridView1.Columns[9].Visible = false;
+                dataGridView1.Columns[7].HeaderText = "Продление";
+                dataGridView1.Columns[7].MinimumWidth = 55;
 
-            dataGridView1.Columns[10].HeaderText = "Отправлен";
-            dataGridView1.Columns[10].MinimumWidth = 60;
-            dataGridView1.Columns[10].Visible = false;
+                dataGridView1.Columns[8].HeaderText = "Тех. решение";
+                dataGridView1.Columns[8].MinimumWidth = 60;
 
-            dataGridView1.Columns[11].HeaderText = "Просрочен";
-            dataGridView1.Columns[11].MinimumWidth = 60;
-            dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[9].HeaderText = "Консервация";
+                dataGridView1.Columns[9].MinimumWidth = 60;
+                dataGridView1.Columns[9].Visible = false;
 
-            dataGridView1.Columns[12].HeaderText = "Склад";
-            dataGridView1.Columns[12].MinimumWidth = 60;
-            dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[10].HeaderText = "Отправлен";
+                dataGridView1.Columns[10].MinimumWidth = 60;
+                dataGridView1.Columns[10].Visible = false;
 
-            dataGridView1.Columns[13].HeaderText = "ГАН";
-            dataGridView1.Columns[13].MinimumWidth = 60;
-            dataGridView1.Columns[13].Visible = false;
+                dataGridView1.Columns[11].HeaderText = "Просрочен";
+                dataGridView1.Columns[11].MinimumWidth = 60;
+                dataGridView1.Columns[11].Visible = false;
+
+                dataGridView1.Columns[12].HeaderText = "Склад";
+                dataGridView1.Columns[12].MinimumWidth = 60;
+                dataGridView1.Columns[12].Visible = false;
+
+                dataGridView1.Columns[13].HeaderText = "ГАН";
+                dataGridView1.Columns[13].MinimumWidth = 60;
+                dataGridView1.Columns[13].Visible = false;
+            });
 
             Thread listMarking_thread = new Thread(ListMarking);
             listMarking_thread.Start();

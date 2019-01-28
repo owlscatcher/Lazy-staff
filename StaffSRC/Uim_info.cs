@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StaffSRC.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,16 @@ namespace StaffSRC
 {
     public partial class Uim_info : Form
     {
+        public string connectionString, tableNameUIM, tableNameRoom;
+
         public Uim_info()
         {
             InitializeComponent();
+
+            connectionString = Settings.Default["connectionString"].ToString();
+            tableNameUIM = Settings.Default["tableNameUIM"].ToString();
+            tableNameRoom = Settings.Default["tableNameRoom"].ToString();
+
         }
 
         private void Uim_info_Load(object sender, EventArgs e)
@@ -33,10 +41,8 @@ namespace StaffSRC
                 {
                     uimInfo_DataGridView.Rows.Remove(uimInfo_DataGridView.Rows[i]);                                    // очищаем datagrid
                 }
-            string connectionString = @"Server=192.168.20.83\SPORTAPP;Database=106_staff;User Id=root;Password=1234";  // для подключения к удаленному серверу
-            string tableName = "[106_staff].[dbo].[uim_info]";
             SqlConnection connection = new SqlConnection(connectionString);
-            string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
+            string querry = ("SELECT * FROM " + tableNameUIM + "");                                                // запрос к sql db на получение строк
             SqlDataAdapter dataAdapter = new SqlDataAdapter(querry, connection);                                // создаем экземпляр dataAdapter для получения строк из sql db                                                           // создаем экземпляр dataset
 
             try
@@ -53,7 +59,17 @@ namespace StaffSRC
                 if (result == System.Windows.Forms.DialogResult.Yes)                                            // Если нажмем кнопку Да
                 {
                     Options Option = new Options();                                                             // Открыть окно настроек
-                    Option.Show();
+                    Option.Owner = this;
+                    Invoke((MethodInvoker)delegate
+                    {
+                        Option.Show();
+                    });
+                    return;
+                }
+                if (result == System.Windows.Forms.DialogResult.No)
+                {
+                    Application.Exit();
+                    return;
                 }
             }
             DataSet dataSet = new DataSet();
@@ -84,10 +100,8 @@ namespace StaffSRC
                 {
                     roomPowerSocketInfo_DataGridView.Rows.Remove(roomPowerSocketInfo_DataGridView.Rows[i]);            // очищаем datagrid
                 }
-            string connectionString = @"Server=192.168.20.83\SPORTAPP;Database=106_staff;User Id=root;Password=1234";  // для подключения к удаленному серверу
-            string tableName = "[106_staff].[dbo].[room_info]";
             SqlConnection connection = new SqlConnection(connectionString);
-            string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
+            string querry = ("SELECT * FROM " + tableNameRoom + "");                                                // запрос к sql db на получение строк
             SqlDataAdapter dataAdapter = new SqlDataAdapter(querry, connection);                                // создаем экземпляр dataAdapter для получения строк из sql db                                                           // создаем экземпляр dataset
 
             try
@@ -104,7 +118,17 @@ namespace StaffSRC
                 if (result == System.Windows.Forms.DialogResult.Yes)                                            // Если нажмем кнопку Да
                 {
                     Options Option = new Options();                                                             // Открыть окно настроек
-                    Option.Show();
+                    Option.Owner = this;
+                    Invoke((MethodInvoker)delegate
+                    {
+                        Option.Show();
+                    });
+                    return;
+                }
+                if (result == System.Windows.Forms.DialogResult.No)
+                {
+                    Application.Exit();
+                    return;
                 }
             }
             DataSet dataSet = new DataSet();
