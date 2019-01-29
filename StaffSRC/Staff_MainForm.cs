@@ -66,6 +66,16 @@ namespace StaffSRC
             Option.Show();
         }
 
+        void ToggleSwitch_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (ToggleSwitch.Toggled1 == true)
+            {
+                groupBox3.Enabled = true;
+            }
+            else
+                groupBox3.Enabled = false;
+        }
+
         public Staff_MainForm()
         {
             InitializeComponent();
@@ -84,6 +94,10 @@ namespace StaffSRC
             // загрузка настроек 
             connectionString = Settings.Default["connectionString"].ToString();
             tableName = Settings.Default["tableName"].ToString();
+
+            ToggleSwitch.MouseLeftButtonDown += new System.Windows.Input.MouseButtonEventHandler(ToggleSwitch_MouseLeftButtonDown);
+
+            groupBox3.Enabled = false;
         }
 
         //-----------------------------------

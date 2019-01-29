@@ -52,6 +52,9 @@
             treeNode13});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
+            this.ToggleSwitch = new StaffSRC.Toggle();
+            this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DeleteDevice_Button = new System.Windows.Forms.Button();
             this.Setting_button = new System.Windows.Forms.Button();
@@ -96,6 +99,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.ToggleHost);
+            this.splitContainer1.Panel1.Controls.Add(this.Admin_Label);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
             this.splitContainer1.Panel1.Controls.Add(this.progressBar1);
             this.splitContainer1.Panel1.Controls.Add(this.ExportToXml_button);
@@ -111,6 +116,26 @@
             this.splitContainer1.Size = new System.Drawing.Size(1370, 749);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // ToggleHost
+            // 
+            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
+            this.ToggleHost.Name = "ToggleHost";
+            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
+            this.ToggleHost.TabIndex = 15;
+            this.ToggleHost.Text = "elementHost1";
+            this.ToggleHost.Child = this.ToggleSwitch;
+            // 
+            // Admin_Label
+            // 
+            this.Admin_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Admin_Label.AutoSize = true;
+            this.Admin_Label.Location = new System.Drawing.Point(9, 727);
+            this.Admin_Label.Name = "Admin_Label";
+            this.Admin_Label.Size = new System.Drawing.Size(86, 13);
+            this.Admin_Label.TabIndex = 14;
+            this.Admin_Label.Text = "Администратор";
             // 
             // groupBox3
             // 
@@ -192,7 +217,7 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(5, 532);
+            this.progressBar1.Location = new System.Drawing.Point(5, 535);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(157, 10);
             this.progressBar1.TabIndex = 8;
@@ -201,7 +226,7 @@
             // 
             this.ExportToXml_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportToXml_button.Location = new System.Drawing.Point(5, 548);
+            this.ExportToXml_button.Location = new System.Drawing.Point(5, 551);
             this.ExportToXml_button.Name = "ExportToXml_button";
             this.ExportToXml_button.Size = new System.Drawing.Size(157, 23);
             this.ExportToXml_button.TabIndex = 7;
@@ -282,9 +307,9 @@
             this.groupBox1.Controls.Add(this.overdue_label);
             this.groupBox1.Controls.Add(this.sent_label);
             this.groupBox1.Controls.Add(this.conservation_label);
-            this.groupBox1.Location = new System.Drawing.Point(3, 577);
+            this.groupBox1.Location = new System.Drawing.Point(3, 580);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(163, 169);
+            this.groupBox1.Size = new System.Drawing.Size(163, 137);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
@@ -292,7 +317,7 @@
             // notgan_label
             // 
             this.notgan_label.AutoSize = true;
-            this.notgan_label.Location = new System.Drawing.Point(9, 113);
+            this.notgan_label.Location = new System.Drawing.Point(9, 94);
             this.notgan_label.Name = "notgan_label";
             this.notgan_label.Size = new System.Drawing.Size(99, 13);
             this.notgan_label.TabIndex = 12;
@@ -301,7 +326,7 @@
             // gan_label
             // 
             this.gan_label.AutoSize = true;
-            this.gan_label.Location = new System.Drawing.Point(9, 100);
+            this.gan_label.Location = new System.Drawing.Point(9, 81);
             this.gan_label.Name = "gan_label";
             this.gan_label.Size = new System.Drawing.Size(84, 13);
             this.gan_label.TabIndex = 11;
@@ -310,7 +335,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 126);
+            this.label1.Location = new System.Drawing.Point(6, 107);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 13);
             this.label1.TabIndex = 10;
@@ -319,7 +344,7 @@
             // allDevides_label
             // 
             this.allDevides_label.AutoSize = true;
-            this.allDevides_label.Location = new System.Drawing.Point(9, 149);
+            this.allDevides_label.Location = new System.Drawing.Point(6, 120);
             this.allDevides_label.Name = "allDevides_label";
             this.allDevides_label.Size = new System.Drawing.Size(94, 13);
             this.allDevides_label.TabIndex = 9;
@@ -328,7 +353,7 @@
             // storage_label
             // 
             this.storage_label.AutoSize = true;
-            this.storage_label.Location = new System.Drawing.Point(9, 65);
+            this.storage_label.Location = new System.Drawing.Point(9, 55);
             this.storage_label.Name = "storage_label";
             this.storage_label.Size = new System.Drawing.Size(63, 13);
             this.storage_label.TabIndex = 8;
@@ -337,7 +362,7 @@
             // seporatingLine_label
             // 
             this.seporatingLine_label.AutoSize = true;
-            this.seporatingLine_label.Location = new System.Drawing.Point(6, 78);
+            this.seporatingLine_label.Location = new System.Drawing.Point(6, 68);
             this.seporatingLine_label.Name = "seporatingLine_label";
             this.seporatingLine_label.Size = new System.Drawing.Size(127, 13);
             this.seporatingLine_label.TabIndex = 7;
@@ -346,7 +371,7 @@
             // overdue_label
             // 
             this.overdue_label.AutoSize = true;
-            this.overdue_label.Location = new System.Drawing.Point(9, 52);
+            this.overdue_label.Location = new System.Drawing.Point(9, 42);
             this.overdue_label.Name = "overdue_label";
             this.overdue_label.Size = new System.Drawing.Size(74, 13);
             this.overdue_label.TabIndex = 6;
@@ -355,7 +380,7 @@
             // sent_label
             // 
             this.sent_label.AutoSize = true;
-            this.sent_label.Location = new System.Drawing.Point(9, 39);
+            this.sent_label.Location = new System.Drawing.Point(9, 29);
             this.sent_label.Name = "sent_label";
             this.sent_label.Size = new System.Drawing.Size(71, 13);
             this.sent_label.TabIndex = 5;
@@ -364,7 +389,7 @@
             // conservation_label
             // 
             this.conservation_label.AutoSize = true;
-            this.conservation_label.Location = new System.Drawing.Point(9, 26);
+            this.conservation_label.Location = new System.Drawing.Point(9, 16);
             this.conservation_label.Name = "conservation_label";
             this.conservation_label.Size = new System.Drawing.Size(93, 13);
             this.conservation_label.TabIndex = 4;
@@ -458,6 +483,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -501,6 +527,9 @@
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Admin_Label;
+        private System.Windows.Forms.Integration.ElementHost ToggleHost;
+        private Toggle ToggleSwitch;
     }
 }
 
