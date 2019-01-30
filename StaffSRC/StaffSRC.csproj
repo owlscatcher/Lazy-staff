@@ -73,6 +73,7 @@
     <Compile Include="Change_device.Designer.cs">
       <DependentUpon>Change_device.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListMarking.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Staff_MainForm.cs">
       <SubType>Form</SubType>

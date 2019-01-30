@@ -156,7 +156,7 @@ namespace StaffSRC
             }
 
             dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor
-            dataTable = dataSet.Tables["Monitor"].Copy();
+            dataTable = dataSet.Tables["Monitor"].Copy();                                                       
             connection.Close();                                                                                 // закрываем соединение
 
             Invoke((MethodInvoker)delegate
