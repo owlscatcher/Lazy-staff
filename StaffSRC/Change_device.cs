@@ -13,20 +13,19 @@ namespace StaffSRC
 {
     public partial class Change_device : Form
     {
-        public int conservation, sent, overdue, storage;
-        public bool gan;
+        public int state;
+        public bool gan_state;
         public Change_device()
         {
             InitializeComponent();
         }
 
-        private void storage_checkBox_CheckStateChanged(object sender, EventArgs e)
+        private void StateStorage_radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (storage_checkBox.Checked)
+            if (StateStorage_radioButton.Checked)
                 deviceLocation_textBox.Text = "склад";
             else
                 deviceLocation_textBox.Text = "";
-
         }
 
         //------------------------------------------
@@ -36,7 +35,6 @@ namespace StaffSRC
         {
             Close();
         }
-
         //------------------------------------------
         // Заполнние формы данными из Staff_MainForm
         //-------------------------------------------
@@ -58,57 +56,34 @@ namespace StaffSRC
             verificationDate_textBox.Text = Convert.ToString(main.verificationDate);
             verifiedTo_textBox.Text = main.verifiedTo;
             solutionNunber_textBox.Text = main.solutionNumber;
-            gan = main.gan_station;
 
-            if (main.conservation == 1)
+            // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
+            switch(main.state)
             {
-                conservation_checkBox.Checked = true;
-                conservation = 1;
+                case 1: //просрочен
+                    StateOverdue_radioButton.Checked = true;
+                    break;
+                case 2: // отправлен
+                    StateSend_radioButton.Checked = true;
+                    break;
+                case 3: // на складе
+                    StateStorage_radioButton.Checked = true;
+                    break;
+                case 4: // консервирован
+                    StateConservation_radioButton.Checked = true;
+                    break;
             }
-            else
+            //значения stageGan: false - не в списке ГАН, true - в списке ГАН (маркеруется в default)
+            switch (main.gan_state)
             {
-                conservation_checkBox.Checked = false;
-                conservation = 0;
-            }
-            if (main.sent == 1)
-            {
-                sent_checkBox.Checked = true;
-                sent = 1;
-            }
-            else
-            {
-                sent_checkBox.Checked = false;
-                sent = 0;
-            }
-            if (main.overdue == 1)
-            {
-                overdue_checkBox.Checked = true;
-                overdue = 1;
-            }
-            else
-            {
-                overdue_checkBox.Checked = false;
-                overdue = 0;
-            }
-            if(main.storage == 1)
-            {
-                storage_checkBox.Checked = true;
-                storage = 1;
-            }
-            else
-            {
-                storage_checkBox.Checked = false;
-                storage = 0;
-            }
-            if (main.gan_station == true)
-            {
-                gan_checkBox.Checked = true;
-                gan = true;
-            }
-            else
-            {
-                gan_checkBox.Checked = false;
-                gan = false;
+                case true:
+                    gan_checkBox.Checked = true;
+                    gan_state = true;
+                    break;
+                case false:
+                    gan_checkBox.Checked = false;
+                    gan_state = false;
+                    break;
             }
         }
         //------------------------------------------------
@@ -118,52 +93,38 @@ namespace StaffSRC
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
-            if (conservation_checkBox.Checked == true)
-                conservation = 1;
-            else
-                conservation = 0;
-            if (sent_checkBox.Checked == true)
-                sent = 1;
-            else
-                sent = 0;
-            if (overdue_checkBox.Checked == true)
-                overdue = 1;
-            else
-                overdue = 0;
-            if (storage_checkBox.Checked == true)
-                storage = 1;
-            else
-                storage = 0;
+            if (StateOverdue_radioButton.Checked == false && StateSend_radioButton.Checked == false && StateConservation_radioButton.Checked == false && StateStorage_radioButton.Checked == false)
+                state = 0;
+            if (StateOverdue_radioButton.Checked == true)
+                state = 1;
+            if (StateSend_radioButton.Checked == true)
+                state = 2;
+            if (StateConservation_radioButton.Checked == true)
+                state = 4;
+            if (StateStorage_radioButton.Checked == true)
+                state = 3;
+
             if (gan_checkBox.Checked)
-                gan = true;
+                gan_state = true;
             else
-                gan = false;
+                gan_state = false;
 
             SqlConnection connection = new SqlConnection(main.connectionString);
             
             string querry = "";
             // разрешение конфликта пустых строк DateTime и ms sql 
             if (sentDate_textBox.Text == "" && verificationDate_textBox.Text == "")     // если отсутствует дата в поле отрпавки и поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', conservation= " + conservation + ", sent= " + sent + ", overdue= " + overdue + ", storage= " + storage + ", gan= '" + gan + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (sentDate_textBox.Text == "")                                            // если отсутствует дата в поле отрпавки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', conservation= " + conservation + ", sent= " + sent + ", overdue= " + overdue + ", storage= " + storage + ", gan= '" + gan + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (verificationDate_textBox.Text == "")                                    // если отсутствует дата в поле Гос поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', conservation= " + conservation + ", sent= " + sent + ", overdue= " + overdue + ", storage= " + storage + ", gan= '" + gan + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (sentDate_textBox.Text != "" && verificationDate_textBox.Text != "")     // если дата есть в дрвух полях
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', conservation= " + conservation + ", sent= " + sent + ", overdue= " + overdue + ", storage= " + storage + ", gan= '" + gan + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
 
             SqlCommand command = new SqlCommand(querry, connection);
-          //  try
-          //  {
-                connection.Open();
-                command.ExecuteNonQuery();
-          //  }
-          /*  catch(Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            connection.Close();
-            connection.Dispose(); */
+            connection.Open();
+            command.ExecuteNonQuery();
 
             // обновление записи в гриде
             main.dataGridView1.CurrentRow.Cells[0].Value = personnelNumber_textBox.Text;
@@ -175,59 +136,13 @@ namespace StaffSRC
             main.dataGridView1.CurrentRow.Cells[6].Value = deviceLocation_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[7].Value = verifiedTo_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[8].Value = solutionNunber_textBox.Text;
-            if (conservation_checkBox.Checked == true)
-            {
-                main.dataGridView1.CurrentRow.Cells[9].Value = 1;
-                main.conservation = 1;
-            }
-            else
-            {
-                main.dataGridView1.CurrentRow.Cells[9].Value = 0;
-                main.conservation = 0;
-            }
-            if (sent_checkBox.Checked == true)
-            {
-                main.dataGridView1.CurrentRow.Cells[10].Value = 1;
-                main.sent = 1;
-            }
-            else
-            {
-                main.dataGridView1.CurrentRow.Cells[10].Value = 0;
-                main.sent = 1;
-            }
-            if (overdue_checkBox.Checked == true)
-            {
-                main.dataGridView1.CurrentRow.Cells[11].Value = 1;
-                main.overdue = 1;
-            }
-            else
-            {
-                main.dataGridView1.CurrentRow.Cells[11].Value = 0;
-                main.overdue = 0;
-            }
-            if (storage_checkBox.Checked == true)
-            {
-                main.dataGridView1.CurrentRow.Cells[12].Value = 1;
-                main.overdue = 1;
-            }
-            else
-            {
-                main.dataGridView1.CurrentRow.Cells[12].Value = 0;
-                main.overdue = 0;
-            }
-            if (gan_checkBox.Checked == true)
-            {
-                main.dataGridView1.CurrentRow.Cells[13].Value = true;
-                main.gan_station = true;
-            }
-            else
-            {
-                main.dataGridView1.CurrentRow.Cells[13].Value = false;
-                main.gan_station = false;
-            }
+            main.dataGridView1.CurrentRow.Cells[9].Value = state;
+            main.dataGridView1.CurrentRow.Cells[10].Value = gan_state;
 
             // Маркируем список
-            main.ListMarkingMethod();
+
+            main.ListMarking();
+
             Close();
         }
     }

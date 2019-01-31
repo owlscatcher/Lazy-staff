@@ -3,16 +3,19 @@
   <Profiles />
   <Settings>
     <Setting Name="connectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server=localhost\SPORTAPP;Database=staff_106;User Id=root;Password=1234</Value>
+      <Value Profile="(Default)">Server=localhost\SPORTAPP;Database=106_staff;User Id=root;Password=1234</Value>
     </Setting>
     <Setting Name="tableName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[staff_106].[dbo].[staff]</Value>
+      <Value Profile="(Default)">[106_staff].[dbo].[staff]</Value>
     </Setting>
     <Setting Name="tableNameUIM" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[staff_106].[dbo].[uim_info]</Value>
+      <Value Profile="(Default)">[106_staff].[dbo].[uim_info]</Value>
     </Setting>
     <Setting Name="tableNameRoom" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[staff_106.[dbo].[room_info]</Value>
+      <Value Profile="(Default)">[106_staff].[dbo].[room_info]</Value>
+    </Setting>
+    <Setting Name="password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">shieldadm</Value>
     </Setting>
   </Settings>
 </SettingsFile>

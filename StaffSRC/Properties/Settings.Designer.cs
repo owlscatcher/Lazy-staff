@@ -25,7 +25,7 @@ namespace StaffSRC.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=localhost\\SPORTAPP;Database=staff_106;User Id=root;Password=1234")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=localhost\\SPORTAPP;Database=106_staff;User Id=root;Password=1234")]
         public string connectionString {
             get {
                 return ((string)(this["connectionString"]));
@@ -37,7 +37,7 @@ namespace StaffSRC.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[staff_106].[dbo].[staff]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[106_staff].[dbo].[staff]")]
         public string tableName {
             get {
                 return ((string)(this["tableName"]));
@@ -49,7 +49,7 @@ namespace StaffSRC.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[staff_106].[dbo].[uim_info]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[106_staff].[dbo].[uim_info]")]
         public string tableNameUIM {
             get {
                 return ((string)(this["tableNameUIM"]));
@@ -61,13 +61,25 @@ namespace StaffSRC.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[staff_106.[dbo].[room_info]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[106_staff].[dbo].[room_info]")]
         public string tableNameRoom {
             get {
                 return ((string)(this["tableNameRoom"]));
             }
             set {
                 this["tableNameRoom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("shieldadm")]
+        public string password {
+            get {
+                return ((string)(this["password"]));
+            }
+            set {
+                this["password"] = value;
             }
         }
     }

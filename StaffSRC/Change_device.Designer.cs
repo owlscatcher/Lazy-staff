@@ -44,15 +44,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.verifiedTo_textBox = new System.Windows.Forms.ComboBox();
             this.solutionNunber_textBox = new System.Windows.Forms.TextBox();
-            this.sent_checkBox = new System.Windows.Forms.CheckBox();
-            this.overdue_checkBox = new System.Windows.Forms.CheckBox();
-            this.conservation_checkBox = new System.Windows.Forms.CheckBox();
-            this.storage_checkBox = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.cancel_button = new System.Windows.Forms.Button();
             this.save_button = new System.Windows.Forms.Button();
             this.gan_checkBox = new System.Windows.Forms.CheckBox();
+            this.StateSend_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateOverdue_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateStorage_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateConservation_radioButton = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // personnelNumber_textBox
@@ -105,7 +105,7 @@
             // 
             this.verificationDate_textBox.Location = new System.Drawing.Point(564, 25);
             this.verificationDate_textBox.Name = "verificationDate_textBox";
-            this.verificationDate_textBox.Size = new System.Drawing.Size(100, 20);
+            this.verificationDate_textBox.Size = new System.Drawing.Size(92, 20);
             this.verificationDate_textBox.TabIndex = 6;
             // 
             // deviceLocation_textBox
@@ -247,55 +247,6 @@
             this.solutionNunber_textBox.Size = new System.Drawing.Size(206, 20);
             this.solutionNunber_textBox.TabIndex = 15;
             // 
-            // sent_checkBox
-            // 
-            this.sent_checkBox.AutoSize = true;
-            this.sent_checkBox.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.sent_checkBox.Location = new System.Drawing.Point(564, 59);
-            this.sent_checkBox.Name = "sent_checkBox";
-            this.sent_checkBox.Size = new System.Drawing.Size(19, 31);
-            this.sent_checkBox.TabIndex = 16;
-            this.sent_checkBox.Text = "О";
-            this.sent_checkBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.sent_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // overdue_checkBox
-            // 
-            this.overdue_checkBox.AutoSize = true;
-            this.overdue_checkBox.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.overdue_checkBox.Location = new System.Drawing.Point(589, 59);
-            this.overdue_checkBox.Name = "overdue_checkBox";
-            this.overdue_checkBox.Size = new System.Drawing.Size(19, 31);
-            this.overdue_checkBox.TabIndex = 17;
-            this.overdue_checkBox.Text = "П";
-            this.overdue_checkBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.overdue_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // conservation_checkBox
-            // 
-            this.conservation_checkBox.AutoSize = true;
-            this.conservation_checkBox.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.conservation_checkBox.Location = new System.Drawing.Point(614, 59);
-            this.conservation_checkBox.Name = "conservation_checkBox";
-            this.conservation_checkBox.Size = new System.Drawing.Size(18, 31);
-            this.conservation_checkBox.TabIndex = 18;
-            this.conservation_checkBox.Text = "К";
-            this.conservation_checkBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.conservation_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // storage_checkBox
-            // 
-            this.storage_checkBox.AutoSize = true;
-            this.storage_checkBox.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.storage_checkBox.Location = new System.Drawing.Point(639, 59);
-            this.storage_checkBox.Name = "storage_checkBox";
-            this.storage_checkBox.Size = new System.Drawing.Size(18, 31);
-            this.storage_checkBox.TabIndex = 19;
-            this.storage_checkBox.Text = "С";
-            this.storage_checkBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.storage_checkBox.UseVisualStyleBackColor = true;
-            this.storage_checkBox.CheckStateChanged += new System.EventHandler(this.storage_checkBox_CheckStateChanged);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -316,9 +267,9 @@
             // 
             // cancel_button
             // 
-            this.cancel_button.Location = new System.Drawing.Point(457, 102);
+            this.cancel_button.Location = new System.Drawing.Point(465, 102);
             this.cancel_button.Name = "cancel_button";
-            this.cancel_button.Size = new System.Drawing.Size(100, 23);
+            this.cancel_button.Size = new System.Drawing.Size(92, 23);
             this.cancel_button.TabIndex = 22;
             this.cancel_button.Text = "Отмена";
             this.cancel_button.UseVisualStyleBackColor = true;
@@ -328,7 +279,7 @@
             // 
             this.save_button.Location = new System.Drawing.Point(564, 102);
             this.save_button.Name = "save_button";
-            this.save_button.Size = new System.Drawing.Size(100, 23);
+            this.save_button.Size = new System.Drawing.Size(92, 23);
             this.save_button.TabIndex = 23;
             this.save_button.Text = "Сохранить";
             this.save_button.UseVisualStyleBackColor = true;
@@ -344,20 +295,69 @@
             this.gan_checkBox.Text = "Прибор входит в списки ГАН";
             this.gan_checkBox.UseVisualStyleBackColor = true;
             // 
+            // StateSend_radioButton
+            // 
+            this.StateSend_radioButton.AutoSize = true;
+            this.StateSend_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.StateSend_radioButton.Location = new System.Drawing.Point(564, 66);
+            this.StateSend_radioButton.Name = "StateSend_radioButton";
+            this.StateSend_radioButton.Size = new System.Drawing.Size(19, 30);
+            this.StateSend_radioButton.TabIndex = 25;
+            this.StateSend_radioButton.TabStop = true;
+            this.StateSend_radioButton.Text = "О";
+            this.StateSend_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // StateOverdue_radioButton
+            // 
+            this.StateOverdue_radioButton.AutoSize = true;
+            this.StateOverdue_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.StateOverdue_radioButton.Location = new System.Drawing.Point(589, 66);
+            this.StateOverdue_radioButton.Name = "StateOverdue_radioButton";
+            this.StateOverdue_radioButton.Size = new System.Drawing.Size(19, 30);
+            this.StateOverdue_radioButton.TabIndex = 26;
+            this.StateOverdue_radioButton.TabStop = true;
+            this.StateOverdue_radioButton.Text = "П";
+            this.StateOverdue_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // StateStorage_radioButton
+            // 
+            this.StateStorage_radioButton.AutoSize = true;
+            this.StateStorage_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.StateStorage_radioButton.Location = new System.Drawing.Point(638, 66);
+            this.StateStorage_radioButton.Name = "StateStorage_radioButton";
+            this.StateStorage_radioButton.Size = new System.Drawing.Size(18, 30);
+            this.StateStorage_radioButton.TabIndex = 27;
+            this.StateStorage_radioButton.TabStop = true;
+            this.StateStorage_radioButton.Text = "С";
+            this.StateStorage_radioButton.UseVisualStyleBackColor = true;
+            this.StateStorage_radioButton.CheckedChanged += new System.EventHandler(this.StateStorage_radioButton_CheckedChanged);
+            // 
+            // StateConservation_radioButton
+            // 
+            this.StateConservation_radioButton.AutoSize = true;
+            this.StateConservation_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.StateConservation_radioButton.Location = new System.Drawing.Point(614, 66);
+            this.StateConservation_radioButton.Name = "StateConservation_radioButton";
+            this.StateConservation_radioButton.Size = new System.Drawing.Size(18, 30);
+            this.StateConservation_radioButton.TabIndex = 28;
+            this.StateConservation_radioButton.TabStop = true;
+            this.StateConservation_radioButton.Text = "К";
+            this.StateConservation_radioButton.UseVisualStyleBackColor = true;
+            // 
             // Change_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 134);
+            this.ClientSize = new System.Drawing.Size(671, 130);
+            this.Controls.Add(this.StateConservation_radioButton);
+            this.Controls.Add(this.StateStorage_radioButton);
+            this.Controls.Add(this.StateOverdue_radioButton);
+            this.Controls.Add(this.StateSend_radioButton);
             this.Controls.Add(this.gan_checkBox);
             this.Controls.Add(this.save_button);
             this.Controls.Add(this.cancel_button);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.storage_checkBox);
-            this.Controls.Add(this.conservation_checkBox);
-            this.Controls.Add(this.overdue_checkBox);
-            this.Controls.Add(this.sent_checkBox);
             this.Controls.Add(this.solutionNunber_textBox);
             this.Controls.Add(this.verifiedTo_textBox);
             this.Controls.Add(this.label7);
@@ -404,14 +404,14 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox verifiedTo_textBox;
         private System.Windows.Forms.TextBox solutionNunber_textBox;
-        private System.Windows.Forms.CheckBox sent_checkBox;
-        private System.Windows.Forms.CheckBox overdue_checkBox;
-        private System.Windows.Forms.CheckBox conservation_checkBox;
-        private System.Windows.Forms.CheckBox storage_checkBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button cancel_button;
         private System.Windows.Forms.Button save_button;
         private System.Windows.Forms.CheckBox gan_checkBox;
+        private System.Windows.Forms.RadioButton StateSend_radioButton;
+        private System.Windows.Forms.RadioButton StateOverdue_radioButton;
+        private System.Windows.Forms.RadioButton StateStorage_radioButton;
+        private System.Windows.Forms.RadioButton StateConservation_radioButton;
     }
 }

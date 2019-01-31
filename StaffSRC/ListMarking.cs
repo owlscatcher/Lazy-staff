@@ -12,7 +12,7 @@ namespace StaffSRC
     {
         public int[] Start()
         {
-            var mainForm = new Staff_MainForm();
+            Staff_MainForm mainForm = new Staff_MainForm();
 
             //---------------------------------------
             // Проверка просрочки
@@ -37,7 +37,7 @@ namespace StaffSRC
                     }
                     if (days >= 366)                                                                                                // просроченный прибор
                     {
-                        mainForm.dataGridView1.Rows[i].Cells[11].Value = 1;
+                        mainForm.dataGridView1.Rows[i].Cells[9].Value = 1;
                         mainForm.dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
                     }
                     else
@@ -82,11 +82,11 @@ namespace StaffSRC
                         break;
                 }
 
-                //значения stageGan: 0 - не в списке ГАН, 1 - в списке ГАН (маркеруется в default)
+                //значения stageGan: false - не в списке ГАН, true - в списке ГАН (маркеруется в default)
 
                 switch (mainForm.dataGridView1.Rows[i].Cells[10].Value)
                 {
-                    case 0:
+                    case false:
                         ++notgan;
                         break;
                     default:
