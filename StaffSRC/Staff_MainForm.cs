@@ -71,6 +71,8 @@ namespace StaffSRC
         {
             if (ToggleSwitch.Toggled1 == true)
             {
+                PasswordInput passwordInput = new PasswordInput();
+                passwordInput.Show();
                 groupBox3.Enabled = true;
             }
             else

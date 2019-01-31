@@ -17,17 +17,21 @@ namespace StaffSRC
             InitializeComponent();
         }
 
-        private void Enter()
-        {
-            password_TextBox.KeyDown += new KeyEventHandler(tb_KeyDown);
-        }
+
 
         static void tb_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                //enter key is down
+                PasswordInput main = new PasswordInput();
+                string password = main.password_TextBox.Text;
+                main.Close();
             }
+        }
+
+        private void PasswordInput_Load(object sender, EventArgs e)
+        {
+            password_TextBox.KeyDown += new KeyEventHandler(tb_KeyDown);
         }
     }
 }
