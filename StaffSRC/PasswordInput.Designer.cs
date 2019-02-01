@@ -33,15 +33,19 @@
             // 
             // password_TextBox
             // 
-            this.password_TextBox.Location = new System.Drawing.Point(1, 1);
+            this.password_TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.password_TextBox.Location = new System.Drawing.Point(12, 12);
             this.password_TextBox.Name = "password_TextBox";
-            this.password_TextBox.Size = new System.Drawing.Size(134, 20);
+            this.password_TextBox.Size = new System.Drawing.Size(179, 20);
             this.password_TextBox.TabIndex = 0;
             // 
             // PasswordInput
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(160, 23);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(203, 43);
             this.Controls.Add(this.password_TextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PasswordInput";

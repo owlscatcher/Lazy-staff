@@ -53,7 +53,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new StaffSRC.Toggle();
+            this.ToggleSwitch1 = new StaffSRC.Toggle();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DeleteDevice_Button = new System.Windows.Forms.Button();
@@ -125,7 +125,7 @@
             this.ToggleHost.Size = new System.Drawing.Size(33, 22);
             this.ToggleHost.TabIndex = 15;
             this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
+            this.ToggleHost.Child = this.ToggleSwitch1;
             // 
             // Admin_Label
             // 
@@ -530,6 +530,8 @@
         private System.Windows.Forms.Label Admin_Label;
         private System.Windows.Forms.Integration.ElementHost ToggleHost;
         private Toggle ToggleSwitch;
+
+        public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
     }
 }
 

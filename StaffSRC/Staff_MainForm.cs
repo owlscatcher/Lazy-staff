@@ -28,7 +28,8 @@ namespace StaffSRC
         public DataTable dataTable = new DataTable();
         public string password, querry, connectionString, tableName, personnelNumber, factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, solutionNumber, sentDate, verificationDate;
         public int index, state;
-        public bool gan_state, administration;
+        public bool gan_state;
+        public static bool administration;
 
         //-----------------------------------
         // Кнопка экспорта из DGV в Excel
@@ -69,14 +70,38 @@ namespace StaffSRC
         // Изменение положения toggle
         void ToggleSwitch_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (ToggleSwitch.Toggled1 == true)
+            if (ToggleSwitch1.Toggled1 == true)
             {
                 PasswordInput passwordInput = new PasswordInput();
-                passwordInput.Show();
-                groupBox3.Enabled = true;
+
+                passwordInput.StartPosition = FormStartPosition.Manual;
+
+                int x = Cursor.Position.X;
+                int y = Cursor.Position.Y - 20;
+
+                passwordInput.Location = new Point(Cursor.Position.X, y);
+
+                passwordInput.ShowDialog();
+
+                if (administration==true)
+                {
+                    groupBox2.Enabled = true;
+                    groupBox3.Enabled = true;
+                }
+                else
+                {
+                    groupBox2.Enabled = false;
+                    groupBox3.Enabled = false;
+                    administration = false;
+                }
             }
             else
+            {
+                groupBox2.Enabled = false;
                 groupBox3.Enabled = false;
+                administration = false;
+            }
+
         }
 
         public Staff_MainForm()
@@ -99,9 +124,10 @@ namespace StaffSRC
             tableName = Settings.Default["tableName"].ToString();
             password = Settings.Default["password"].ToString();
 
-            ToggleSwitch.MouseLeftButtonDown += new System.Windows.Input.MouseButtonEventHandler(ToggleSwitch_MouseLeftButtonDown);
+            ToggleSwitch1.MouseLeftButtonDown += new System.Windows.Input.MouseButtonEventHandler(ToggleSwitch_MouseLeftButtonDown);
             administration = false;
 
+            groupBox2.Enabled = false;
             groupBox3.Enabled = false;
         }
 
