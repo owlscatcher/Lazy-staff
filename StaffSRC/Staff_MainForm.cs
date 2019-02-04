@@ -70,7 +70,7 @@ namespace StaffSRC
         // Изменение положения toggle
         void ToggleSwitch_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (ToggleSwitch1.Toggled1 == true)
+            if (ToggleSwitch1.Toggled == true)
             {
                 PasswordInput passwordInput = new PasswordInput();
 
@@ -129,6 +129,12 @@ namespace StaffSRC
 
             groupBox2.Enabled = false;
             groupBox3.Enabled = false;
+        }
+
+        // После окончания сортировки
+        private void dataGridView1_Sorted(object sender, EventArgs e)
+        {
+            ListMarking();
         }
 
         //-----------------------------------
@@ -256,12 +262,29 @@ namespace StaffSRC
 
                     if (days >= 335 && days <= 365)                                                                                 // подготовить на отправку || для продления
                     {
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
+                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 7)
+                        {
+                            dataGridView1.Rows[i].Cells[9].Value = 5;
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[i].Cells[9].Value = 7;
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
+                        }
                     }
                     if (days >= 366)                                                                                                // просроченный прибор
                     {
-                        dataGridView1.Rows[i].Cells[9].Value = 1;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
+                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 6)
+                        {
+                            dataGridView1.Rows[i].Cells[9].Value = 1;
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[i].Cells[9].Value = 6;
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
+                        }
                     }
                     else
                         continue;
@@ -280,25 +303,38 @@ namespace StaffSRC
                 allDevices++;
                 // значения stage хранятся в ячейках [9] || .Cells[9].Value
                 // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
+                //                 5 - готовится на отправку, 6 - просрочен и на складе, 7 - готовится на отправку и на складе
                 switch (dataGridView1.Rows[i].Cells[9].Value)
                 {
                     case 0:
                         break;
-                    case 1:
+                    case 1: // просрочен
                         overdue++;
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
                         break;
-                    case 2:
+                    case 2: // отправлен
                         sent++;
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#58ACFA");
                         break;
-                    case 3:
+                    case 3: // на складе
                         storage++;
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#58FA82");
                         break;
-                    case 4:
+                    case 4: // консервирован
                         conservation++;
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F6CED8");
+                        break;
+                   case 5: // на отправку
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
+                        break;
+                    case 6: // просрочен и на складе
+                        overdue++;
+                        storage++;
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
+                        break;
+                    case 7: // на отправку и на складе
+                        storage++;
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
                         break;
                     default:
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFFFFF");
@@ -329,13 +365,7 @@ namespace StaffSRC
                 notgan_label.Text = ("Приборов не ГАН: " + notgan.ToString());
             });
         }
-        //---------------------------------------
-        // Кнопка принудительной маркировки
-        //---------------------------------------
-        private void ListMarking_buttons(object sender, EventArgs e)
-        {
-            ListMarking();
-        }
+
         //--------------------------------------------------------------
         // Метод для рботы с PDF файлом
         //--------------------------------------------------------------
@@ -652,7 +682,7 @@ namespace StaffSRC
 
             // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
 
-            if (treeView1.Nodes[2].IsSelected)
+            if (treeView1.Nodes[3].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -665,9 +695,24 @@ namespace StaffSRC
             }
 
             //********************************
+            // Фильтр готовящихся устройств
+            //********************************
+            if (treeView1.Nodes[1].IsSelected)
+            {
+                dataGridView1.CurrentCell = null;
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 5 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 7)                // где 5 - Прибор готовится на отправку
+                        dataGridView1.Rows[i].Visible = true;
+                    else
+                        dataGridView1.Rows[i].Visible = false;
+                }
+            }
+
+            //********************************
             // Фильтр отправленных устройств
             //********************************
-            if (treeView1.Nodes[3].IsSelected)
+            if (treeView1.Nodes[4].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -682,12 +727,12 @@ namespace StaffSRC
             //********************************
             // Фильтр просроченных устройств
             //********************************
-            if (treeView1.Nodes[1].IsSelected)
+            if (treeView1.Nodes[2].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 1)                // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 1 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 6)                // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -697,12 +742,12 @@ namespace StaffSRC
             //********************************
             // Фильтр устройств на складе
             //********************************
-            if (treeView1.Nodes[4].IsSelected)
+            if (treeView1.Nodes[5].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 3)                // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 3 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 6 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 7)                // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -712,7 +757,7 @@ namespace StaffSRC
             //********************************
             // Фильтр устройств ГАН
             //********************************
-            if (treeView1.Nodes[5].Nodes[0].IsSelected)
+            if (treeView1.Nodes[6].Nodes[0].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -726,7 +771,7 @@ namespace StaffSRC
             //********************************
             // Фильтр устройств не ГАН
             //********************************
-            if (treeView1.Nodes[5].Nodes[1].IsSelected)
+            if (treeView1.Nodes[6].Nodes[1].IsSelected)
             {
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)

@@ -18,7 +18,8 @@ namespace StaffSRC
             // Проверка просрочки
             //---------------------------------------
 
-            // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
+            // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация, 5 - подготовить на отправку
+            //                                                                                                                    записывается локально
 
             DateTime currentDate, verificationDate = new DateTime();
             currentDate = DateTime.Now.Date;                                                                                        // актуальная дата
@@ -34,6 +35,7 @@ namespace StaffSRC
                     if (days >= 335 && days <= 365)                                                                                 // подготовить на отправку || для продления
                     {
                         mainForm.dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
+                        mainForm.dataGridView1.Rows[i].Cells[9].Value = 5;
                     }
                     if (days >= 366)                                                                                                // просроченный прибор
                     {
@@ -76,6 +78,9 @@ namespace StaffSRC
                     case 4:
                         conservation++;
                         mainForm.dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F6CED8");
+                        break;
+                    case 5:
+                        mainForm.dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
                         break;
                     default:
                         mainForm.dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFFFFF");

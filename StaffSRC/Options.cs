@@ -14,6 +14,8 @@ namespace StaffSRC
 {
     public partial class Options : Form
     {
+        string admin_pass = Settings.Default["password"].ToString();
+
         public Options()
         {
             InitializeComponent();
@@ -52,11 +54,24 @@ namespace StaffSRC
             TableNameRoom_TextBox.Text = Settings.Default["tableNameRoom"].ToString();
             uim_Info.tableNameUIM = Settings.Default["tableNameRoom"].ToString();                    // Обновление переменной
 
+            if (admin_pass == OldAdminPass_TextBox.Text)
+            {
+                Settings.Default["password"] = (NewAdminPass_TextBox.Text).ToString();
+                Settings.Default.Save();
+            }
+            else
+                MessageBox.Show("Неверный пароль");
 
             Thread dataGridUpdate = new Thread(main.DataGridView_Load);
             dataGridUpdate.Start();
 
-            Close();
+            string message = "Настройки обновлены!";                                                       // Формировани текста окна
+            string caption = "Успешно";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result;
+            result = MessageBox.Show(message, caption, buttons);                                            // Вывод диалогового окна
+            if (result == System.Windows.Forms.DialogResult.OK)
+                Close();
         }
     }
 }

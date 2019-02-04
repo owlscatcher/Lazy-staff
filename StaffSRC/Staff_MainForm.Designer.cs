@@ -41,26 +41,26 @@
             treeNode4,
             treeNode5,
             treeNode6});
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Просроченные приборы");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Консервация");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Отправленные на Гос. поверку");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Склад");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("ГАН");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Другие");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
-            treeNode12,
-            treeNode13});
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Подготовить на отпр.");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Просроченные приборы");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Консервация");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Отправленные на Гос. поверку");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Склад");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("ГАН");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Другие");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
+            treeNode13,
+            treeNode14});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch1 = new StaffSRC.Toggle();
+            this.ToggleSwitch = new StaffSRC.Toggle();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DeleteDevice_Button = new System.Windows.Forms.Button();
             this.Setting_button = new System.Windows.Forms.Button();
             this.uimInfo_button = new System.Windows.Forms.Button();
             this.AddDevice_button = new System.Windows.Forms.Button();
-            this.Marker_button = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.ExportToXml_button = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -125,7 +125,7 @@
             this.ToggleHost.Size = new System.Drawing.Size(33, 22);
             this.ToggleHost.TabIndex = 15;
             this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch1;
+            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Admin_Label
             // 
@@ -145,10 +145,9 @@
             this.groupBox3.Controls.Add(this.Setting_button);
             this.groupBox3.Controls.Add(this.uimInfo_button);
             this.groupBox3.Controls.Add(this.AddDevice_button);
-            this.groupBox3.Controls.Add(this.Marker_button);
-            this.groupBox3.Location = new System.Drawing.Point(5, 330);
+            this.groupBox3.Location = new System.Drawing.Point(3, 330);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(161, 164);
+            this.groupBox3.Size = new System.Drawing.Size(163, 134);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Опции";
@@ -157,7 +156,7 @@
             // 
             this.DeleteDevice_Button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteDevice_Button.Location = new System.Drawing.Point(0, 77);
+            this.DeleteDevice_Button.Location = new System.Drawing.Point(2, 77);
             this.DeleteDevice_Button.Name = "DeleteDevice_Button";
             this.DeleteDevice_Button.Size = new System.Drawing.Size(157, 23);
             this.DeleteDevice_Button.TabIndex = 13;
@@ -169,7 +168,7 @@
             // 
             this.Setting_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Setting_button.Location = new System.Drawing.Point(0, 19);
+            this.Setting_button.Location = new System.Drawing.Point(2, 19);
             this.Setting_button.Name = "Setting_button";
             this.Setting_button.Size = new System.Drawing.Size(157, 23);
             this.Setting_button.TabIndex = 11;
@@ -181,7 +180,7 @@
             // 
             this.uimInfo_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uimInfo_button.Location = new System.Drawing.Point(0, 106);
+            this.uimInfo_button.Location = new System.Drawing.Point(2, 106);
             this.uimInfo_button.Name = "uimInfo_button";
             this.uimInfo_button.Size = new System.Drawing.Size(157, 23);
             this.uimInfo_button.TabIndex = 9;
@@ -193,25 +192,13 @@
             // 
             this.AddDevice_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddDevice_button.Location = new System.Drawing.Point(0, 48);
+            this.AddDevice_button.Location = new System.Drawing.Point(2, 48);
             this.AddDevice_button.Name = "AddDevice_button";
             this.AddDevice_button.Size = new System.Drawing.Size(157, 23);
             this.AddDevice_button.TabIndex = 10;
             this.AddDevice_button.Text = "Добавить устройство";
             this.AddDevice_button.UseVisualStyleBackColor = true;
             this.AddDevice_button.Click += new System.EventHandler(this.AddDevice_button_Click);
-            // 
-            // Marker_button
-            // 
-            this.Marker_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Marker_button.Location = new System.Drawing.Point(0, 135);
-            this.Marker_button.Name = "Marker_button";
-            this.Marker_button.Size = new System.Drawing.Size(157, 23);
-            this.Marker_button.TabIndex = 2;
-            this.Marker_button.Text = "Принудительная маркеровка";
-            this.Marker_button.UseVisualStyleBackColor = true;
-            this.Marker_button.Click += new System.EventHandler(this.ListMarking_buttons);
             // 
             // progressBar1
             // 
@@ -416,27 +403,30 @@
             treeNode6.Text = "ДКГ";
             treeNode7.Name = "All";
             treeNode7.Text = "Все приборы";
-            treeNode8.Name = "PROSROCH";
-            treeNode8.Text = "Просроченные приборы";
-            treeNode9.Name = "KONSERV";
-            treeNode9.Text = "Консервация";
-            treeNode10.Name = "OTPRAVLENNIE";
-            treeNode10.Text = "Отправленные на Гос. поверку";
-            treeNode11.Name = "SKLAD";
-            treeNode11.Text = "Склад";
-            treeNode12.Name = "gan";
-            treeNode12.Text = "ГАН";
-            treeNode13.Name = "notgan";
-            treeNode13.Text = "Другие";
-            treeNode14.Name = "lists";
-            treeNode14.Text = "Особые списки";
+            treeNode8.Name = "PREPROSROCH";
+            treeNode8.Text = "Подготовить на отпр.";
+            treeNode9.Name = "PROSROCH";
+            treeNode9.Text = "Просроченные приборы";
+            treeNode10.Name = "KONSERV";
+            treeNode10.Text = "Консервация";
+            treeNode11.Name = "OTPRAVLENNIE";
+            treeNode11.Text = "Отправленные на Гос. поверку";
+            treeNode12.Name = "SKLAD";
+            treeNode12.Text = "Склад";
+            treeNode13.Name = "gan";
+            treeNode13.Text = "ГАН";
+            treeNode14.Name = "notgan";
+            treeNode14.Text = "Другие";
+            treeNode15.Name = "lists";
+            treeNode15.Text = "Особые списки";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode7,
             treeNode8,
             treeNode9,
             treeNode10,
             treeNode11,
-            treeNode14});
+            treeNode12,
+            treeNode15});
             this.treeView1.Size = new System.Drawing.Size(164, 199);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -468,6 +458,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(1190, 720);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
             // 
             // Staff_MainForm
@@ -479,7 +470,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Приборы УРБ зд. 106 (v1.1.28 от 28/01/2019)";
+            this.Text = "Приборы УРБ зд. 106 (v1.2.04 от 04/02/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -505,7 +496,6 @@
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button PrintPdf_button;
         private System.Windows.Forms.TextBox search_textBox;
-        private System.Windows.Forms.Button Marker_button;
         private System.Windows.Forms.Label conservation_label;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label overdue_label;

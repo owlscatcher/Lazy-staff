@@ -38,6 +38,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.password_TextBox.Location = new System.Drawing.Point(12, 12);
             this.password_TextBox.Name = "password_TextBox";
+            this.password_TextBox.PasswordChar = '•';
             this.password_TextBox.Size = new System.Drawing.Size(179, 20);
             this.password_TextBox.TabIndex = 0;
             // 

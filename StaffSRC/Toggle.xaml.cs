@@ -28,15 +28,12 @@ namespace StaffSRC
         SolidColorBrush Off = new SolidColorBrush(Color.FromRgb(160, 160, 160));                // в HEX #FFA0A0A0 - серый
         SolidColorBrush On = new SolidColorBrush(Color.FromRgb(149, 221, 128));                 // в HEX #95DD80 - пастельно-зеленый
 
-        // Изначальное состояние Toggle
-        private bool Toggled = false;
-
         public Toggle()
         {
             InitializeComponent();
         }
 
-        public bool Toggled1 { get => Toggled; set => Toggled = value; }
+        public bool Toggled { get; set; } = false;
 
         private void Dot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
