@@ -153,11 +153,15 @@ namespace StaffSRC
         //----------------------------------------------------------------------------
         public void DataGridView_Load()
         {
-            while (dataGridView1.Rows.Count > 0)                                                                // Пока есть строки в массиве
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    dataGridView1.Rows.Remove(dataGridView1.Rows[i]);                                           // очищаем datagrid
-                }
+            /* int rowsCount = dataGridView1.Rows.Count;
+             while (dataGridView1.Rows.Count > 0)                                                                // Пока есть строки в массиве
+                 for (int i = 0; i < rowsCount; i++)
+                 {
+                     dataGridView1.Rows.Remove(dataGridView1.Rows[i]);                                           // очищаем datagrid
+                 }*/
+
+            dataSet.Clear();
+
             SqlConnection connection = new SqlConnection(connectionString);
             string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
             SqlDataAdapter dataAdapter = new SqlDataAdapter(querry, connection);                                // создаем экземпляр dataAdapter для получения строк из sql db
@@ -226,11 +230,11 @@ namespace StaffSRC
                 dataGridView1.Columns[8].HeaderText = "Тех. решение";
                 dataGridView1.Columns[8].MinimumWidth = 60;
 
-                dataGridView1.Columns[9].HeaderText = "Состояние";
+                dataGridView1.Columns[9].HeaderText = "ГАН";
                 dataGridView1.Columns[9].MinimumWidth = 60;
                 dataGridView1.Columns[9].Visible = false;
 
-                dataGridView1.Columns[10].HeaderText = "ГАН";
+                dataGridView1.Columns[10].HeaderText = "Состояние";
                 dataGridView1.Columns[10].MinimumWidth = 60;
                 dataGridView1.Columns[10].Visible = false;
             });
@@ -247,7 +251,8 @@ namespace StaffSRC
             // Проверка просрочки
             //---------------------------------------
 
-            // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
+            // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервации, 5 - готовится к отправке
+            //                 6 - просрочен и на складе, 7 - готовится к отправке и на складе
 
             DateTime currentDate, verificationDate = new DateTime();
             currentDate = DateTime.Now.Date;                                                                                        // актуальная дата
@@ -255,34 +260,34 @@ namespace StaffSRC
 
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 2 && Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 4 && dataGridView1.Rows[i].Cells[5].Value != DBNull.Value)  // Если прибор не на консервации и не отправлен
+                if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 2 && Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 4 && dataGridView1.Rows[i].Cells[5].Value != DBNull.Value)  // Если прибор не на консервации и не отправлен
                 {
                     verificationDate = (Convert.ToDateTime(dataGridView1.Rows[i].Cells[5].Value));
                     int days = (int)currentDate.Subtract(verificationDate).TotalDays;                                               // получаем разность между currentDate и verificationDate в днях
 
                     if (days >= 335 && days <= 365)                                                                                 // подготовить на отправку || для продления
                     {
-                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 7)
+                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 7)
                         {
-                            dataGridView1.Rows[i].Cells[9].Value = 5;
+                            dataGridView1.Rows[i].Cells[10].Value = 5;
                             dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
                         }
                         else
                         {
-                            dataGridView1.Rows[i].Cells[9].Value = 7;
+                            dataGridView1.Rows[i].Cells[10].Value = 7;
                             dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
                         }
                     }
                     if (days >= 366)                                                                                                // просроченный прибор
                     {
-                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) != 6)
+                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 6)
                         {
-                            dataGridView1.Rows[i].Cells[9].Value = 1;
+                            dataGridView1.Rows[i].Cells[10].Value = 1;
                             dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
                         }
                         else
                         {
-                            dataGridView1.Rows[i].Cells[9].Value = 6;
+                            dataGridView1.Rows[i].Cells[10].Value = 6;
                             dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
                         }
                     }
@@ -301,10 +306,10 @@ namespace StaffSRC
             for (int i = 0; i < dataGridView1.Rows.Count; i++)                                                             // цикл маркировки
             {
                 allDevices++;
-                // значения stage хранятся в ячейках [9] || .Cells[9].Value
+                // значения stage хранятся в ячейках [10] || .Cells[10].Value
                 // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
                 //                 5 - готовится на отправку, 6 - просрочен и на складе, 7 - готовится на отправку и на складе
-                switch (dataGridView1.Rows[i].Cells[9].Value)
+                switch (dataGridView1.Rows[i].Cells[10].Value)
                 {
                     case 0:
                         break;
@@ -343,7 +348,7 @@ namespace StaffSRC
 
                 //значения stageGan: false - не в списке ГАН, true - в списке ГАН (маркеруется в default)
 
-                switch (dataGridView1.Rows[i].Cells[10].Value)
+                switch (dataGridView1.Rows[i].Cells[9].Value)
                 {
                     case false:
                         ++notgan;
@@ -457,7 +462,7 @@ namespace StaffSRC
                 // меняем статус устройства на "Отправлен" и изменяем дату отправки
                 dataGridView1.CurrentRow.Cells[4].Value = date;
                 dataGridView1.CurrentRow.Cells[6].Value = "----";
-                dataGridView1.CurrentRow.Cells[9].Value = 2;
+                dataGridView1.CurrentRow.Cells[10].Value = 2;
                 SqlConnection connection = new SqlConnection(connectionString);
                 SqlCommand command = new SqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
 
@@ -576,8 +581,8 @@ namespace StaffSRC
                 deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
                 verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
                 solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[9].Value);
-                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[10].Value);
+                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
+                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
 
                 Change_device ChangeDev = new Change_device();
                 ChangeDev.Owner = this;
@@ -687,7 +692,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 4)                 // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 4)                 // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -702,7 +707,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 5 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 7)                // где 5 - Прибор готовится на отправку
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 5 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 5 - Прибор готовится на отправку
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -717,7 +722,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 2)                // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 2)                // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -732,7 +737,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 1 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 6)                // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 1 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6)                // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -747,7 +752,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 3 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 6 || Convert.ToInt32(dataGridView1.Rows[i].Cells[9].Value) == 7)                // где 1 - отправлен, 0 - нет
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 3 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 1 - отправлен, 0 - нет
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -762,7 +767,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[10].Value) == true)                       // где true - ГАН, false - не ГАН
+                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == true)                       // где true - ГАН, false - не ГАН
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;
@@ -776,7 +781,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[10].Value) == false)                       // где true - ГАН, false - не ГАН
+                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == false)                       // где true - ГАН, false - не ГАН
                         dataGridView1.Rows[i].Visible = true;
                     else
                         dataGridView1.Rows[i].Visible = false;

@@ -136,8 +136,8 @@ namespace StaffSRC
             main.dataGridView1.CurrentRow.Cells[6].Value = deviceLocation_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[7].Value = verifiedTo_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[8].Value = solutionNunber_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[9].Value = state;
-            main.dataGridView1.CurrentRow.Cells[10].Value = gan_state;
+            main.dataGridView1.CurrentRow.Cells[10].Value = state;
+            main.dataGridView1.CurrentRow.Cells[9].Value = gan_state;
 
             // Маркируем список
 
