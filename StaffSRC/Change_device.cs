@@ -60,6 +60,9 @@ namespace StaffSRC
             // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
             switch(main.state)
             {
+                case 0: // нормально
+                    StateNormal_radioButton.Checked = true;
+                    break;
                 case 1: //просрочен
                     StateOverdue_radioButton.Checked = true;
                     break;
@@ -93,7 +96,11 @@ namespace StaffSRC
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
-            if (StateOverdue_radioButton.Checked == false && StateSend_radioButton.Checked == false && StateConservation_radioButton.Checked == false && StateStorage_radioButton.Checked == false)
+            if (StateOverdue_radioButton.Checked == false && 
+                StateSend_radioButton.Checked == false && 
+                StateConservation_radioButton.Checked == false && 
+                StateStorage_radioButton.Checked == false &&
+                StateNormal_radioButton.Checked == true)
                 state = 0;
             if (StateOverdue_radioButton.Checked == true)
                 state = 1;

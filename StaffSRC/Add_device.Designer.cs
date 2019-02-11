@@ -54,13 +54,14 @@
             this.StateStorage_radioButton = new System.Windows.Forms.RadioButton();
             this.StateOverdue_radioButton = new System.Windows.Forms.RadioButton();
             this.StateSend_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateNormal_radioButton = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // save_button
             // 
             this.save_button.Location = new System.Drawing.Point(564, 102);
             this.save_button.Name = "save_button";
-            this.save_button.Size = new System.Drawing.Size(92, 23);
+            this.save_button.Size = new System.Drawing.Size(116, 23);
             this.save_button.TabIndex = 47;
             this.save_button.Text = "Добавить";
             this.save_button.UseVisualStyleBackColor = true;
@@ -234,9 +235,9 @@
             // 
             // verificationDate_textBox
             // 
-            this.verificationDate_textBox.Location = new System.Drawing.Point(564, 25);
+            this.verificationDate_textBox.Location = new System.Drawing.Point(563, 26);
             this.verificationDate_textBox.Name = "verificationDate_textBox";
-            this.verificationDate_textBox.Size = new System.Drawing.Size(92, 20);
+            this.verificationDate_textBox.Size = new System.Drawing.Size(116, 20);
             this.verificationDate_textBox.TabIndex = 30;
             // 
             // sentDate_textBox
@@ -376,11 +377,24 @@
             this.StateSend_radioButton.Text = "О";
             this.StateSend_radioButton.UseVisualStyleBackColor = true;
             // 
+            // StateNormal_radioButton
+            // 
+            this.StateNormal_radioButton.AutoSize = true;
+            this.StateNormal_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.StateNormal_radioButton.Location = new System.Drawing.Point(662, 65);
+            this.StateNormal_radioButton.Name = "StateNormal_radioButton";
+            this.StateNormal_radioButton.Size = new System.Drawing.Size(19, 30);
+            this.StateNormal_radioButton.TabIndex = 54;
+            this.StateNormal_radioButton.TabStop = true;
+            this.StateNormal_radioButton.Text = "Н";
+            this.StateNormal_radioButton.UseVisualStyleBackColor = true;
+            // 
             // Add_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 135);
+            this.ClientSize = new System.Drawing.Size(690, 135);
+            this.Controls.Add(this.StateNormal_radioButton);
             this.Controls.Add(this.StateConservation_radioButton);
             this.Controls.Add(this.StateStorage_radioButton);
             this.Controls.Add(this.StateOverdue_radioButton);
@@ -444,5 +458,6 @@
         private System.Windows.Forms.RadioButton StateStorage_radioButton;
         private System.Windows.Forms.RadioButton StateOverdue_radioButton;
         private System.Windows.Forms.RadioButton StateSend_radioButton;
+        private System.Windows.Forms.RadioButton StateNormal_radioButton;
     }
 }

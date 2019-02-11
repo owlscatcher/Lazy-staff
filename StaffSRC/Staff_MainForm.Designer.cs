@@ -53,8 +53,6 @@
             treeNode14});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new StaffSRC.Toggle();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DeleteDevice_Button = new System.Windows.Forms.Button();
@@ -81,6 +79,11 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.StatusPanel = new System.Windows.Forms.StatusStrip();
+            this.SyncStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CountStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
+            this.ToggleSwitch = new StaffSRC.Toggle();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -89,6 +92,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.StatusPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -111,21 +115,12 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel2.Controls.Add(this.StatusPanel);
             this.splitContainer1.Panel2.Controls.Add(this.search_textBox);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
             this.splitContainer1.Size = new System.Drawing.Size(1370, 749);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // ToggleHost
-            // 
-            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
-            this.ToggleHost.Name = "ToggleHost";
-            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
-            this.ToggleHost.TabIndex = 15;
-            this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Admin_Label
             // 
@@ -458,8 +453,42 @@
             this.dataGridView1.Size = new System.Drawing.Size(1190, 720);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            // 
+            // StatusPanel
+            // 
+            this.StatusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SyncStatusLabel_StatusPanel,
+            this.CountStatusLabel_StatusPanel});
+            this.StatusPanel.Location = new System.Drawing.Point(0, 727);
+            this.StatusPanel.Name = "StatusPanel";
+            this.StatusPanel.Size = new System.Drawing.Size(1196, 22);
+            this.StatusPanel.TabIndex = 3;
+            this.StatusPanel.Text = "statusStrip1";
+            // 
+            // SyncStatusLabel_StatusPanel
+            // 
+            this.SyncStatusLabel_StatusPanel.Name = "SyncStatusLabel_StatusPanel";
+            this.SyncStatusLabel_StatusPanel.Size = new System.Drawing.Size(157, 17);
+            this.SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация:";
+            // 
+            // CountStatusLabel_StatusPanel
+            // 
+            this.CountStatusLabel_StatusPanel.Name = "CountStatusLabel_StatusPanel";
+            this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(207, 17);
+            this.CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: ";
+            // 
+            // ToggleHost
+            // 
+            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
+            this.ToggleHost.Name = "ToggleHost";
+            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
+            this.ToggleHost.TabIndex = 15;
+            this.ToggleHost.Text = "elementHost1";
+            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Staff_MainForm
             // 
@@ -485,6 +514,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.StatusPanel.ResumeLayout(false);
+            this.StatusPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -520,6 +551,9 @@
         private System.Windows.Forms.Label Admin_Label;
         private System.Windows.Forms.Integration.ElementHost ToggleHost;
         private Toggle ToggleSwitch;
+        private System.Windows.Forms.StatusStrip StatusPanel;
+        private System.Windows.Forms.ToolStripStatusLabel SyncStatusLabel_StatusPanel;
+        private System.Windows.Forms.ToolStripStatusLabel CountStatusLabel_StatusPanel;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
     }

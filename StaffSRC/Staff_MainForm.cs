@@ -104,6 +104,9 @@ namespace StaffSRC
 
         }
 
+        //-----------------------------------
+        // Инициализация
+        //-----------------------------------
         public Staff_MainForm()
         {
             InitializeComponent();
@@ -131,14 +134,26 @@ namespace StaffSRC
             groupBox3.Enabled = false;
         }
 
-        // После окончания сортировки
+        //-----------------------------------
+        // Событие изменение select состояния строки
+        //-----------------------------------
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            // Получаем колличество SelectRows и выводим их на статус панель
+            string selectedRowsCount = Convert.ToString(dataGridView1.SelectedRows.Count);
+            CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: " + selectedRowsCount;
+        }
+
+        //-----------------------------------
+        // Событие окончания сортировки, обновление маркеровки
+        //-----------------------------------
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
             ListMarking();
         }
 
         //-----------------------------------
-        // При первом отображении формы
+        // Событие при первом отображении формы, загрузка из бд
         //-----------------------------------
         private void Staff_MainForm_Shown(object sender, EventArgs e)
         {
@@ -149,18 +164,11 @@ namespace StaffSRC
 
 
         //----------------------------------------------------------------------------
-        // Загрузка данных в DataGridView
+        // Загрузка данных из DataGridView
         //----------------------------------------------------------------------------
         public void DataGridView_Load()
         {
-            /* int rowsCount = dataGridView1.Rows.Count;
-             while (dataGridView1.Rows.Count > 0)                                                                // Пока есть строки в массиве
-                 for (int i = 0; i < rowsCount; i++)
-                 {
-                     dataGridView1.Rows.Remove(dataGridView1.Rows[i]);                                           // очищаем datagrid
-                 }*/
-
-            dataSet.Clear();
+            dataSet.Clear();                                                                                    // Очистили DataSet
 
             SqlConnection connection = new SqlConnection(connectionString);
             string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
@@ -172,7 +180,7 @@ namespace StaffSRC
             }
             catch (SqlException)
             {
-                string message = "Не удалось подклюиться к базе данных.";                                       // Формировани текста окна ошибки
+                string message = "Не удалось подклюиться к базе данных. Открыть настройки?";                  // Формировани текста окна ошибки
                 string caption = "Ошибка";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;                                            // Формирование кнопок Да/Нет
                 DialogResult result;                                                                            // В какую переменную вывести 
@@ -240,6 +248,9 @@ namespace StaffSRC
             });
 
             ListMarking();
+
+            DateTime dateTime = DateTime.Now;
+            SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
         }
 
         //-----------------------------------------------------
@@ -520,6 +531,8 @@ namespace StaffSRC
                 process.EnableRaisingEvents = true;
                 process.Close();
             }
+
+            ListMarking();
         }
         //---------------------------------------
         // получаем индекс выделенной строки

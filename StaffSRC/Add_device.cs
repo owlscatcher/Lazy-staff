@@ -33,7 +33,11 @@ namespace StaffSRC
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
-            if (StateOverdue_radioButton.Checked == false && StateSend_radioButton.Checked == false && StateConservation_radioButton.Checked == false && StateStorage_radioButton.Checked == false)
+            if (StateOverdue_radioButton.Checked == false && 
+                StateSend_radioButton.Checked == false && 
+                StateConservation_radioButton.Checked == false && 
+                StateStorage_radioButton.Checked == false &&
+                StateNormal_radioButton.Checked == true)
                 state = 0;
             if (StateOverdue_radioButton.Checked == true)
                 state = 1;
