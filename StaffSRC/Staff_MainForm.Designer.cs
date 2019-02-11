@@ -450,7 +450,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1190, 720);
+            this.dataGridView1.Size = new System.Drawing.Size(1190, 698);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
@@ -499,7 +499,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Приборы УРБ зд. 106 (v1.2.04 от 04/02/2019)";
+            this.Text = "Приборы УРБ зд. 106 (v1.2.11 от 11/02/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
