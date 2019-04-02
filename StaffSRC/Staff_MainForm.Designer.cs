@@ -48,11 +48,15 @@
             System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Склад");
             System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("ГАН");
             System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Другие");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Списанные приборы");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
             treeNode13,
-            treeNode14});
+            treeNode14,
+            treeNode15});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
+            this.ToggleSwitch = new StaffSRC.Toggle();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DeleteDevice_Button = new System.Windows.Forms.Button();
@@ -69,7 +73,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.notgan_label = new System.Windows.Forms.Label();
             this.gan_label = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.seporatingLine_label3 = new System.Windows.Forms.Label();
             this.allDevides_label = new System.Windows.Forms.Label();
             this.storage_label = new System.Windows.Forms.Label();
             this.seporatingLine_label = new System.Windows.Forms.Label();
@@ -77,13 +81,13 @@
             this.sent_label = new System.Windows.Forms.Label();
             this.conservation_label = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.search_textBox = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.StatusPanel = new System.Windows.Forms.StatusStrip();
             this.SyncStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
             this.CountStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new StaffSRC.Toggle();
+            this.search_textBox = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.seporatingLine_label2 = new System.Windows.Forms.Label();
+            this.decommissioned_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -91,8 +95,8 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.StatusPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -121,6 +125,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(1370, 749);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // ToggleHost
+            // 
+            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
+            this.ToggleHost.Name = "ToggleHost";
+            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
+            this.ToggleHost.TabIndex = 15;
+            this.ToggleHost.Text = "elementHost1";
+            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Admin_Label
             // 
@@ -199,7 +213,7 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(5, 535);
+            this.progressBar1.Location = new System.Drawing.Point(5, 513);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(157, 10);
             this.progressBar1.TabIndex = 8;
@@ -208,7 +222,7 @@
             // 
             this.ExportToXml_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportToXml_button.Location = new System.Drawing.Point(5, 551);
+            this.ExportToXml_button.Location = new System.Drawing.Point(5, 529);
             this.ExportToXml_button.Name = "ExportToXml_button";
             this.ExportToXml_button.Size = new System.Drawing.Size(157, 23);
             this.ExportToXml_button.TabIndex = 7;
@@ -280,18 +294,20 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.seporatingLine_label2);
+            this.groupBox1.Controls.Add(this.decommissioned_label);
             this.groupBox1.Controls.Add(this.notgan_label);
             this.groupBox1.Controls.Add(this.gan_label);
-            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.seporatingLine_label3);
             this.groupBox1.Controls.Add(this.allDevides_label);
             this.groupBox1.Controls.Add(this.storage_label);
             this.groupBox1.Controls.Add(this.seporatingLine_label);
             this.groupBox1.Controls.Add(this.overdue_label);
             this.groupBox1.Controls.Add(this.sent_label);
             this.groupBox1.Controls.Add(this.conservation_label);
-            this.groupBox1.Location = new System.Drawing.Point(3, 580);
+            this.groupBox1.Location = new System.Drawing.Point(5, 558);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(163, 137);
+            this.groupBox1.Size = new System.Drawing.Size(163, 166);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
@@ -314,19 +330,19 @@
             this.gan_label.TabIndex = 11;
             this.gan_label.Text = "Приборов ГАН:";
             // 
-            // label1
+            // seporatingLine_label3
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 107);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "____________________";
+            this.seporatingLine_label3.AutoSize = true;
+            this.seporatingLine_label3.Location = new System.Drawing.Point(6, 133);
+            this.seporatingLine_label3.Name = "seporatingLine_label3";
+            this.seporatingLine_label3.Size = new System.Drawing.Size(127, 13);
+            this.seporatingLine_label3.TabIndex = 10;
+            this.seporatingLine_label3.Text = "____________________";
             // 
             // allDevides_label
             // 
             this.allDevides_label.AutoSize = true;
-            this.allDevides_label.Location = new System.Drawing.Point(6, 120);
+            this.allDevides_label.Location = new System.Drawing.Point(9, 146);
             this.allDevides_label.Name = "allDevides_label";
             this.allDevides_label.Size = new System.Drawing.Size(94, 13);
             this.allDevides_label.TabIndex = 9;
@@ -412,8 +428,10 @@
             treeNode13.Text = "ГАН";
             treeNode14.Name = "notgan";
             treeNode14.Text = "Другие";
-            treeNode15.Name = "lists";
-            treeNode15.Text = "Особые списки";
+            treeNode15.Name = "decommissioned";
+            treeNode15.Text = "Списанные приборы";
+            treeNode16.Name = "lists";
+            treeNode16.Text = "Особые списки";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode7,
             treeNode8,
@@ -421,10 +439,33 @@
             treeNode10,
             treeNode11,
             treeNode12,
-            treeNode15});
+            treeNode16});
             this.treeView1.Size = new System.Drawing.Size(164, 199);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            // 
+            // StatusPanel
+            // 
+            this.StatusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SyncStatusLabel_StatusPanel,
+            this.CountStatusLabel_StatusPanel});
+            this.StatusPanel.Location = new System.Drawing.Point(0, 727);
+            this.StatusPanel.Name = "StatusPanel";
+            this.StatusPanel.Size = new System.Drawing.Size(1196, 22);
+            this.StatusPanel.TabIndex = 3;
+            this.StatusPanel.Text = "statusStrip1";
+            // 
+            // SyncStatusLabel_StatusPanel
+            // 
+            this.SyncStatusLabel_StatusPanel.Name = "SyncStatusLabel_StatusPanel";
+            this.SyncStatusLabel_StatusPanel.Size = new System.Drawing.Size(157, 17);
+            this.SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация:";
+            // 
+            // CountStatusLabel_StatusPanel
+            // 
+            this.CountStatusLabel_StatusPanel.Name = "CountStatusLabel_StatusPanel";
+            this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(207, 17);
+            this.CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: ";
             // 
             // search_textBox
             // 
@@ -457,38 +498,23 @@
             this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
             // 
-            // StatusPanel
+            // seporatingLine_label2
             // 
-            this.StatusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SyncStatusLabel_StatusPanel,
-            this.CountStatusLabel_StatusPanel});
-            this.StatusPanel.Location = new System.Drawing.Point(0, 727);
-            this.StatusPanel.Name = "StatusPanel";
-            this.StatusPanel.Size = new System.Drawing.Size(1196, 22);
-            this.StatusPanel.TabIndex = 3;
-            this.StatusPanel.Text = "statusStrip1";
+            this.seporatingLine_label2.AutoSize = true;
+            this.seporatingLine_label2.Location = new System.Drawing.Point(6, 107);
+            this.seporatingLine_label2.Name = "seporatingLine_label2";
+            this.seporatingLine_label2.Size = new System.Drawing.Size(127, 13);
+            this.seporatingLine_label2.TabIndex = 14;
+            this.seporatingLine_label2.Text = "____________________";
             // 
-            // SyncStatusLabel_StatusPanel
+            // decommissioned_label
             // 
-            this.SyncStatusLabel_StatusPanel.Name = "SyncStatusLabel_StatusPanel";
-            this.SyncStatusLabel_StatusPanel.Size = new System.Drawing.Size(157, 17);
-            this.SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация:";
-            // 
-            // CountStatusLabel_StatusPanel
-            // 
-            this.CountStatusLabel_StatusPanel.Name = "CountStatusLabel_StatusPanel";
-            this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(207, 17);
-            this.CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: ";
-            // 
-            // ToggleHost
-            // 
-            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
-            this.ToggleHost.Name = "ToggleHost";
-            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
-            this.ToggleHost.TabIndex = 15;
-            this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
+            this.decommissioned_label.AutoSize = true;
+            this.decommissioned_label.Location = new System.Drawing.Point(9, 120);
+            this.decommissioned_label.Name = "decommissioned_label";
+            this.decommissioned_label.Size = new System.Drawing.Size(66, 13);
+            this.decommissioned_label.TabIndex = 13;
+            this.decommissioned_label.Text = "Списанных:";
             // 
             // Staff_MainForm
             // 
@@ -513,9 +539,9 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.StatusPanel.ResumeLayout(false);
             this.StatusPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -547,13 +573,15 @@
         private System.Windows.Forms.Button DeleteDevice_Button;
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label seporatingLine_label3;
         private System.Windows.Forms.Label Admin_Label;
         private System.Windows.Forms.Integration.ElementHost ToggleHost;
         private Toggle ToggleSwitch;
         private System.Windows.Forms.StatusStrip StatusPanel;
         private System.Windows.Forms.ToolStripStatusLabel SyncStatusLabel_StatusPanel;
         private System.Windows.Forms.ToolStripStatusLabel CountStatusLabel_StatusPanel;
+        private System.Windows.Forms.Label seporatingLine_label2;
+        private System.Windows.Forms.Label decommissioned_label;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
     }

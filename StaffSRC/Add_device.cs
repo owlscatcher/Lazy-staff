@@ -33,20 +33,27 @@ namespace StaffSRC
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
-            if (StateOverdue_radioButton.Checked == false && 
-                StateSend_radioButton.Checked == false && 
-                StateConservation_radioButton.Checked == false && 
-                StateStorage_radioButton.Checked == false &&
-                StateNormal_radioButton.Checked == true)
-                state = 0;
-            if (StateOverdue_radioButton.Checked == true)
-                state = 1;
-            if (StateSend_radioButton.Checked == true)
-                state = 2;
-            if (StateConservation_radioButton.Checked == true)
-                state = 4;
-            if (StateStorage_radioButton.Checked == true)
-                state = 3;
+            if (!decommissioned_checkBox.Checked)
+            {
+                if (StateOverdue_radioButton.Checked == false &&
+                    StateSend_radioButton.Checked == false &&
+                    StateConservation_radioButton.Checked == false &&
+                    StateStorage_radioButton.Checked == false &&
+                    StateNormal_radioButton.Checked == true)
+                    state = 0;
+                if (StateOverdue_radioButton.Checked == true)
+                    state = 1;
+                if (StateSend_radioButton.Checked == true)
+                    state = 2;
+                if (StateConservation_radioButton.Checked == true)
+                    state = 4;
+                if (StateStorage_radioButton.Checked == true)
+                    state = 3;
+            }
+            else
+            {
+                state = 8;
+            }
 
             if (gan_checkBox.Checked)
                 gan_state = true;

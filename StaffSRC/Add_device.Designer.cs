@@ -55,6 +55,7 @@
             this.StateOverdue_radioButton = new System.Windows.Forms.RadioButton();
             this.StateSend_radioButton = new System.Windows.Forms.RadioButton();
             this.StateNormal_radioButton = new System.Windows.Forms.RadioButton();
+            this.decommissioned_checkBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // save_button
@@ -389,11 +390,24 @@
             this.StateNormal_radioButton.Text = "Н";
             this.StateNormal_radioButton.UseVisualStyleBackColor = true;
             // 
+            // decommissioned_checkBox
+            // 
+            this.decommissioned_checkBox.AutoSize = true;
+            this.decommissioned_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.decommissioned_checkBox.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.decommissioned_checkBox.Location = new System.Drawing.Point(224, 102);
+            this.decommissioned_checkBox.Name = "decommissioned_checkBox";
+            this.decommissioned_checkBox.Size = new System.Drawing.Size(116, 17);
+            this.decommissioned_checkBox.TabIndex = 55;
+            this.decommissioned_checkBox.Text = "Прибор списан";
+            this.decommissioned_checkBox.UseVisualStyleBackColor = true;
+            // 
             // Add_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(690, 135);
+            this.Controls.Add(this.decommissioned_checkBox);
             this.Controls.Add(this.StateNormal_radioButton);
             this.Controls.Add(this.StateConservation_radioButton);
             this.Controls.Add(this.StateStorage_radioButton);
@@ -459,5 +473,6 @@
         private System.Windows.Forms.RadioButton StateOverdue_radioButton;
         private System.Windows.Forms.RadioButton StateSend_radioButton;
         private System.Windows.Forms.RadioButton StateNormal_radioButton;
+        private System.Windows.Forms.CheckBox decommissioned_checkBox;
     }
 }
