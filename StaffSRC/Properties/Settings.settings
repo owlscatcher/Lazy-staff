@@ -17,5 +17,8 @@
     <Setting Name="password" Type="System.String" Scope="User">
       <Value Profile="(Default)">shieldadm</Value>
     </Setting>
+    <Setting Name="admin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

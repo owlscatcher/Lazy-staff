@@ -14,11 +14,13 @@ namespace StaffSRC
     public partial class PasswordInput : Form
     {
         string password;
+        bool admin;
         public PasswordInput()
         {
             InitializeComponent();
 
             password = Settings.Default["password"].ToString();
+            admin = Convert.ToBoolean(Settings.Default["admin"]);
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -45,6 +47,30 @@ namespace StaffSRC
         private void PasswordInput_Load(object sender, EventArgs e)
         {
             password_TextBox.KeyDown += new KeyEventHandler(TextBox_KeyDown);
+
+            if(admin)
+            {
+                SavePassword_checkBox.Checked = true;
+                password_TextBox.Text = password;
+            }
+        }
+
+        private void SavePassword_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SavePassword_checkBox.Checked)
+            {
+                admin = true;
+
+                Settings.Default["admin"] = admin;
+                Settings.Default.Save();
+            }
+            else
+            {
+                admin = false;
+
+                Settings.Default["admin"] = admin;
+                Settings.Default.Save();
+            }
         }
     }
 }

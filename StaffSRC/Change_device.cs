@@ -15,6 +15,7 @@ namespace StaffSRC
     {
         public int state;
         public bool gan_state;
+        public string verifiedToQuarter, verifiedToYear, verefiedToSumm;
         public Change_device()
         {
             InitializeComponent();
@@ -54,7 +55,24 @@ namespace StaffSRC
             deviceLocation_textBox.Text = main.deviceLocation;
             sentDate_textBox.Text = Convert.ToString(main.sentDate);
             verificationDate_textBox.Text = Convert.ToString(main.verificationDate);
-            verifiedTo_textBox.Text = main.verifiedTo;
+
+            // разбиваем дату верификации на квартал и год
+
+            verefiedToSumm = main.verifiedTo;
+            try
+            {
+                int l = verefiedToSumm.Length;
+                verifiedToQuarter = verefiedToSumm.Substring(0, 6);
+                verifiedToYear = verefiedToSumm.Substring(6, 4);
+            }
+            catch(Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+
+            verifiedToQuarter_comboBox.Text = verifiedToQuarter;
+            verifiedToYear_comboBox.Text = verifiedToYear;
+
             solutionNunber_textBox.Text = main.solutionNumber;
 
             // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
@@ -74,6 +92,9 @@ namespace StaffSRC
                     break;
                 case 4: // консервирован
                     StateConservation_radioButton.Checked = true;
+                    break;
+                case 8:
+                    decommissioned_checkBox.Checked = true;
                     break;
             }
             //значения stageGan: false - не в списке ГАН, true - в списке ГАН (маркеруется в default)
@@ -106,28 +127,32 @@ namespace StaffSRC
                 state = 1;
             if (StateSend_radioButton.Checked == true)
                 state = 2;
-            if (StateConservation_radioButton.Checked == true)
-                state = 4;
             if (StateStorage_radioButton.Checked == true)
                 state = 3;
+            if (StateConservation_radioButton.Checked == true)
+                state = 4;
+            if (decommissioned_checkBox.Checked == true)
+                state = 8;
 
             if (gan_checkBox.Checked)
                 gan_state = true;
             else
                 gan_state = false;
 
+            verefiedToSumm = "" + verifiedToQuarter_comboBox.Text + "" + verifiedToYear_comboBox.Text + "";
+
             SqlConnection connection = new SqlConnection(main.connectionString);
             
             string querry = "";
             // разрешение конфликта пустых строк DateTime и ms sql 
             if (sentDate_textBox.Text == "" && verificationDate_textBox.Text == "")     // если отсутствует дата в поле отрпавки и поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (sentDate_textBox.Text == "")                                            // если отсутствует дата в поле отрпавки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (verificationDate_textBox.Text == "")                                    // если отсутствует дата в поле Гос поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
             else if (sentDate_textBox.Text != "" && verificationDate_textBox.Text != "")     // если дата есть в дрвух полях
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verifiedTo_textBox.Text + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
+                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_textBox.Text + "', verificationDate= '" + verificationDate_textBox.Text + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
 
             SqlCommand command = new SqlCommand(querry, connection);
             connection.Open();
@@ -141,7 +166,7 @@ namespace StaffSRC
             main.dataGridView1.CurrentRow.Cells[4].Value = sentDate_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[5].Value = verificationDate_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[6].Value = deviceLocation_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[7].Value = verifiedTo_textBox.Text;
+            main.dataGridView1.CurrentRow.Cells[7].Value = verefiedToSumm;
             main.dataGridView1.CurrentRow.Cells[8].Value = solutionNunber_textBox.Text;
             main.dataGridView1.CurrentRow.Cells[10].Value = state;
             main.dataGridView1.CurrentRow.Cells[9].Value = gan_state;

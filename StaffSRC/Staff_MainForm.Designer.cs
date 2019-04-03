@@ -71,6 +71,8 @@
             this.test_radioButton = new System.Windows.Forms.RadioButton();
             this.PrintPdf_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.seporatingLine_label2 = new System.Windows.Forms.Label();
+            this.decommissioned_label = new System.Windows.Forms.Label();
             this.notgan_label = new System.Windows.Forms.Label();
             this.gan_label = new System.Windows.Forms.Label();
             this.seporatingLine_label3 = new System.Windows.Forms.Label();
@@ -86,8 +88,7 @@
             this.CountStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.seporatingLine_label2 = new System.Windows.Forms.Label();
-            this.decommissioned_label = new System.Windows.Forms.Label();
+            this.CountVisibleDevices_StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -312,6 +313,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
             // 
+            // seporatingLine_label2
+            // 
+            this.seporatingLine_label2.AutoSize = true;
+            this.seporatingLine_label2.Location = new System.Drawing.Point(6, 107);
+            this.seporatingLine_label2.Name = "seporatingLine_label2";
+            this.seporatingLine_label2.Size = new System.Drawing.Size(127, 13);
+            this.seporatingLine_label2.TabIndex = 14;
+            this.seporatingLine_label2.Text = "____________________";
+            // 
+            // decommissioned_label
+            // 
+            this.decommissioned_label.AutoSize = true;
+            this.decommissioned_label.Location = new System.Drawing.Point(9, 120);
+            this.decommissioned_label.Name = "decommissioned_label";
+            this.decommissioned_label.Size = new System.Drawing.Size(66, 13);
+            this.decommissioned_label.TabIndex = 13;
+            this.decommissioned_label.Text = "Списанных:";
+            // 
             // notgan_label
             // 
             this.notgan_label.AutoSize = true;
@@ -448,7 +467,8 @@
             // 
             this.StatusPanel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SyncStatusLabel_StatusPanel,
-            this.CountStatusLabel_StatusPanel});
+            this.CountStatusLabel_StatusPanel,
+            this.CountVisibleDevices_StatusLabel});
             this.StatusPanel.Location = new System.Drawing.Point(0, 727);
             this.StatusPanel.Name = "StatusPanel";
             this.StatusPanel.Size = new System.Drawing.Size(1196, 22);
@@ -471,11 +491,16 @@
             // 
             this.search_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.search_textBox.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.search_textBox.Location = new System.Drawing.Point(3, 3);
             this.search_textBox.Name = "search_textBox";
             this.search_textBox.Size = new System.Drawing.Size(1190, 20);
             this.search_textBox.TabIndex = 2;
+            this.search_textBox.Text = "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор" +
+    " (пр.: 1 кв. 2020)";
             this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
+            this.search_textBox.Enter += new System.EventHandler(this.search_textBox_Enter);
+            this.search_textBox.Leave += new System.EventHandler(this.search_textBox_Leave);
             // 
             // dataGridView1
             // 
@@ -498,23 +523,11 @@
             this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
             // 
-            // seporatingLine_label2
+            // CountVisibleDevices_StatusLabel
             // 
-            this.seporatingLine_label2.AutoSize = true;
-            this.seporatingLine_label2.Location = new System.Drawing.Point(6, 107);
-            this.seporatingLine_label2.Name = "seporatingLine_label2";
-            this.seporatingLine_label2.Size = new System.Drawing.Size(127, 13);
-            this.seporatingLine_label2.TabIndex = 14;
-            this.seporatingLine_label2.Text = "____________________";
-            // 
-            // decommissioned_label
-            // 
-            this.decommissioned_label.AutoSize = true;
-            this.decommissioned_label.Location = new System.Drawing.Point(9, 120);
-            this.decommissioned_label.Name = "decommissioned_label";
-            this.decommissioned_label.Size = new System.Drawing.Size(66, 13);
-            this.decommissioned_label.TabIndex = 13;
-            this.decommissioned_label.Text = "Списанных:";
+            this.CountVisibleDevices_StatusLabel.Name = "CountVisibleDevices_StatusLabel";
+            this.CountVisibleDevices_StatusLabel.Size = new System.Drawing.Size(141, 17);
+            this.CountVisibleDevices_StatusLabel.Text = "Отображено приборов: ";
             // 
             // Staff_MainForm
             // 
@@ -582,6 +595,7 @@
         private System.Windows.Forms.ToolStripStatusLabel CountStatusLabel_StatusPanel;
         private System.Windows.Forms.Label seporatingLine_label2;
         private System.Windows.Forms.Label decommissioned_label;
+        private System.Windows.Forms.ToolStripStatusLabel CountVisibleDevices_StatusLabel;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
     }

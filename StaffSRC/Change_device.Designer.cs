@@ -42,7 +42,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.verifiedTo_textBox = new System.Windows.Forms.ComboBox();
+            this.verifiedToQuarter_comboBox = new System.Windows.Forms.ComboBox();
             this.solutionNunber_textBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -55,6 +55,7 @@
             this.StateConservation_radioButton = new System.Windows.Forms.RadioButton();
             this.StateNormal_radioButton = new System.Windows.Forms.RadioButton();
             this.decommissioned_checkBox = new System.Windows.Forms.CheckBox();
+            this.verifiedToYear_comboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // personnelNumber_textBox
@@ -224,23 +225,23 @@
             this.label7.TabIndex = 13;
             this.label7.Text = "Расположение:";
             // 
-            // verifiedTo_textBox
+            // verifiedToQuarter_comboBox
             // 
-            this.verifiedTo_textBox.AutoCompleteCustomSource.AddRange(new string[] {
+            this.verifiedToQuarter_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
             "1 кв. 2019",
             "2 кв. 2019",
             "3 кв. 2019",
             "4 кв. 2019"});
-            this.verifiedTo_textBox.FormattingEnabled = true;
-            this.verifiedTo_textBox.Items.AddRange(new object[] {
-            "1 кв.",
-            "2 кв.",
-            "3 кв.",
-            "4 кв."});
-            this.verifiedTo_textBox.Location = new System.Drawing.Point(224, 75);
-            this.verifiedTo_textBox.Name = "verifiedTo_textBox";
-            this.verifiedTo_textBox.Size = new System.Drawing.Size(121, 21);
-            this.verifiedTo_textBox.TabIndex = 14;
+            this.verifiedToQuarter_comboBox.FormattingEnabled = true;
+            this.verifiedToQuarter_comboBox.Items.AddRange(new object[] {
+            "1 кв. ",
+            "2 кв. ",
+            "3 кв. ",
+            "4 кв. "});
+            this.verifiedToQuarter_comboBox.Location = new System.Drawing.Point(224, 75);
+            this.verifiedToQuarter_comboBox.Name = "verifiedToQuarter_comboBox";
+            this.verifiedToQuarter_comboBox.Size = new System.Drawing.Size(59, 21);
+            this.verifiedToQuarter_comboBox.TabIndex = 14;
             // 
             // solutionNunber_textBox
             // 
@@ -370,11 +371,50 @@
             this.decommissioned_checkBox.Text = "Прибор списан";
             this.decommissioned_checkBox.UseVisualStyleBackColor = true;
             // 
+            // verifiedToYear_comboBox
+            // 
+            this.verifiedToYear_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
+            "1 кв. 2019",
+            "2 кв. 2019",
+            "3 кв. 2019",
+            "4 кв. 2019"});
+            this.verifiedToYear_comboBox.FormattingEnabled = true;
+            this.verifiedToYear_comboBox.Items.AddRange(new object[] {
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+            "2021",
+            "2022",
+            "2023",
+            "2024",
+            "2025",
+            "2026",
+            "2027",
+            "2028",
+            "2029",
+            "2030",
+            "2031",
+            "2032",
+            "2033",
+            "2034",
+            "2035",
+            "2036",
+            "2037",
+            "2038",
+            "2039",
+            "2040"});
+            this.verifiedToYear_comboBox.Location = new System.Drawing.Point(286, 75);
+            this.verifiedToYear_comboBox.Name = "verifiedToYear_comboBox";
+            this.verifiedToYear_comboBox.Size = new System.Drawing.Size(59, 21);
+            this.verifiedToYear_comboBox.TabIndex = 31;
+            // 
             // Change_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(692, 130);
+            this.Controls.Add(this.verifiedToYear_comboBox);
             this.Controls.Add(this.decommissioned_checkBox);
             this.Controls.Add(this.StateNormal_radioButton);
             this.Controls.Add(this.StateConservation_radioButton);
@@ -387,7 +427,7 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.solutionNunber_textBox);
-            this.Controls.Add(this.verifiedTo_textBox);
+            this.Controls.Add(this.verifiedToQuarter_comboBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -430,7 +470,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox verifiedTo_textBox;
+        private System.Windows.Forms.ComboBox verifiedToQuarter_comboBox;
         private System.Windows.Forms.TextBox solutionNunber_textBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
@@ -443,5 +483,6 @@
         private System.Windows.Forms.RadioButton StateConservation_radioButton;
         private System.Windows.Forms.RadioButton StateNormal_radioButton;
         private System.Windows.Forms.CheckBox decommissioned_checkBox;
+        private System.Windows.Forms.ComboBox verifiedToYear_comboBox;
     }
 }

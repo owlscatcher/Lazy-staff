@@ -26,7 +26,9 @@ namespace StaffSRC
     {
         public DataSet dataSet = new DataSet();
         public DataTable dataTable = new DataTable();
-        public string password, querry, connectionString, tableName, personnelNumber, factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, solutionNumber, sentDate, verificationDate;
+        public string password, querry, connectionString, tableName, personnelNumber, 
+            factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, 
+            solutionNumber, sentDate, verificationDate, help_serachTB = "Введите Табульный/Заводской номер или дату продления";
         public int index, state;
         public bool gan_state;
         public static bool administration;
@@ -388,7 +390,8 @@ namespace StaffSRC
                 allDevides_label.Text = ("Всего устройств: " + (allDevices-decommissioned).ToString() + " (" + allDevices + ")");
                 gan_label.Text = ("Приборов ГАН: " + gan.ToString());
                 notgan_label.Text = ("Приборов не ГАН: " + notgan.ToString());
-                decommissioned_label.Text = ("Списанных: " + decommissioned.ToString());
+
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             });
         }
 
@@ -556,27 +559,57 @@ namespace StaffSRC
         //------------------------------------
         private void search_textBox_TextChanged(object sender, EventArgs e)
         {
-            try
+            if (search_textBox.Text != "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
             {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                try
                 {
-                    if ((dataGridView1.Rows[i].Cells[0].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[1].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[7].Value.ToString() == "" + search_textBox.Text))            // Фильтр по Табельному номеру
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-
-                    if (search_textBox.Text == "")
+                    dataGridView1.CurrentCell = null;
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
-                        dataGridView1.Rows[i].Visible = true;
+                        if ((dataGridView1.Rows[i].Cells[0].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[1].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[7].Value.ToString() == "" + search_textBox.Text))            // Фильтр по Табельному номеру
+                            dataGridView1.Rows[i].Visible = true;
+                        else
+                            dataGridView1.Rows[i].Visible = false;
+
+                        if (search_textBox.Text == "")
+                        {
+                            dataGridView1.Rows[i].Visible = true;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.StackTrace);
+                }
             }
-            catch (Exception ex)
+            CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+
+        }
+        //------------------------------------
+        // Удаление подсказки из textbox
+        //------------------------------------
+        private void search_textBox_Enter(object sender, EventArgs e)
+        {
+            if(search_textBox.Text == "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
             {
-                MessageBox.Show(ex.StackTrace);
+                search_textBox.TextChanged -= new System.EventHandler(search_textBox_TextChanged);      // Отписываемся от события TextChanged, что бы не дёргало таблицу
+                search_textBox.Text = "";                                                               // Очищаем TextBox
+                search_textBox.ForeColor = Color.Black;                                                 // Возвращаем системный текст
+                search_textBox.TextChanged += new System.EventHandler(search_textBox_TextChanged);      // Подписываемся обратно после завершения очистки TextBox
             }
         }
+        //------------------------------------
+        // Добавление подсказки из textbox
+        //------------------------------------
+        private void search_textBox_Leave(object sender, EventArgs e)
+        {
+            if (search_textBox.Text == "")
+            {
+                search_textBox.Text = "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)";
+                search_textBox.ForeColor = Color.Silver;
+            }
+        }
+
         //------------------------------------
         // Вызов окна редактирования строки
         //------------------------------------
@@ -630,6 +663,7 @@ namespace StaffSRC
                 {
                    dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[0].IsSelected)                                                     // Фильтр для УИМ
@@ -642,6 +676,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[1].IsSelected)                                                     // Фильтр для БДАС
@@ -654,6 +689,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[2].IsSelected)                                                     // Фильтр для БДГБ
@@ -666,6 +702,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[3].IsSelected)                                                     // Фильтр для БДМГ
@@ -678,6 +715,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[4].IsSelected)                                                     // Фильтр для УДАС
@@ -690,6 +728,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             if (treeView1.Nodes[0].Nodes[5].IsSelected)                                                     // Фильтр для ДКГ
@@ -702,6 +741,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = true;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //**********************************
@@ -720,6 +760,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //********************************
@@ -735,6 +776,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //********************************
@@ -750,6 +792,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //********************************
@@ -765,6 +808,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //********************************
@@ -780,6 +824,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
             //********************************
@@ -795,6 +840,7 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
             //********************************
             // Фильтр устройств не ГАН
@@ -809,6 +855,23 @@ namespace StaffSRC
                     else
                         dataGridView1.Rows[i].Visible = false;
                 }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            }
+
+            //********************************
+            // Фильтр списанных устройств
+            //********************************
+            if (treeView1.Nodes[6].Nodes[2].IsSelected)
+            {
+                dataGridView1.CurrentCell = null;
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 8)                            // где 8 - списан
+                        dataGridView1.Rows[i].Visible = true;
+                    else
+                        dataGridView1.Rows[i].Visible = false;
+                }
+                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
             }
 
         }
@@ -917,9 +980,9 @@ namespace StaffSRC
         {
             string id = (dataGridView1.Rows[index].Cells[0].Value).ToString();
 
-            string message = "Удалить прибор с табульным №" + id + " из базы данных";                                       // Формировани текста окна ошибки
+            string message = "Удалить устройство с табульным №" + id + " из базы данных";                                       // Формировани текста окна ошибки
             string caption = "Подтверждение:";
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons);                                                            // Вывод диалогового окна
             if (result == System.Windows.Forms.DialogResult.OK)
@@ -937,9 +1000,9 @@ namespace StaffSRC
                 DataGridView_Load();
 
                 dataGridView1.Refresh();
-            }
 
-            MessageBox.Show("Прибор удалён!");
+                MessageBox.Show("Устройство удалёно!");
+            }
         }
     }
 }

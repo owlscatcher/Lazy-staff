@@ -60,6 +60,12 @@ namespace StaffSRC
             else
                 gan_state = false;
 
+            if(yearOfIssue_textBox.Text == "" || personnelNumber_textBox.Text == "" || factoryNumber_textBox.Text == "")
+            {
+                MessageBox.Show("Не все поля заполнены! \n\nОбязательно должны быть указаны Табульный и Заводской номер, \nа так же Год выпуска устройства.");
+                return;
+            }
+
             SqlConnection connection = new SqlConnection(main.connectionString);
 
             string querry = "";
