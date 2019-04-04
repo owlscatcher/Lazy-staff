@@ -86,9 +86,9 @@
             this.StatusPanel = new System.Windows.Forms.StatusStrip();
             this.SyncStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
             this.CountStatusLabel_StatusPanel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CountVisibleDevices_StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.CountVisibleDevices_StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -487,6 +487,12 @@
             this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(207, 17);
             this.CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: ";
             // 
+            // CountVisibleDevices_StatusLabel
+            // 
+            this.CountVisibleDevices_StatusLabel.Name = "CountVisibleDevices_StatusLabel";
+            this.CountVisibleDevices_StatusLabel.Size = new System.Drawing.Size(141, 17);
+            this.CountVisibleDevices_StatusLabel.Text = "Отображено приборов: ";
+            // 
             // search_textBox
             // 
             this.search_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -518,16 +524,11 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1190, 698);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
-            // 
-            // CountVisibleDevices_StatusLabel
-            // 
-            this.CountVisibleDevices_StatusLabel.Name = "CountVisibleDevices_StatusLabel";
-            this.CountVisibleDevices_StatusLabel.Size = new System.Drawing.Size(141, 17);
-            this.CountVisibleDevices_StatusLabel.Text = "Отображено приборов: ";
             // 
             // Staff_MainForm
             // 

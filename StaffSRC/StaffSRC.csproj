@@ -81,6 +81,12 @@
       <DependentUpon>PasswordInput.cs</DependentUpon>
     </Compile>
     <Compile Include="Property.cs" />
+    <Compile Include="ReplaceDevice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReplaceDevice.Designer.cs">
+      <DependentUpon>ReplaceDevice.cs</DependentUpon>
+    </Compile>
     <Compile Include="SqlDbWatcher.cs" />
     <Compile Include="Staff_MainForm.cs">
       <SubType>Form</SubType>
@@ -117,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PasswordInput.resx">
       <DependentUpon>PasswordInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReplaceDevice.resx">
+      <DependentUpon>ReplaceDevice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Staff_MainForm.resx">
       <DependentUpon>Staff_MainForm.cs</DependentUpon>

@@ -134,6 +134,8 @@ namespace StaffSRC
 
             groupBox2.Enabled = false;
             groupBox3.Enabled = false;
+
+            
         }
 
         //-----------------------------------
@@ -252,8 +254,16 @@ namespace StaffSRC
 
             DateTime dateTime = DateTime.Now;
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
-        }
 
+            DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+            buttonColumn.UseColumnTextForButtonValue = true;
+            buttonColumn.Text = "Replace";
+            buttonColumn.Name = "Замена";
+            Invoke((MethodInvoker)delegate
+            {
+                dataGridView1.Columns.Insert(11, buttonColumn);
+            });
+        }
         //-----------------------------------------------------
         // Маркировка списка и проверка просроченных приборов
         //-----------------------------------------------------
@@ -553,6 +563,44 @@ namespace StaffSRC
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             index = dataGridView1.CurrentRow.Index;
+
+            // Отрабатывает клик по кнопке
+            if (administration == true)
+            {
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "Замена")
+                {
+
+                    // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
+                    personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
+
+                    personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
+                    factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
+                    deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
+                    yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
+
+                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
+                    {
+                        sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
+                    }
+                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
+                    {
+                        verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
+                    }
+
+                    deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
+                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                    solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
+                    state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
+                    gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
+
+                    ReplaceDevice ReplaceDevice = new ReplaceDevice();
+                    ReplaceDevice.Owner = this;
+                    ReplaceDevice.Show();
+                }
+            }
+            else
+                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
+            return;
         }
         //------------------------------------
         // фильтр поиска в datagridview
@@ -617,32 +665,35 @@ namespace StaffSRC
         {
             if (administration == true)
             {
-                // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
-                personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
-
-                personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
-                factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
-
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
+                if (dataGridView1.CurrentCell.OwningColumn.Name != "Замена")
                 {
-                    sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
-                }
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
-                {
-                    verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
-                }
+                    // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
+                    personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
 
-                deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
-                solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
+                    personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
+                    factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
+                    deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
+                    yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
 
-                Change_device ChangeDev = new Change_device();
-                ChangeDev.Owner = this;
-                ChangeDev.Show();
+                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
+                    {
+                        sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
+                    }
+                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
+                    {
+                        verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
+                    }
+
+                    deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
+                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                    solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
+                    state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
+                    gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
+
+                    Change_device ChangeDev = new Change_device();
+                    ChangeDev.Owner = this;
+                    ChangeDev.Show();
+                }
             }
             else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");

@@ -59,19 +59,23 @@ namespace StaffSRC
             // разбиваем дату верификации на квартал и год
 
             verefiedToSumm = main.verifiedTo;
-            try
-            {
-                int l = verefiedToSumm.Length;
-                verifiedToQuarter = verefiedToSumm.Substring(0, 6);
-                verifiedToYear = verefiedToSumm.Substring(6, 4);
-            }
-            catch(Exception exc)
-            {
-                MessageBox.Show(exc.ToString());
-            }
 
-            verifiedToQuarter_comboBox.Text = verifiedToQuarter;
-            verifiedToYear_comboBox.Text = verifiedToYear;
+            if (verefiedToSumm != null && verefiedToSumm != "")
+            {
+                try
+                {
+                    int l = verefiedToSumm.Length;
+                    verifiedToQuarter = verefiedToSumm.Substring(0, 6);
+                    verifiedToYear = verefiedToSumm.Substring(6, 4);
+
+                    verifiedToQuarter_comboBox.Text = verifiedToQuarter;
+                    verifiedToYear_comboBox.Text = verifiedToYear;
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
+            }
 
             solutionNunber_textBox.Text = main.solutionNumber;
 
