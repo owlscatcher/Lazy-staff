@@ -155,6 +155,134 @@ namespace StaffSRC
             ListMarking();
         }
 
+        //---------------------------------
+        // Замена устройства
+        //---------------------------------
+        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Отрабатывает клик по кнопке
+            if (administration == true)
+            {
+                // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
+                personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
+
+                personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
+                factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
+                deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
+                yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
+
+                if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
+                {
+                    sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
+                }
+                if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
+                {
+                    verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
+                }
+
+                deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
+                verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
+                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
+                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
+
+                ReplaceDevice ReplaceDevice = new ReplaceDevice();
+                ReplaceDevice.Owner = this;
+                ReplaceDevice.Show();
+            }
+            else
+                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
+            return;
+        }
+        //-----------------------------------
+        // Изменение устройства
+        //-----------------------------------
+        private void changeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (administration == true)
+            {
+                // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
+                personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
+
+                personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
+                factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
+                deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
+                yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
+
+                if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
+                {
+                    sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
+                }
+                if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
+                {
+                    verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
+                }
+
+                deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
+                verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
+                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
+                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
+
+                Change_device ChangeDev = new Change_device();
+                ChangeDev.Owner = this;
+                ChangeDev.Show();
+            }
+            else
+                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
+            return;
+        }
+
+        //------------------------------------
+        // Выделение Row по ПКМ
+        //------------------------------------
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
+            {
+                dataGridView1.CurrentCell = dataGridView1[e.ColumnIndex, e.RowIndex];
+                dataGridView1.CurrentRow.Selected = true;
+            }
+        }
+
+        //-----------------------------------
+        // Удаление устройства
+        //-----------------------------------
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (administration == true)
+            {
+                string id = (dataGridView1.Rows[index].Cells[0].Value).ToString();
+
+                string message = "Удалить устройство с табульным №" + id + " из базы данных";                                       // Формировани текста окна ошибки
+                string caption = "Подтверждение:";
+                MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);                                                            // Вывод диалогового окна
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    querry = "DELETE FROM " + tableName + " WHERE personnelNumber=" + id;
+
+                    SqlConnection connection = new SqlConnection(connectionString);
+                    SqlCommand command = new SqlCommand(querry, connection);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    connection.Dispose();
+
+                    DataGridView_Load();
+
+                    dataGridView1.Refresh();
+
+                    MessageBox.Show("Устройство удалёно!");
+                }
+            }
+            else
+                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
+            return;
+        }
+
         //-----------------------------------
         // Событие при первом отображении формы, загрузка из бд
         //-----------------------------------
@@ -254,15 +382,6 @@ namespace StaffSRC
 
             DateTime dateTime = DateTime.Now;
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
-
-            DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
-            buttonColumn.UseColumnTextForButtonValue = true;
-            buttonColumn.Text = "Replace";
-            buttonColumn.Name = "Замена";
-            Invoke((MethodInvoker)delegate
-            {
-                dataGridView1.Columns.Insert(11, buttonColumn);
-            });
         }
         //-----------------------------------------------------
         // Маркировка списка и проверка просроченных приборов
@@ -524,7 +643,7 @@ namespace StaffSRC
         //---------------------------------------------------
         // Метод вывода на печать .pdf файла чрез iTextSharp
         //---------------------------------------------------
-        private void PrintPdfFile()
+        public void PrintPdfFile()
         {
             RegistryKey adobe = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe");      // поиск adobe acrobate reader
 
@@ -563,44 +682,6 @@ namespace StaffSRC
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             index = dataGridView1.CurrentRow.Index;
-
-            // Отрабатывает клик по кнопке
-            if (administration == true)
-            {
-                if (dataGridView1.Columns[e.ColumnIndex].Name == "Замена")
-                {
-
-                    // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
-                    personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
-
-                    personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
-                    factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                    deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                    yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
-
-                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
-                    {
-                        sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
-                    }
-                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
-                    {
-                        verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
-                    }
-
-                    deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
-                    solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                    state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                    gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
-
-                    ReplaceDevice ReplaceDevice = new ReplaceDevice();
-                    ReplaceDevice.Owner = this;
-                    ReplaceDevice.Show();
-                }
-            }
-            else
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
         }
         //------------------------------------
         // фильтр поиска в datagridview
@@ -658,47 +739,6 @@ namespace StaffSRC
             }
         }
 
-        //------------------------------------
-        // Вызов окна редактирования строки
-        //------------------------------------
-        private void dataGridView1_DoubleClick(object sender, EventArgs e)
-        {
-            if (administration == true)
-            {
-                if (dataGridView1.CurrentCell.OwningColumn.Name != "Замена")
-                {
-                    // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
-                    personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
-
-                    personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
-                    factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                    deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                    yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
-
-                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
-                    {
-                        sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
-                    }
-                    if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
-                    {
-                        verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
-                    }
-
-                    deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
-                    solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                    state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                    gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
-
-                    Change_device ChangeDev = new Change_device();
-                    ChangeDev.Owner = this;
-                    ChangeDev.Show();
-                }
-            }
-            else
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
-        }
         //---------------------------------------
         // Фильтрация по ThreeView
         //---------------------------------------
@@ -1022,38 +1062,6 @@ namespace StaffSRC
             Add_device AddDevice = new Add_device();
             AddDevice.Owner = this;
             AddDevice.Show();
-        }
-
-        //----------------------------------------------------------------
-        // Удаление прибора
-        //----------------------------------------------------------------
-        private void DeleteDevice_Button_Click(object sender, EventArgs e)
-        {
-            string id = (dataGridView1.Rows[index].Cells[0].Value).ToString();
-
-            string message = "Удалить устройство с табульным №" + id + " из базы данных";                                       // Формировани текста окна ошибки
-            string caption = "Подтверждение:";
-            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-            DialogResult result;
-            result = MessageBox.Show(message, caption, buttons);                                                            // Вывод диалогового окна
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                querry = "DELETE FROM " + tableName + " WHERE personnelNumber=" + id;
-
-                SqlConnection connection = new SqlConnection(connectionString);
-                SqlCommand command = new SqlCommand(querry, connection);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-                connection.Dispose();
-
-                DataGridView_Load();
-
-                dataGridView1.Refresh();
-
-                MessageBox.Show("Устройство удалёно!");
-            }
         }
     }
 }

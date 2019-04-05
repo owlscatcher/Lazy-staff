@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("УИМ");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("БДАС");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("БДГБ");
@@ -55,11 +56,8 @@
             treeNode15});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new StaffSRC.Toggle();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.DeleteDevice_Button = new System.Windows.Forms.Button();
             this.Setting_button = new System.Windows.Forms.Button();
             this.uimInfo_button = new System.Windows.Forms.Button();
             this.AddDevice_button = new System.Windows.Forms.Button();
@@ -89,6 +87,12 @@
             this.CountVisibleDevices_StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGrid_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
+            this.ToggleSwitch = new StaffSRC.Toggle();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -98,6 +102,7 @@
             this.groupBox1.SuspendLayout();
             this.StatusPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataGrid_contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -127,16 +132,6 @@
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
             // 
-            // ToggleHost
-            // 
-            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
-            this.ToggleHost.Name = "ToggleHost";
-            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
-            this.ToggleHost.TabIndex = 15;
-            this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
-            // 
             // Admin_Label
             // 
             this.Admin_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -151,28 +146,15 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.DeleteDevice_Button);
             this.groupBox3.Controls.Add(this.Setting_button);
             this.groupBox3.Controls.Add(this.uimInfo_button);
             this.groupBox3.Controls.Add(this.AddDevice_button);
             this.groupBox3.Location = new System.Drawing.Point(3, 330);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 134);
+            this.groupBox3.Size = new System.Drawing.Size(163, 105);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Опции";
-            // 
-            // DeleteDevice_Button
-            // 
-            this.DeleteDevice_Button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteDevice_Button.Location = new System.Drawing.Point(2, 77);
-            this.DeleteDevice_Button.Name = "DeleteDevice_Button";
-            this.DeleteDevice_Button.Size = new System.Drawing.Size(157, 23);
-            this.DeleteDevice_Button.TabIndex = 13;
-            this.DeleteDevice_Button.Text = "Удалить устройство";
-            this.DeleteDevice_Button.UseVisualStyleBackColor = true;
-            this.DeleteDevice_Button.Click += new System.EventHandler(this.DeleteDevice_Button_Click);
             // 
             // Setting_button
             // 
@@ -190,7 +172,7 @@
             // 
             this.uimInfo_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uimInfo_button.Location = new System.Drawing.Point(2, 106);
+            this.uimInfo_button.Location = new System.Drawing.Point(2, 77);
             this.uimInfo_button.Name = "uimInfo_button";
             this.uimInfo_button.Size = new System.Drawing.Size(157, 23);
             this.uimInfo_button.TabIndex = 9;
@@ -517,18 +499,59 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.ContextMenuStrip = this.dataGrid_contextMenuStrip;
             this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.dataGridView1.Location = new System.Drawing.Point(3, 26);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1190, 698);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
-            this.dataGridView1.DoubleClick += new System.EventHandler(this.dataGridView1_DoubleClick);
+            // 
+            // dataGrid_contextMenuStrip
+            // 
+            this.dataGrid_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeToolStripMenuItem,
+            this.replaceToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.dataGrid_contextMenuStrip.Name = "dataGrid_contextMenuStrip";
+            this.dataGrid_contextMenuStrip.Size = new System.Drawing.Size(129, 70);
+            // 
+            // changeToolStripMenuItem
+            // 
+            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
+            this.changeToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.changeToolStripMenuItem.Text = "Изменить";
+            this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
+            // 
+            // replaceToolStripMenuItem
+            // 
+            this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
+            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.replaceToolStripMenuItem.Text = "Заменить";
+            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.deleteToolStripMenuItem.Text = "Удалить";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // ToggleHost
+            // 
+            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
+            this.ToggleHost.Name = "ToggleHost";
+            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
+            this.ToggleHost.TabIndex = 15;
+            this.ToggleHost.Text = "elementHost1";
+            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Staff_MainForm
             // 
@@ -539,7 +562,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Приборы УРБ зд. 106 (v1.2.11 от 11/02/2019)";
+            this.Text = "Приборы УРБ зд. 106 (v1.4.05 от 4/04/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -556,6 +579,7 @@
             this.StatusPanel.ResumeLayout(false);
             this.StatusPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.dataGrid_contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -584,7 +608,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button Setting_button;
         private System.Windows.Forms.Button AddDevice_button;
-        private System.Windows.Forms.Button DeleteDevice_Button;
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
         private System.Windows.Forms.Label seporatingLine_label3;
@@ -597,6 +620,10 @@
         private System.Windows.Forms.Label seporatingLine_label2;
         private System.Windows.Forms.Label decommissioned_label;
         private System.Windows.Forms.ToolStripStatusLabel CountVisibleDevices_StatusLabel;
+        private System.Windows.Forms.ContextMenuStrip dataGrid_contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
     }
