@@ -19,13 +19,14 @@ namespace StaffSRC
         {
             InitializeComponent();
 
+            // Загрузили настройки
             password = Settings.Default["password"].ToString();
             admin = Convert.ToBoolean(Settings.Default["admin"]);
         }
 
+        // Обработка нажатия Enter
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-
             if (e.KeyCode == Keys.Enter)
             {
                 PasswordInput passwordForm = new PasswordInput();
@@ -55,6 +56,7 @@ namespace StaffSRC
             }
         }
 
+        // Сохранять / не сохранять изменения
         private void SavePassword_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (SavePassword_checkBox.Checked)

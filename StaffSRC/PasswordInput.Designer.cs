@@ -66,6 +66,7 @@
             this.Controls.Add(this.password_TextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximumSize = new System.Drawing.Size(281, 23);
+            this.MinimumSize = new System.Drawing.Size(281, 23);
             this.Name = "PasswordInput";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
