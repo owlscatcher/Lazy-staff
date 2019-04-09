@@ -60,7 +60,7 @@ namespace StaffSRC
 
             verefiedToSumm = main.verifiedTo;
 
-            if (verefiedToSumm != null && verefiedToSumm != "")
+            if (verefiedToSumm != null && verefiedToSumm != "" && verefiedToSumm != " ")
             {
                 try
                 {

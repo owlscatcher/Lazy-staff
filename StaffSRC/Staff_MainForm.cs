@@ -219,7 +219,10 @@ namespace StaffSRC
                 }
 
                 deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                if (dataGridView1.CurrentRow.Cells[7].Value != DBNull.Value)
+                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                else
+                    verifiedTo = null;
                 solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
                 state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
                 gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
@@ -459,6 +462,7 @@ namespace StaffSRC
                 switch (dataGridView1.Rows[i].Cells[10].Value)
                 {
                     case 0:
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = DefaultBackColor;
                         break;
                     case 1: // просрочен
                         overdue++;
