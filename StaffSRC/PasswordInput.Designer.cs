@@ -68,6 +68,7 @@
             this.MaximumSize = new System.Drawing.Size(281, 23);
             this.MinimumSize = new System.Drawing.Size(281, 23);
             this.Name = "PasswordInput";
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PasswordInput";

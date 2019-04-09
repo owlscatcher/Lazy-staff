@@ -113,6 +113,7 @@
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Uim_info";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Справка по УИМ2-2 и помещениям";
             this.Load += new System.EventHandler(this.Uim_info_Load);

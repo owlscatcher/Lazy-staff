@@ -39,10 +39,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Connection_groupBox = new System.Windows.Forms.GroupBox();
             this.Administration_groupBox = new System.Windows.Forms.GroupBox();
-            this.OldAdminPass_label = new System.Windows.Forms.Label();
-            this.OldAdminPass_TextBox = new System.Windows.Forms.TextBox();
-            this.NewAdminPass_TextBox = new System.Windows.Forms.TextBox();
             this.NewAdminPass_label = new System.Windows.Forms.Label();
+            this.NewAdminPass_TextBox = new System.Windows.Forms.TextBox();
+            this.OldAdminPass_TextBox = new System.Windows.Forms.TextBox();
+            this.OldAdminPass_label = new System.Windows.Forms.Label();
             this.Connection_groupBox.SuspendLayout();
             this.Administration_groupBox.SuspendLayout();
             this.SuspendLayout();
@@ -152,22 +152,14 @@
             this.Administration_groupBox.TabStop = false;
             this.Administration_groupBox.Text = "Параметры администрирования:";
             // 
-            // OldAdminPass_label
+            // NewAdminPass_label
             // 
-            this.OldAdminPass_label.AutoSize = true;
-            this.OldAdminPass_label.Location = new System.Drawing.Point(6, 27);
-            this.OldAdminPass_label.Name = "OldAdminPass_label";
-            this.OldAdminPass_label.Size = new System.Drawing.Size(87, 13);
-            this.OldAdminPass_label.TabIndex = 0;
-            this.OldAdminPass_label.Text = "Старый пароль:";
-            // 
-            // OldAdminPass_TextBox
-            // 
-            this.OldAdminPass_TextBox.Location = new System.Drawing.Point(131, 24);
-            this.OldAdminPass_TextBox.Name = "OldAdminPass_TextBox";
-            this.OldAdminPass_TextBox.PasswordChar = '•';
-            this.OldAdminPass_TextBox.Size = new System.Drawing.Size(147, 20);
-            this.OldAdminPass_TextBox.TabIndex = 1;
+            this.NewAdminPass_label.AutoSize = true;
+            this.NewAdminPass_label.Location = new System.Drawing.Point(286, 27);
+            this.NewAdminPass_label.Name = "NewAdminPass_label";
+            this.NewAdminPass_label.Size = new System.Drawing.Size(83, 13);
+            this.NewAdminPass_label.TabIndex = 3;
+            this.NewAdminPass_label.Text = "Новый пароль:";
             // 
             // NewAdminPass_TextBox
             // 
@@ -177,14 +169,22 @@
             this.NewAdminPass_TextBox.Size = new System.Drawing.Size(147, 20);
             this.NewAdminPass_TextBox.TabIndex = 2;
             // 
-            // NewAdminPass_label
+            // OldAdminPass_TextBox
             // 
-            this.NewAdminPass_label.AutoSize = true;
-            this.NewAdminPass_label.Location = new System.Drawing.Point(286, 27);
-            this.NewAdminPass_label.Name = "NewAdminPass_label";
-            this.NewAdminPass_label.Size = new System.Drawing.Size(83, 13);
-            this.NewAdminPass_label.TabIndex = 3;
-            this.NewAdminPass_label.Text = "Новый пароль:";
+            this.OldAdminPass_TextBox.Location = new System.Drawing.Point(131, 24);
+            this.OldAdminPass_TextBox.Name = "OldAdminPass_TextBox";
+            this.OldAdminPass_TextBox.PasswordChar = '•';
+            this.OldAdminPass_TextBox.Size = new System.Drawing.Size(147, 20);
+            this.OldAdminPass_TextBox.TabIndex = 1;
+            // 
+            // OldAdminPass_label
+            // 
+            this.OldAdminPass_label.AutoSize = true;
+            this.OldAdminPass_label.Location = new System.Drawing.Point(6, 27);
+            this.OldAdminPass_label.Name = "OldAdminPass_label";
+            this.OldAdminPass_label.Size = new System.Drawing.Size(87, 13);
+            this.OldAdminPass_label.TabIndex = 0;
+            this.OldAdminPass_label.Text = "Старый пароль:";
             // 
             // Options
             // 
@@ -198,6 +198,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Options";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Настройки";
             this.Connection_groupBox.ResumeLayout(false);

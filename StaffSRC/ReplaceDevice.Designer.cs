@@ -45,11 +45,11 @@
             this.Replace_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
-            this.repairs_radioButton = new System.Windows.Forms.RadioButton();
-            this.test_radioButton = new System.Windows.Forms.RadioButton();
-            this.Print_chechBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.Print_chechBox = new System.Windows.Forms.CheckBox();
+            this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
+            this.test_radioButton = new System.Windows.Forms.RadioButton();
+            this.repairs_radioButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -218,38 +218,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройка печати:";
             // 
-            // entranceControl_radioButton
+            // label1
             // 
-            this.entranceControl_radioButton.AutoSize = true;
-            this.entranceControl_radioButton.Location = new System.Drawing.Point(304, 13);
-            this.entranceControl_radioButton.Name = "entranceControl_radioButton";
-            this.entranceControl_radioButton.Size = new System.Drawing.Size(117, 17);
-            this.entranceControl_radioButton.TabIndex = 7;
-            this.entranceControl_radioButton.TabStop = true;
-            this.entranceControl_radioButton.Text = "Входной контроль";
-            this.entranceControl_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // repairs_radioButton
-            // 
-            this.repairs_radioButton.AutoSize = true;
-            this.repairs_radioButton.Location = new System.Drawing.Point(235, 13);
-            this.repairs_radioButton.Name = "repairs_radioButton";
-            this.repairs_radioButton.Size = new System.Drawing.Size(63, 17);
-            this.repairs_radioButton.TabIndex = 6;
-            this.repairs_radioButton.TabStop = true;
-            this.repairs_radioButton.Text = "Ремонт";
-            this.repairs_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // test_radioButton
-            // 
-            this.test_radioButton.AutoSize = true;
-            this.test_radioButton.Location = new System.Drawing.Point(160, 13);
-            this.test_radioButton.Name = "test_radioButton";
-            this.test_radioButton.Size = new System.Drawing.Size(69, 17);
-            this.test_radioButton.TabIndex = 5;
-            this.test_radioButton.TabStop = true;
-            this.test_radioButton.Text = "Поверка";
-            this.test_radioButton.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(145, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(9, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "|";
             // 
             // Print_chechBox
             // 
@@ -262,14 +238,38 @@
             this.Print_chechBox.UseVisualStyleBackColor = true;
             this.Print_chechBox.CheckedChanged += new System.EventHandler(this.Print_chechBox_CheckedChanged);
             // 
-            // label1
+            // entranceControl_radioButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(145, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(9, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "|";
+            this.entranceControl_radioButton.AutoSize = true;
+            this.entranceControl_radioButton.Location = new System.Drawing.Point(304, 13);
+            this.entranceControl_radioButton.Name = "entranceControl_radioButton";
+            this.entranceControl_radioButton.Size = new System.Drawing.Size(117, 17);
+            this.entranceControl_radioButton.TabIndex = 7;
+            this.entranceControl_radioButton.TabStop = true;
+            this.entranceControl_radioButton.Text = "Входной контроль";
+            this.entranceControl_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // test_radioButton
+            // 
+            this.test_radioButton.AutoSize = true;
+            this.test_radioButton.Location = new System.Drawing.Point(160, 13);
+            this.test_radioButton.Name = "test_radioButton";
+            this.test_radioButton.Size = new System.Drawing.Size(69, 17);
+            this.test_radioButton.TabIndex = 5;
+            this.test_radioButton.TabStop = true;
+            this.test_radioButton.Text = "Поверка";
+            this.test_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // repairs_radioButton
+            // 
+            this.repairs_radioButton.AutoSize = true;
+            this.repairs_radioButton.Location = new System.Drawing.Point(235, 13);
+            this.repairs_radioButton.Name = "repairs_radioButton";
+            this.repairs_radioButton.Size = new System.Drawing.Size(63, 17);
+            this.repairs_radioButton.TabIndex = 6;
+            this.repairs_radioButton.TabStop = true;
+            this.repairs_radioButton.Text = "Ремонт";
+            this.repairs_radioButton.UseVisualStyleBackColor = true;
             // 
             // ReplaceDevice
             // 
@@ -284,6 +284,7 @@
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ReplaceDevice";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Замена устройства";
             this.Load += new System.EventHandler(this.ReplaceDevice_Load);

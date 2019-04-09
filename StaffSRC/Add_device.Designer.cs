@@ -437,6 +437,7 @@
             this.Controls.Add(this.personnelNumber_textBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Add_device";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавить прибор:";
             this.ResumeLayout(false);
