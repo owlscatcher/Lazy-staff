@@ -986,77 +986,89 @@ namespace StaffSRC
             // Подготавливаем Excel файл под эксорт в него
             //---------------------------------------------
 
-            ExcelDLL.Application excelApp = new ExcelDLL.Application();                                        // Создаем объект класса Application
-            excelApp.Workbooks.Add();                                                                          // Создаем новую рабочую книгу (содержит 3 листа по умолчанию)
-            ExcelDLL.Worksheet workSheet = (ExcelDLL.Worksheet)excelApp.ActiveSheet;                           // Получаем активный лист
+            try
+            {
+                ExcelDLL.Application excelApp = new ExcelDLL.Application();                                        // Создаем объект класса Application
+                excelApp.Workbooks.Add();                                                                          // Создаем новую рабочую книгу (содержит 3 листа по умолчанию)
+                ExcelDLL.Worksheet workSheet = (ExcelDLL.Worksheet)excelApp.ActiveSheet;                           // Получаем активный лист
 
-            //---------------------------------------------
-            // Заполняем заголовки колонок
-            //---------------------------------------------
+                //---------------------------------------------
+                // Заполняем заголовки колонок
+                //---------------------------------------------
 
-            workSheet.Cells[1, 1] = dataGridView1.Columns[0].HeaderText;
-            workSheet.Cells[1, 2] = dataGridView1.Columns[1].HeaderText;
-            workSheet.Cells[1, 3] = dataGridView1.Columns[2].HeaderText;
-            workSheet.Cells[1, 4] = dataGridView1.Columns[3].HeaderText;
-            workSheet.Cells[1, 5] = dataGridView1.Columns[4].HeaderText;
-            workSheet.Cells[1, 6] = dataGridView1.Columns[5].HeaderText;
-            workSheet.Cells[1, 7] = dataGridView1.Columns[6].HeaderText;
-            workSheet.Cells[1, 8] = dataGridView1.Columns[7].HeaderText;
-            workSheet.Cells[1, 9] = dataGridView1.Columns[8].HeaderText;
+                workSheet.Cells[1, 1] = dataGridView1.Columns[0].HeaderText;
+                workSheet.Cells[1, 2] = dataGridView1.Columns[1].HeaderText;
+                workSheet.Cells[1, 3] = dataGridView1.Columns[2].HeaderText;
+                workSheet.Cells[1, 4] = dataGridView1.Columns[3].HeaderText;
+                workSheet.Cells[1, 5] = dataGridView1.Columns[4].HeaderText;
+                workSheet.Cells[1, 6] = dataGridView1.Columns[5].HeaderText;
+                workSheet.Cells[1, 7] = dataGridView1.Columns[6].HeaderText;
+                workSheet.Cells[1, 8] = dataGridView1.Columns[7].HeaderText;
+                workSheet.Cells[1, 9] = dataGridView1.Columns[8].HeaderText;
 
-            //---------------------------------------------
-            // Экспортируем из DataGridView в Excel
-            //---------------------------------------------
-            
-            int rowExcel = 2;                                                                                   // начинаем со строки 2, т.к. в 1 заголовки (в excel счет с 1, а не с 0)
-            for(int i = 0; i < dataGridView1.Rows.Count; i++)
+                //---------------------------------------------
+                // Экспортируем из DataGridView в Excel
+                //---------------------------------------------
+
+                int rowExcel = 2;                                                                                   // начинаем со строки 2, т.к. в 1 заголовки (в excel счет с 1, а не с 0)
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        progressBar1.Increment(1);                                                                      // увеличиваем прогресс бар
+                });
+                    if (dataGridView1.Rows[i].Visible)
+                    {
+                        workSheet.Cells[rowExcel, 1] = dataGridView1.Rows[i].Cells[0].Value;
+                        workSheet.Cells[rowExcel, 2] = dataGridView1.Rows[i].Cells[1].Value;
+                        workSheet.Cells[rowExcel, 3] = dataGridView1.Rows[i].Cells[2].Value;
+                        workSheet.Cells[rowExcel, 4] = dataGridView1.Rows[i].Cells[3].Value;
+                        workSheet.Cells[rowExcel, 5] = dataGridView1.Rows[i].Cells[4].Value;
+                        workSheet.Cells[rowExcel, 6] = dataGridView1.Rows[i].Cells[5].Value;
+                        workSheet.Cells[rowExcel, 7] = dataGridView1.Rows[i].Cells[6].Value;
+                        workSheet.Cells[rowExcel, 8] = dataGridView1.Rows[i].Cells[7].Value;
+                        workSheet.Cells[rowExcel, 9] = dataGridView1.Rows[i].Cells[8].Value;
+
+                        ++rowExcel;
+                    }
+                }
+
+                //--------------------------------------------
+                // Настройка форматирвоания вывода
+                //--------------------------------------------
+                workSheet.Name = "Список приборов";
+
+                workSheet.Cells.Font.Name = "Time New Roman";                                                       // используем нужный шрифт
+                workSheet.Cells.Font.Size = 10;                                                                     // используемый нужный размер текста
+                for (int i = 1; i < 10; i++)                                                                        // делаем заголовок жирным
+                    (workSheet.Cells[1, i] as ExcelDLL.Range).Font.Bold = true;
+
+                (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
+                (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
+
+                for (int i = 1; i < 10; i++)                                                                          // устанавливаем ширину колонки по содержимому
+                    workSheet.Columns[i].AutoFit();
+
+                // Сохраняем файл
+                string username = Environment.UserName;                                                            // узнаем имя пользователя
+                string pathToXmlFile = @"C:\Documents and Settings\" + username + @"\Desktop\Export";               // указываем путь до рабочего стола
+                workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
+
+                excelApp.Quit();
+                Invoke((MethodInvoker)delegate
+                {
+                    progressBar1.Visible = false;
+                });
+                MessageBox.Show("Экспорт завершен, файл с именем Export.xml расположен на рабочем столе");
+            }
+            catch (System.Runtime.InteropServices.COMException)
             {
                 Invoke((MethodInvoker)delegate
                 {
-                    progressBar1.Increment(1);                                                                      // увеличиваем прогресс бар
+                    progressBar1.Visible = false;
                 });
-                if (dataGridView1.Rows[i].Visible)
-                {
-                    workSheet.Cells[rowExcel, 1] = dataGridView1.Rows[i].Cells[0].Value;
-                    workSheet.Cells[rowExcel, 2] = dataGridView1.Rows[i].Cells[1].Value;
-                    workSheet.Cells[rowExcel, 3] = dataGridView1.Rows[i].Cells[2].Value;
-                    workSheet.Cells[rowExcel, 4] = dataGridView1.Rows[i].Cells[3].Value;
-                    workSheet.Cells[rowExcel, 5] = dataGridView1.Rows[i].Cells[4].Value;
-                    workSheet.Cells[rowExcel, 6] = dataGridView1.Rows[i].Cells[5].Value;
-                    workSheet.Cells[rowExcel, 7] = dataGridView1.Rows[i].Cells[6].Value;
-                    workSheet.Cells[rowExcel, 8] = dataGridView1.Rows[i].Cells[7].Value;
-                    workSheet.Cells[rowExcel, 9] = dataGridView1.Rows[i].Cells[8].Value;
-
-                    ++rowExcel;
-                }
+                MessageBox.Show("Для работы требуется установленный Microsoft Office Excel\n\nКод ошибки: 0x80040154 (System.Runtime.InteropServices.COMException)");
             }
-
-            //--------------------------------------------
-            // Настройка форматирвоания вывода
-            //--------------------------------------------
-            workSheet.Name = "Список приборов";
-
-            workSheet.Cells.Font.Name = "Time New Roman";                                                       // используем нужный шрифт
-            workSheet.Cells.Font.Size = 10;                                                                     // используемый нужный размер текста
-            for (int i = 1; i < 10; i++)                                                                        // делаем заголовок жирным
-                (workSheet.Cells[1, i] as ExcelDLL.Range).Font.Bold = true;
-
-            (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
-            (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
-
-            for (int i = 1; i<10; i++)                                                                          // устанавливаем ширину колонки по содержимому
-                workSheet.Columns[i].AutoFit();
-
-            // Сохраняем файл
-            string username =  Environment.UserName;                                                            // узнаем имя пользователя
-            string pathToXmlFile = @"C:\Documents and Settings\" + username + @"\Desktop\Export";               // указываем путь до рабочего стола
-            workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
-
-            excelApp.Quit();
-            Invoke((MethodInvoker)delegate
-            {
-                progressBar1.Visible = false;
-            });
         }
         //----------------------------------------------------------------
         // Добавление прибора
