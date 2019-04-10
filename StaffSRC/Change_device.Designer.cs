@@ -106,7 +106,7 @@
             // 
             // verificationDate_textBox
             // 
-            this.verificationDate_textBox.Location = new System.Drawing.Point(564, 25);
+            this.verificationDate_textBox.Location = new System.Drawing.Point(563, 26);
             this.verificationDate_textBox.Name = "verificationDate_textBox";
             this.verificationDate_textBox.Size = new System.Drawing.Size(116, 20);
             this.verificationDate_textBox.TabIndex = 6;
@@ -174,7 +174,8 @@
             "УДБН-02Р",
             "УИ-27",
             "УИМ2-2",
-            "УИМ2-2Д"});
+            "УИМ2-2Д",
+            "EPD-G"});
             this.deviceType_comboBox.Location = new System.Drawing.Point(224, 25);
             this.deviceType_comboBox.Name = "deviceType_comboBox";
             this.deviceType_comboBox.Size = new System.Drawing.Size(121, 21);
@@ -351,7 +352,7 @@
             // 
             this.StateNormal_radioButton.AutoSize = true;
             this.StateNormal_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateNormal_radioButton.Location = new System.Drawing.Point(661, 66);
+            this.StateNormal_radioButton.Location = new System.Drawing.Point(660, 66);
             this.StateNormal_radioButton.Name = "StateNormal_radioButton";
             this.StateNormal_radioButton.Size = new System.Drawing.Size(19, 30);
             this.StateNormal_radioButton.TabIndex = 29;

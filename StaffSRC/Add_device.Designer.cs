@@ -117,7 +117,7 @@
             "4 кв."});
             this.verifiedTo_textBox.Location = new System.Drawing.Point(224, 75);
             this.verifiedTo_textBox.Name = "verifiedTo_textBox";
-            this.verifiedTo_textBox.Size = new System.Drawing.Size(53, 21);
+            this.verifiedTo_textBox.Size = new System.Drawing.Size(59, 21);
             this.verifiedTo_textBox.TabIndex = 38;
             // 
             // label7
@@ -221,7 +221,8 @@
             "УДБН-02Р",
             "УИ-27",
             "УИМ2-2",
-            "УИМ2-2Д"});
+            "УИМ2-2Д",
+            "EPD-G"});
             this.deviceType_comboBox.Location = new System.Drawing.Point(224, 25);
             this.deviceType_comboBox.Name = "deviceType_comboBox";
             this.deviceType_comboBox.Size = new System.Drawing.Size(121, 21);
@@ -315,9 +316,9 @@
             "2038",
             "2039",
             "2040"});
-            this.verifiedToY_textBox.Location = new System.Drawing.Point(283, 75);
+            this.verifiedToY_textBox.Location = new System.Drawing.Point(286, 75);
             this.verifiedToY_textBox.Name = "verifiedToY_textBox";
-            this.verifiedToY_textBox.Size = new System.Drawing.Size(62, 21);
+            this.verifiedToY_textBox.Size = new System.Drawing.Size(59, 21);
             this.verifiedToY_textBox.TabIndex = 48;
             // 
             // gan_checkBox
@@ -382,7 +383,7 @@
             // 
             this.StateNormal_radioButton.AutoSize = true;
             this.StateNormal_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateNormal_radioButton.Location = new System.Drawing.Point(662, 65);
+            this.StateNormal_radioButton.Location = new System.Drawing.Point(660, 65);
             this.StateNormal_radioButton.Name = "StateNormal_radioButton";
             this.StateNormal_radioButton.Size = new System.Drawing.Size(19, 30);
             this.StateNormal_radioButton.TabIndex = 54;
@@ -406,7 +407,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(690, 135);
+            this.ClientSize = new System.Drawing.Size(690, 131);
             this.Controls.Add(this.decommissioned_checkBox);
             this.Controls.Add(this.StateNormal_radioButton);
             this.Controls.Add(this.StateConservation_radioButton);

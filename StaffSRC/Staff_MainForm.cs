@@ -69,7 +69,9 @@ namespace StaffSRC
             Option.Show();
         }
 
+        //-----------------------------------
         // Изменение положения toggle
+        //-----------------------------------
         void ToggleSwitch_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (ToggleSwitch1.Toggled == true)
