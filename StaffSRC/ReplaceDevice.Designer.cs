@@ -82,7 +82,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(776, 65);
+            this.dataGridView1.Size = new System.Drawing.Size(776, 55);
             this.dataGridView1.TabIndex = 0;
             // 
             // personnelNumber
@@ -157,13 +157,14 @@
             // 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AllowUserToResizeRows = false;
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.dataGridView2.Location = new System.Drawing.Point(12, 124);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 117);
             this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
@@ -175,7 +176,7 @@
             // search_textBox
             // 
             this.search_textBox.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.search_textBox.Location = new System.Drawing.Point(12, 98);
+            this.search_textBox.Location = new System.Drawing.Point(12, 90);
             this.search_textBox.Name = "search_textBox";
             this.search_textBox.Size = new System.Drawing.Size(776, 20);
             this.search_textBox.TabIndex = 2;
