@@ -20,6 +20,8 @@ using ExcelDLL = Microsoft.Office.Interop.Excel;
 using System.Security.Principal;
 using StaffSRC.Properties;
 
+using Spire.Pdf;
+
 namespace StaffSRC
 {
     public partial class Staff_MainForm : Form
@@ -522,6 +524,7 @@ namespace StaffSRC
                 sent_label.Text = ("Отправлено: " + sent.ToString());
                 overdue_label.Text = ("Просрочено: " + overdue.ToString());
                 storage_label.Text = ("На складе: " + storage.ToString());
+                decommissioned_label.Text = ("Списанных: " + decommissioned.ToString());
                 allDevides_label.Text = ("Всего устройств: " + (allDevices-decommissioned).ToString() + " (" + allDevices + ")");
                 gan_label.Text = ("Приборов ГАН: " + gan.ToString());
                 notgan_label.Text = ("Приборов не ГАН: " + notgan.ToString());
@@ -647,38 +650,20 @@ namespace StaffSRC
             }
         }
         //---------------------------------------------------
-        // Метод вывода на печать .pdf файла чрез iTextSharp
+        // Метод вывода на печать .pdf файла чрез Spire.PDF
         //---------------------------------------------------
         public void PrintPdfFile()
         {
-            RegistryKey adobe = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\AcroRd32.exe");      // поиск adobe acrobate reader
+            string newFile = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                 // путь экспорта заполненного .pdf
 
-            if(adobe != null)                                                                                                               // если нашли
-            {
-                string path = adobe.GetValue("").ToString();                                                                                // найти путь до исполнительного файла Arobate
-                Process process = new Process();                                                                                            // создаем новый процесс
+            Spire.Pdf.PdfDocument pdfdocument = new Spire.Pdf.PdfDocument();                                    // создаём экземпляр
+            pdfdocument.LoadFromFile(newFile);                                                                  // загружаем файл
 
-                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;                                                                  // делаем его скрытым
-                process.StartInfo.Verb = "print";                                                                                           // задаем команду для печати
+            //pdfdocument.PrinterName = "My Printer";
 
-                string pdfFileName = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                                     // задаем путь до файла, отправляемого на печать
-
-                process.StartInfo.FileName = path;                                                                                          // конфигурируем процесс | путь до AcroRd32.exe
-                process.StartInfo.Arguments = @"/p /h " + pdfFileName;                                                                      // путь до .pdf файла
-                process.StartInfo.UseShellExecute = false;                                                                                  // не создаем новых окон
-                process.StartInfo.CreateNoWindow = true;
-
-                process.Start();                                                                                                            // запускаем процесс
-                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;                                                                  // скрытно
-                if (process.HasExited == false)
-                {
-                    if (!process.WaitForExit(5000))
-                        process.Kill();
-                }
-
-                process.EnableRaisingEvents = true;
-                process.Close();
-            }
+            pdfdocument.PrintDocument.PrinterSettings.Copies = 1;                                               // количество копий (можно не указывать)
+            pdfdocument.PrintDocument.Print();
+            pdfdocument.Dispose();
 
             ListMarking();
         }
