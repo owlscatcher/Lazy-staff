@@ -805,7 +805,7 @@ namespace StaffSRC
                 dataGridView1.CurrentCell = null;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    if ((dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-03П") && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-02П"))
+                    if ((dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-03П") && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-02П" && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАБ-02П"))
                         dataGridView1.Rows[i].Visible = false;
                     else
                         dataGridView1.Rows[i].Visible = true;
