@@ -16,6 +16,9 @@ namespace StaffSRC
 {
     public partial class ReplaceDevice : Form
     {
+        Classes.Search Search = new Classes.Search();
+        string date = DateTime.Now.ToString("dd.MM.yyyy");
+
         public ReplaceDevice()
         {
             InitializeComponent();
@@ -23,12 +26,18 @@ namespace StaffSRC
             // Включаем двойную буферизацию для DataGridView2
             typeof(DataGridView).InvokeMember(
                 "DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty,
+                System.Reflection.BindingFlags.NonPublic 
+                | System.Reflection.BindingFlags.Instance 
+                | System.Reflection.BindingFlags.SetProperty,
                 null,
                 dataGridView2,
                 new object[] { true });
 
             Print_chechBox.Checked = true;
+            manualDate_dateTimePicker.Enabled = false;
+
+            manualDate_dateTimePicker.CustomFormat = "MMMM dd, yyyy - dddd";
+            manualDate_dateTimePicker.Format = DateTimePickerFormat.Custom;
         }
 
         private void ReplaceDevice_Load(object sender, EventArgs e)
@@ -90,29 +99,7 @@ namespace StaffSRC
         //------------------------------------
         private void search_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (search_textBox.Text != "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
-            {
-                try
-                {
-                    dataGridView2.CurrentCell = null;
-                    for (int i = 0; i < dataGridView2.Rows.Count; i++)
-                    {
-                        if ((dataGridView2.Rows[i].Cells[0].Value.ToString() == "" + search_textBox.Text) || (dataGridView2.Rows[i].Cells[1].Value.ToString() == "" + search_textBox.Text) || (dataGridView2.Rows[i].Cells[7].Value.ToString() == "" + search_textBox.Text))            // Фильтр по Табельному номеру
-                            dataGridView2.Rows[i].Visible = true;
-                        else
-                            dataGridView2.Rows[i].Visible = false;
-
-                        if (search_textBox.Text == "")
-                        {
-                            dataGridView2.Rows[i].Visible = true;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.StackTrace);
-                }
-            }
+            Search.Start(this, dataGridView2, search_textBox);
         }
         //------------------------------------
         // Удаление подсказки из textbox
@@ -170,8 +157,6 @@ namespace StaffSRC
                 {
                     dataGridView2.CurrentRow.Cells[6].Value = dataGridView1.CurrentRow.Cells[6].Value;
 
-                    string date = DateTime.Now.ToString("dd.MM.yyyy");
-
                     dataGridView1.CurrentRow.Cells[4].Value = date;
                     dataGridView1.CurrentRow.Cells[6].Value = "----";
                     dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
@@ -197,8 +182,6 @@ namespace StaffSRC
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
                         dataGridView2.CurrentRow.Cells[6].Value = dataGridView1.CurrentRow.Cells[6].Value;
-
-                        string date = DateTime.Now.ToString("dd.MM.yyyy");
 
                         dataGridView1.CurrentRow.Cells[4].Value = date;
                         dataGridView1.CurrentRow.Cells[6].Value = "----";
@@ -290,7 +273,6 @@ namespace StaffSRC
                             contentByte.ShowTextAligned(1, text, 629, 112, 0);
                         }
 
-                        string date = DateTime.Now.ToString("dd.MM.yyyy");
                         text = Convert.ToString(date);
                         contentByte.ShowTextAligned(1, text, 145, 41, 0);
                         contentByte.ShowTextAligned(1, text, 672, 58, 0);
@@ -322,6 +304,35 @@ namespace StaffSRC
             }
             else
                 MessageBox.Show("Выберите устройство из второй таблицы, которым требуется заменить");
+        }
+
+        private void Cancel_button_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        //------------------------------------------------------
+        // настройка ввода даты вручну
+        //------------------------------------------------------
+        private void ManualDate_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (manualDate_checkBox.Checked)
+            {
+                manualDate_dateTimePicker.Enabled = true;
+                date = manualDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
+            }
+            else
+            {
+                manualDate_dateTimePicker.Enabled = false;
+                date = DateTime.Now.ToString("dd.MM.yyyy");
+            }
+        }
+        private void ManualDate_dateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (manualDate_checkBox.Checked)
+                date = manualDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
+            else
+                date = DateTime.Now.ToString("dd.MM.yyyy");
         }
     }
 }

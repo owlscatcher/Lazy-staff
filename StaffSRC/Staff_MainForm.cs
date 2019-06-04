@@ -35,11 +35,17 @@ namespace StaffSRC
         public bool gan_state;
         public static bool administration;
 
+        Classes.ListMarking listMarking = new Classes.ListMarking();
+        Classes.Search Search = new Classes.Search();
+
         //-----------------------------------
         // Кнопка экспорта из DGV в Excel
         //-----------------------------------
         private void ExportToXml_button_Click(object sender, EventArgs e)
         {
+
+            SqlConnection sqlConnection = new SqlConnection();
+
             Thread exportToExcel = new Thread(ExportToExcel);
             exportToExcel.Start();
         }
@@ -107,7 +113,6 @@ namespace StaffSRC
                 groupBox3.Enabled = false;
                 administration = false;
             }
-
         }
 
         //-----------------------------------
@@ -139,11 +144,12 @@ namespace StaffSRC
             groupBox2.Enabled = false;
             groupBox3.Enabled = false;
 
-            
+            printDateTimePicker.Checked = false;
+
         }
 
         //-----------------------------------
-        // Событие изменение select состояния строки
+        // Событие изменение select состояния строки || количество выделенных приборов
         //-----------------------------------
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
@@ -156,7 +162,7 @@ namespace StaffSRC
         //-----------------------------------
         private void dataGridView1_Sorted(object sender, EventArgs e)
         {
-            ListMarking();
+            listMarking.Start(this);
         }
 
         //---------------------------------
@@ -238,6 +244,30 @@ namespace StaffSRC
             else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
             return;
+        }
+        //---------------------------------
+        // Добавление устройства
+        //---------------------------------
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (administration == true)
+            {
+                Add_device AddDevice = new Add_device();
+                AddDevice.Owner = this;
+                AddDevice.Show();
+            }
+            else
+                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
+            return;
+        }
+
+        //----------------------------------
+        // Экспорт списков продления
+        //----------------------------------
+        private void ExportListSI_button_Click(object sender, EventArgs e)
+        {
+            ExportListSI exportListSI = new ExportListSI();
+            exportListSI.Show();
         }
 
         //------------------------------------
@@ -385,153 +415,12 @@ namespace StaffSRC
                 dataGridView1.Columns[10].Visible = false;
             });
 
-            ListMarking();
+            listMarking.Start(this);
 
             DateTime dateTime = DateTime.Now;
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
         }
-        //-----------------------------------------------------
-        // Маркировка списка и проверка просроченных приборов
-        //-----------------------------------------------------
-        public void ListMarking()
-        {
-            //---------------------------------------
-            // Проверка просрочки
-            //---------------------------------------
 
-            // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервации, 5 - готовится к отправке
-            //                 6 - просрочен и на складе, 7 - готовится к отправке и на складе, 8 - списан
-
-            // dataGridView1.Rows[i].Cells[10].Value - stage (состояние прибора)
-            // dataGridView1.Rows[i].Cells[5].Value  - дата гос.поверки
-
-            DateTime currentDate, verificationDate = new DateTime();
-            currentDate = DateTime.Now.Date;                                                                                        // актуальная дата
-            verificationDate = verificationDate.Date;                                                                               // дата из базы данных прибора
-
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)
-            {
-                if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 2 && 
-                    Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 4 && 
-                    Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 8 && 
-                    dataGridView1.Rows[i].Cells[5].Value != DBNull.Value)                                                           // Если прибор не на консервации, не списан и не отправлен
-                {
-                    verificationDate = (Convert.ToDateTime(dataGridView1.Rows[i].Cells[5].Value));
-                    int days = (int)currentDate.Subtract(verificationDate).TotalDays;                                               // получаем разность между currentDate и verificationDate в днях
-
-                    if (days >= 335 && days <= 365)                                                                                 // подготовить на отправку || для продления
-                    {
-                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 7)
-                        {
-                            dataGridView1.Rows[i].Cells[10].Value = 5;
-                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
-                        }
-                        else
-                        {
-                            dataGridView1.Rows[i].Cells[10].Value = 7;
-                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
-                        }
-                    }
-                    if (days >= 366)                                                                                                // просроченный прибор
-                    {
-                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 3 && Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) != 6)
-                        {
-                            dataGridView1.Rows[i].Cells[10].Value = 1;
-                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
-                        }
-                        else
-                        {
-                            dataGridView1.Rows[i].Cells[10].Value = 6;
-                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
-                        }
-                    }
-                    else
-                        continue;
-                }
-                else
-                    continue;
-            }
-
-            //---------------------------------------
-            // Маркировка списка
-            //---------------------------------------
-            int conservation = 0, sent = 0, overdue = 0, storage = 0, allDevices = 0, gan = 0, notgan = 0, decommissioned = 0;      // счетчики
-
-            for (int i = 0; i < dataGridView1.Rows.Count; i++)                                                                      // цикл маркировки
-            {
-                allDevices++;
-                // значения stage хранятся в ячейках [10] || .Cells[10].Value
-                // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
-                //                 5 - готовится на отправку, 6 - просрочен и на складе, 7 - готовится на отправку и на складе, 8 - списан
-                switch (dataGridView1.Rows[i].Cells[10].Value)
-                {
-                    case 0:
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = DefaultBackColor;
-                        break;
-                    case 1: // просрочен
-                        overdue++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
-                        break;
-                    case 2: // отправлен
-                        sent++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#58ACFA");
-                        break;
-                    case 3: // на складе
-                        storage++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#58FA82");
-                        break;
-                    case 4: // консервирован
-                        conservation++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F6CED8");
-                        break;
-                   case 5: // на отправку
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
-                        break;
-                    case 6: // просрочен и на складе
-                        overdue++;
-                        storage++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#B40404");
-                        break;
-                    case 7: // на отправку и на складе
-                        storage++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F3F781");
-                        break;
-                    case 8: // списан
-                        decommissioned++;
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#6E6E6E");
-                        break;
-                    default:
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFFFFF");
-                        break;
-                }
-
-                //значения stageGan: false - не в списке ГАН, true - в списке ГАН (маркеруется в default)
-
-                switch (dataGridView1.Rows[i].Cells[9].Value)
-                {
-                    case false:
-                        ++notgan;
-                        break;
-                    default:
-                        ++gan;
-                        break;
-                }
-            }
-
-            Invoke((MethodInvoker)delegate
-            {
-                conservation_label.Text = ("На консервации: " + conservation.ToString());
-                sent_label.Text = ("Отправлено: " + sent.ToString());
-                overdue_label.Text = ("Просрочено: " + overdue.ToString());
-                storage_label.Text = ("На складе: " + storage.ToString());
-                decommissioned_label.Text = ("Списанных: " + decommissioned.ToString());
-                allDevides_label.Text = ("Всего устройств: " + (allDevices-decommissioned).ToString() + " (" + allDevices + ")");
-                gan_label.Text = ("Приборов ГАН: " + gan.ToString());
-                notgan_label.Text = ("Приборов не ГАН: " + notgan.ToString());
-
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            });
-        }
 
         //--------------------------------------------------------------
         // Метод для рботы с PDF файлом
@@ -606,7 +495,11 @@ namespace StaffSRC
                     contentByte.ShowTextAligned(1, text, 629, 112, 0);
                 }
 
-                string date = DateTime.Now.ToString("dd.MM.yyyy");
+                string date;
+                if (!printDateTimePicker.Checked)
+                    date = DateTime.Now.ToString("dd.MM.yyyy");
+                else
+                    date = printDateTimePicker.Value.ToString("dd.MM.yyyy");
                 text = Convert.ToString(date);
                 contentByte.ShowTextAligned(1, text, 145, 41, 0);
                 contentByte.ShowTextAligned(1, text, 672, 58, 0);
@@ -665,7 +558,7 @@ namespace StaffSRC
             pdfdocument.PrintDocument.Print();
             pdfdocument.Dispose();
 
-            ListMarking();
+            listMarking.Start(this);
         }
         //---------------------------------------
         // получаем индекс выделенной строки
@@ -679,31 +572,7 @@ namespace StaffSRC
         //------------------------------------
         private void search_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (search_textBox.Text != "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
-            {
-                try
-                {
-                    dataGridView1.CurrentCell = null;
-                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                    {
-                        if ((dataGridView1.Rows[i].Cells[0].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[1].Value.ToString() == "" + search_textBox.Text) || (dataGridView1.Rows[i].Cells[7].Value.ToString() == "" + search_textBox.Text))            // Фильтр по Табельному номеру
-                            dataGridView1.Rows[i].Visible = true;
-                        else
-                            dataGridView1.Rows[i].Visible = false;
-
-                        if (search_textBox.Text == "")
-                        {
-                            dataGridView1.Rows[i].Visible = true;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.StackTrace);
-                }
-            }
-            CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-
+            Search.Start(this, dataGridView1, search_textBox);
         }
         //------------------------------------
         // Удаление подсказки из textbox
@@ -733,228 +602,234 @@ namespace StaffSRC
         //---------------------------------------
         // Фильтрация по ThreeView
         //---------------------------------------
+
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //***************************
-            // Фильтры по типу устройств
-            //***************************
-            if (treeView1.Nodes[0].IsSelected)                                                             // Фильтр для УИМ
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                   dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            int level = e.Node.Level;
+            int index = e.Node.Index;
 
-            if (treeView1.Nodes[0].Nodes[0].IsSelected)                                                     // Фильтр для УИМ
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УИМ2-2" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "УИМ2-2Д")
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            Classes.TreeViewFilter treeViewFilter = new Classes.TreeViewFilter();
+            treeViewFilter.Filter(this, level, index);
+            ////***************************
+            //// Фильтры по типу устройств
+            ////***************************
+            //if (treeView1.Nodes[0].IsSelected)                                                             // Фильтр для всех
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //       dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            if (treeView1.Nodes[0].Nodes[1].IsSelected)                                                     // Фильтр для БДАС
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДАС-03П")
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[0].Nodes[0].IsSelected)                                                     // Фильтр для УИМ
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            if (treeView1.Nodes[0].Nodes[2].IsSelected)                                                     // Фильтр для БДГБ
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДГБ-02П" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДГБ-02И" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДГБ-02П1")
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[0].Nodes[1].IsSelected)                                                     // Фильтр для БДАС
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            if (treeView1.Nodes[0].Nodes[3].IsSelected)                                                     // Фильтр для БДМГ
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ41" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ41-01" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ41-03" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ08Р-02" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ08Р-04" && dataGridView1.Rows[i].Cells[2].Value.ToString() != "БДМГ08Р-05")
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[0].Nodes[2].IsSelected)                                                     // Фильтр для БДГБ
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            if (treeView1.Nodes[0].Nodes[4].IsSelected)                                                     // Фильтр для УДАС
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if ((dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-03П") && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАС-02П" && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "УДАБ-02П")))
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[0].Nodes[3].IsSelected)                                                     // Фильтр для БДМГ
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            if (treeView1.Nodes[0].Nodes[5].IsSelected)                                                     // Фильтр для ДКГ
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if ((dataGridView1.Rows[i].Cells[2].Value.ToString() != "ДКГ-АТ2503") && (dataGridView1.Rows[i].Cells[2].Value.ToString() != "ДКГ-АТ2503А"))
-                        dataGridView1.Rows[i].Visible = false;
-                    else
-                        dataGridView1.Rows[i].Visible = true;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[0].Nodes[4].IsSelected)                                                     // Фильтр для УДАС
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //**********************************
-            // Фильтр консервировнных устройств
-            //**********************************
+            //if (treeView1.Nodes[0].Nodes[5].IsSelected)                                                     // Фильтр для ДКГ
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (!dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(treeView1.SelectedNode.Text.ToString()))
+            //            dataGridView1.Rows[i].Visible = false;
+            //        else
+            //            dataGridView1.Rows[i].Visible = true;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
+            ////**********************************
+            //// Фильтр консервировнных устройств
+            ////**********************************
 
-            if (treeView1.Nodes[3].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 4)                 // где 1 - отправлен, 0 - нет
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //// значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
 
-            //********************************
-            // Фильтр готовящихся устройств
-            //********************************
-            if (treeView1.Nodes[1].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 5 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 5 - Прибор готовится на отправку
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            //if (treeView1.Nodes[3].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 4)                 // где 1 - отправлен, 0 - нет
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //********************************
-            // Фильтр отправленных устройств
-            //********************************
-            if (treeView1.Nodes[4].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 2)                // где 1 - отправлен, 0 - нет
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            ////********************************
+            //// Фильтр готовящихся устройств
+            ////********************************
+            //if (treeView1.Nodes[1].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 5 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 5 - Прибор готовится на отправку
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //********************************
-            // Фильтр просроченных устройств
-            //********************************
-            if (treeView1.Nodes[2].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 1 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6)                // где 1 - отправлен, 0 - нет
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            ////********************************
+            //// Фильтр отправленных устройств
+            ////********************************
+            //if (treeView1.Nodes[4].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 2)                // где 1 - отправлен, 0 - нет
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //********************************
-            // Фильтр устройств на складе
-            //********************************
-            if (treeView1.Nodes[5].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 3 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 1 - отправлен, 0 - нет
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            ////********************************
+            //// Фильтр просроченных устройств
+            ////********************************
+            //if (treeView1.Nodes[2].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 1 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6)                // где 1 - отправлен, 0 - нет
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //********************************
-            // Фильтр устройств ГАН
-            //********************************
-            if (treeView1.Nodes[6].Nodes[0].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == true)                       // где true - ГАН, false - не ГАН
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
-            //********************************
-            // Фильтр устройств не ГАН
-            //********************************
-            if (treeView1.Nodes[6].Nodes[1].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == false)                       // где true - ГАН, false - не ГАН
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            ////********************************
+            //// Фильтр устройств на складе
+            ////********************************
+            //if (treeView1.Nodes[5].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 3 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 6 || Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 1 - отправлен, 0 - нет
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
-            //********************************
-            // Фильтр списанных устройств
-            //********************************
-            if (treeView1.Nodes[6].Nodes[2].IsSelected)
-            {
-                dataGridView1.CurrentCell = null;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 8)                            // где 8 - списан
-                        dataGridView1.Rows[i].Visible = true;
-                    else
-                        dataGridView1.Rows[i].Visible = false;
-                }
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
+            ////********************************
+            //// Фильтр устройств ГАН
+            ////********************************
+            //if (treeView1.Nodes[6].Nodes[0].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == true)                       // где true - ГАН, false - не ГАН
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
+            ////********************************
+            //// Фильтр устройств не ГАН
+            ////********************************
+            //if (treeView1.Nodes[6].Nodes[1].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToBoolean(dataGridView1.Rows[i].Cells[9].Value) == false)                       // где true - ГАН, false - не ГАН
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
+
+            ////********************************
+            //// Фильтр списанных устройств
+            ////********************************
+            //if (treeView1.Nodes[6].Nodes[2].IsSelected)
+            //{
+            //    dataGridView1.CurrentCell = null;
+            //    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            //    {
+            //        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[10].Value) == 8)                            // где 8 - списан
+            //            dataGridView1.Rows[i].Visible = true;
+            //        else
+            //            dataGridView1.Rows[i].Visible = false;
+            //    }
+            //    CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            //}
 
         }
 
@@ -1056,15 +931,6 @@ namespace StaffSRC
                 });
                 MessageBox.Show("Для работы требуется установленный Microsoft Office Excel\n\nКод ошибки: 0x80040154 (System.Runtime.InteropServices.COMException)");
             }
-        }
-        //----------------------------------------------------------------
-        // Добавление прибора
-        //----------------------------------------------------------------
-        private void AddDevice_button_Click(object sender, EventArgs e)
-        {
-            Add_device AddDevice = new Add_device();
-            AddDevice.Owner = this;
-            AddDevice.Show();
         }
     }
 }
