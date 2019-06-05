@@ -1,4 +1,6 @@
-﻿namespace StaffSRC
+﻿using System.Windows.Forms;
+
+namespace StaffSRC
 {
     partial class Staff_MainForm
     {
@@ -33,37 +35,40 @@
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("БДАС");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("БДГБ");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("БДМГ");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("УДАС");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("ДКГ");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Все приборы", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("УДАБ");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("УДАС");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ДКГ");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Все приборы", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
             treeNode4,
             treeNode5,
-            treeNode6});
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Подготовить на отпр.");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Просроченные приборы");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Консервация");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Отправленные на Гос. поверку");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Склад");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("ГАН");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Другие");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Списанные приборы");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
+            treeNode6,
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Подготовить на отпр.");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Просроченные приборы");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Консервация");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Отправленные на Гос. поверку");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Склад");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("ГАН");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Другие");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Списанные приборы");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Особые списки", new System.Windows.Forms.TreeNode[] {
             treeNode14,
-            treeNode15});
+            treeNode15,
+            treeNode16});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ExportListSI_button = new System.Windows.Forms.Button();
             this.Admin_Label = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.Setting_button = new System.Windows.Forms.Button();
             this.uimInfo_button = new System.Windows.Forms.Button();
-            this.AddDevice_button = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.ExportToXml_button = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.printDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
             this.repairs_radioButton = new System.Windows.Forms.RadioButton();
             this.test_radioButton = new System.Windows.Forms.RadioButton();
@@ -90,6 +95,8 @@
             this.dataGrid_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.separateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
             this.ToggleSwitch = new StaffSRC.Toggle();
@@ -113,6 +120,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.ExportListSI_button);
             this.splitContainer1.Panel1.Controls.Add(this.ToggleHost);
             this.splitContainer1.Panel1.Controls.Add(this.Admin_Label);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
@@ -132,6 +140,18 @@
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
             // 
+            // ExportListSI_button
+            // 
+            this.ExportListSI_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExportListSI_button.Location = new System.Drawing.Point(5, 484);
+            this.ExportListSI_button.Name = "ExportListSI_button";
+            this.ExportListSI_button.Size = new System.Drawing.Size(157, 23);
+            this.ExportListSI_button.TabIndex = 16;
+            this.ExportListSI_button.Text = "Списки продления СИ";
+            this.ExportListSI_button.UseVisualStyleBackColor = true;
+            this.ExportListSI_button.Click += new System.EventHandler(this.ExportListSI_button_Click);
+            // 
             // Admin_Label
             // 
             this.Admin_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -148,10 +168,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.Setting_button);
             this.groupBox3.Controls.Add(this.uimInfo_button);
-            this.groupBox3.Controls.Add(this.AddDevice_button);
-            this.groupBox3.Location = new System.Drawing.Point(3, 330);
+            this.groupBox3.Location = new System.Drawing.Point(3, 356);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 105);
+            this.groupBox3.Size = new System.Drawing.Size(163, 75);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Опции";
@@ -172,25 +191,13 @@
             // 
             this.uimInfo_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uimInfo_button.Location = new System.Drawing.Point(2, 77);
+            this.uimInfo_button.Location = new System.Drawing.Point(2, 48);
             this.uimInfo_button.Name = "uimInfo_button";
             this.uimInfo_button.Size = new System.Drawing.Size(157, 23);
             this.uimInfo_button.TabIndex = 9;
             this.uimInfo_button.Text = "Справка по УИМ2-2";
             this.uimInfo_button.UseVisualStyleBackColor = true;
             this.uimInfo_button.Click += new System.EventHandler(this.uimInfo_button_Click);
-            // 
-            // AddDevice_button
-            // 
-            this.AddDevice_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddDevice_button.Location = new System.Drawing.Point(2, 48);
-            this.AddDevice_button.Name = "AddDevice_button";
-            this.AddDevice_button.Size = new System.Drawing.Size(157, 23);
-            this.AddDevice_button.TabIndex = 10;
-            this.AddDevice_button.Text = "Добавить устройство";
-            this.AddDevice_button.UseVisualStyleBackColor = true;
-            this.AddDevice_button.Click += new System.EventHandler(this.AddDevice_button_Click);
             // 
             // progressBar1
             // 
@@ -217,16 +224,27 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.printDateTimePicker);
             this.groupBox2.Controls.Add(this.entranceControl_radioButton);
             this.groupBox2.Controls.Add(this.repairs_radioButton);
             this.groupBox2.Controls.Add(this.test_radioButton);
             this.groupBox2.Controls.Add(this.PrintPdf_button);
             this.groupBox2.Location = new System.Drawing.Point(3, 208);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(163, 116);
+            this.groupBox2.Size = new System.Drawing.Size(163, 142);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Настройка печати";
+            // 
+            // printDateTimePicker
+            // 
+            this.printDateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.printDateTimePicker.Location = new System.Drawing.Point(4, 88);
+            this.printDateTimePicker.Name = "printDateTimePicker";
+            this.printDateTimePicker.ShowCheckBox = true;
+            this.printDateTimePicker.Size = new System.Drawing.Size(153, 20);
+            this.printDateTimePicker.TabIndex = 5;
             // 
             // entranceControl_radioButton
             // 
@@ -265,7 +283,7 @@
             // 
             this.PrintPdf_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PrintPdf_button.Location = new System.Drawing.Point(2, 88);
+            this.PrintPdf_button.Location = new System.Drawing.Point(2, 114);
             this.PrintPdf_button.Name = "PrintPdf_button";
             this.PrintPdf_button.Size = new System.Drawing.Size(157, 23);
             this.PrintPdf_button.TabIndex = 1;
@@ -409,38 +427,40 @@
             treeNode3.Text = "БДГБ";
             treeNode4.Name = "BDMG";
             treeNode4.Text = "БДМГ";
-            treeNode5.Name = "UDAS";
-            treeNode5.Text = "УДАС";
-            treeNode6.Name = "DKG";
-            treeNode6.Text = "ДКГ";
-            treeNode7.Name = "All";
-            treeNode7.Text = "Все приборы";
-            treeNode8.Name = "PREPROSROCH";
-            treeNode8.Text = "Подготовить на отпр.";
-            treeNode9.Name = "PROSROCH";
-            treeNode9.Text = "Просроченные приборы";
-            treeNode10.Name = "KONSERV";
-            treeNode10.Text = "Консервация";
-            treeNode11.Name = "OTPRAVLENNIE";
-            treeNode11.Text = "Отправленные на Гос. поверку";
-            treeNode12.Name = "SKLAD";
-            treeNode12.Text = "Склад";
-            treeNode13.Name = "gan";
-            treeNode13.Text = "ГАН";
-            treeNode14.Name = "notgan";
-            treeNode14.Text = "Другие";
-            treeNode15.Name = "decommissioned";
-            treeNode15.Text = "Списанные приборы";
-            treeNode16.Name = "lists";
-            treeNode16.Text = "Особые списки";
+            treeNode5.Name = "UDAB";
+            treeNode5.Text = "УДАБ";
+            treeNode6.Name = "UDAS";
+            treeNode6.Text = "УДАС";
+            treeNode7.Name = "DKG";
+            treeNode7.Text = "ДКГ";
+            treeNode8.Name = "All";
+            treeNode8.Text = "Все приборы";
+            treeNode9.Name = "PREPROSROCH";
+            treeNode9.Text = "Подготовить на отпр.";
+            treeNode10.Name = "PROSROCH";
+            treeNode10.Text = "Просроченные приборы";
+            treeNode11.Name = "KONSERV";
+            treeNode11.Text = "Консервация";
+            treeNode12.Name = "OTPRAVLENNIE";
+            treeNode12.Text = "Отправленные на Гос. поверку";
+            treeNode13.Name = "SKLAD";
+            treeNode13.Text = "Склад";
+            treeNode14.Name = "gan";
+            treeNode14.Text = "ГАН";
+            treeNode15.Name = "notgan";
+            treeNode15.Text = "Другие";
+            treeNode16.Name = "decommissioned";
+            treeNode16.Text = "Списанные приборы";
+            treeNode17.Name = "lists";
+            treeNode17.Text = "Особые списки";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
             treeNode8,
             treeNode9,
             treeNode10,
             treeNode11,
             treeNode12,
-            treeNode16});
+            treeNode13,
+            treeNode17});
             this.treeView1.Size = new System.Drawing.Size(164, 199);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
@@ -519,28 +539,45 @@
             this.dataGrid_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.changeToolStripMenuItem,
             this.replaceToolStripMenuItem,
+            this.separateToolStripMenuItem,
+            this.addToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.dataGrid_contextMenuStrip.Name = "dataGrid_contextMenuStrip";
-            this.dataGrid_contextMenuStrip.Size = new System.Drawing.Size(129, 70);
+            this.dataGrid_contextMenuStrip.Size = new System.Drawing.Size(165, 114);
             // 
             // changeToolStripMenuItem
             // 
             this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
-            this.changeToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.changeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.changeToolStripMenuItem.Text = "Изменить";
             this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
             // 
             // replaceToolStripMenuItem
             // 
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.replaceToolStripMenuItem.Text = "Заменить";
             this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
+            // 
+            // separateToolStripMenuItem
+            // 
+            this.separateToolStripMenuItem.Enabled = false;
+            this.separateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.separateToolStripMenuItem.Name = "separateToolStripMenuItem";
+            this.separateToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.separateToolStripMenuItem.Text = "__________________";
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.addToolStripMenuItem.Text = "Добавить";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.deleteToolStripMenuItem.Text = "Удалить";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -563,7 +600,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Radioactive Raccoon (v1.4.22 от 22/04/2019)";
+            this.Text = "Radioactive Raccoon (v1.5.0b от 04/06/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -608,7 +645,6 @@
         private System.Windows.Forms.Label allDevides_label;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button Setting_button;
-        private System.Windows.Forms.Button AddDevice_button;
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
         private System.Windows.Forms.Label seporatingLine_label3;
@@ -625,8 +661,23 @@
         private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Button ExportListSI_button;
+        private ToolStripMenuItem separateToolStripMenuItem;
+        private ToolStripMenuItem addToolStripMenuItem;
+        private DateTimePicker printDateTimePicker;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
+        public Label Conservation_label { get => conservation_label; set => conservation_label = value; }
+        public Label Sent_label { get => sent_label; set => sent_label = value; }
+        public Label Overdue_label { get => overdue_label; set => overdue_label = value; }
+        public Label Storage_label { get => storage_label; set => storage_label = value; }
+        public Label Decommissioned_label { get => decommissioned_label; set => decommissioned_label = value; }
+        public Label AllDevides_label { get => allDevides_label; set => allDevides_label = value; }
+        public Label Gan_label { get => gan_label; set => gan_label = value; }
+        public Label Notgan_label { get => notgan_label; set => notgan_label = value; }
+        public ToolStripStatusLabel CountVisibleDevices_StatusLabel1 { get => CountVisibleDevices_StatusLabel; set => CountVisibleDevices_StatusLabel = value; }
+        public TextBox Search_textBox { get => search_textBox; set => search_textBox = value; }
+        public TreeView TreeView { get => treeView1; }
     }
 }
 

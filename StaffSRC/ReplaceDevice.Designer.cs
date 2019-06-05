@@ -50,6 +50,8 @@
             this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
             this.test_radioButton = new System.Windows.Forms.RadioButton();
             this.repairs_radioButton = new System.Windows.Forms.RadioButton();
+            this.manualDate_checkBox = new System.Windows.Forms.CheckBox();
+            this.manualDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -82,7 +84,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(776, 55);
+            this.dataGridView1.Size = new System.Drawing.Size(776, 59);
             this.dataGridView1.TabIndex = 0;
             // 
             // personnelNumber
@@ -170,7 +172,7 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(776, 244);
+            this.dataGridView2.Size = new System.Drawing.Size(776, 251);
             this.dataGridView2.TabIndex = 1;
             // 
             // search_textBox
@@ -204,17 +206,20 @@
             this.Cancel_button.TabIndex = 5;
             this.Cancel_button.Text = "Отмена";
             this.Cancel_button.UseVisualStyleBackColor = true;
+            this.Cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.manualDate_dateTimePicker);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.manualDate_checkBox);
             this.groupBox1.Controls.Add(this.Print_chechBox);
             this.groupBox1.Controls.Add(this.entranceControl_radioButton);
             this.groupBox1.Controls.Add(this.test_radioButton);
             this.groupBox1.Controls.Add(this.repairs_radioButton);
             this.groupBox1.Location = new System.Drawing.Point(12, 374);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(425, 36);
+            this.groupBox1.Size = new System.Drawing.Size(425, 59);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройка печати:";
@@ -272,11 +277,31 @@
             this.repairs_radioButton.Text = "Ремонт";
             this.repairs_radioButton.UseVisualStyleBackColor = true;
             // 
+            // manualDate_checkBox
+            // 
+            this.manualDate_checkBox.AutoSize = true;
+            this.manualDate_checkBox.Location = new System.Drawing.Point(7, 36);
+            this.manualDate_checkBox.Name = "manualDate_checkBox";
+            this.manualDate_checkBox.Size = new System.Drawing.Size(141, 17);
+            this.manualDate_checkBox.TabIndex = 7;
+            this.manualDate_checkBox.Text = "Указать дату вручную:";
+            this.manualDate_checkBox.UseVisualStyleBackColor = true;
+            this.manualDate_checkBox.CheckedChanged += new System.EventHandler(this.ManualDate_checkBox_CheckedChanged);
+            // 
+            // manualDate_dateTimePicker
+            // 
+            this.manualDate_dateTimePicker.Location = new System.Drawing.Point(148, 33);
+            this.manualDate_dateTimePicker.Name = "manualDate_dateTimePicker";
+            this.manualDate_dateTimePicker.Size = new System.Drawing.Size(271, 20);
+            this.manualDate_dateTimePicker.TabIndex = 8;
+            this.manualDate_dateTimePicker.Value = new System.DateTime(2019, 5, 31, 7, 49, 8, 0);
+            this.manualDate_dateTimePicker.ValueChanged += new System.EventHandler(this.ManualDate_dateTimePicker_ValueChanged);
+            // 
             // ReplaceDevice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 422);
+            this.ClientSize = new System.Drawing.Size(800, 443);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Replace_button);
@@ -322,5 +347,7 @@
         private System.Windows.Forms.RadioButton entranceControl_radioButton;
         private System.Windows.Forms.RadioButton test_radioButton;
         private System.Windows.Forms.RadioButton repairs_radioButton;
+        private System.Windows.Forms.CheckBox manualDate_checkBox;
+        private System.Windows.Forms.DateTimePicker manualDate_dateTimePicker;
     }
 }

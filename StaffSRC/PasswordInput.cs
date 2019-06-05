@@ -15,13 +15,14 @@ namespace StaffSRC
     {
         string password;
         bool admin;
+        Staff_MainForm staff_MainForm = new Staff_MainForm();
         public PasswordInput()
         {
             InitializeComponent();
 
             // Загрузили настройки
             password = Settings.Default["password"].ToString();
-            admin = Convert.ToBoolean(Settings.Default["admin"]);
+            admin = Convert.ToBoolean(Settings.Default["admin"]);   
         }
 
         // Обработка нажатия Enter
@@ -29,9 +30,6 @@ namespace StaffSRC
         {
             if (e.KeyCode == Keys.Enter)
             {
-                PasswordInput passwordForm = new PasswordInput();
-                Staff_MainForm mainForm = new Staff_MainForm();
-
                 if (password == password_TextBox.Text)
                 {
                     Staff_MainForm.administration = true;
@@ -47,6 +45,7 @@ namespace StaffSRC
 
         private void PasswordInput_Load(object sender, EventArgs e)
         {
+            CenterToScreen();
             password_TextBox.KeyDown += new KeyEventHandler(TextBox_KeyDown);
 
             if(admin)
@@ -72,6 +71,25 @@ namespace StaffSRC
 
                 Settings.Default["admin"] = admin;
                 Settings.Default.Save();
+            }
+        }
+
+        private void Cancel_Button_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Login_Button_Click(object sender, EventArgs e)
+        {
+            if (password == password_TextBox.Text)
+            {
+                Staff_MainForm.administration = true;
+                Close();
+            }
+            else
+            {
+                Staff_MainForm.administration = false;
+                MessageBox.Show("Неверный пароль");
             }
         }
     }

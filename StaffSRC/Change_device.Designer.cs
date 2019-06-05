@@ -33,8 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.factoryNumber_textBox = new System.Windows.Forms.TextBox();
             this.yearOfIssue_textBox = new System.Windows.Forms.TextBox();
-            this.sentDate_textBox = new System.Windows.Forms.TextBox();
-            this.verificationDate_textBox = new System.Windows.Forms.TextBox();
             this.deviceLocation_textBox = new System.Windows.Forms.TextBox();
             this.deviceType_comboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,6 +54,8 @@
             this.StateNormal_radioButton = new System.Windows.Forms.RadioButton();
             this.decommissioned_checkBox = new System.Windows.Forms.CheckBox();
             this.verifiedToYear_comboBox = new System.Windows.Forms.ComboBox();
+            this.sentDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.verificationDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // personnelNumber_textBox
@@ -97,20 +97,6 @@
             this.yearOfIssue_textBox.Size = new System.Drawing.Size(100, 20);
             this.yearOfIssue_textBox.TabIndex = 4;
             // 
-            // sentDate_textBox
-            // 
-            this.sentDate_textBox.Location = new System.Drawing.Point(457, 26);
-            this.sentDate_textBox.Name = "sentDate_textBox";
-            this.sentDate_textBox.Size = new System.Drawing.Size(100, 20);
-            this.sentDate_textBox.TabIndex = 5;
-            // 
-            // verificationDate_textBox
-            // 
-            this.verificationDate_textBox.Location = new System.Drawing.Point(563, 26);
-            this.verificationDate_textBox.Name = "verificationDate_textBox";
-            this.verificationDate_textBox.Size = new System.Drawing.Size(116, 20);
-            this.verificationDate_textBox.TabIndex = 6;
-            // 
             // deviceLocation_textBox
             // 
             this.deviceLocation_textBox.Location = new System.Drawing.Point(12, 75);
@@ -121,16 +107,18 @@
             // deviceType_comboBox
             // 
             this.deviceType_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
+            "альфа-радиометр",
             "БДАС-03П",
+            "БДГБ-02И",
             "БДГБ-02П",
             "БДГБ-02П1",
-            "БДГБ-02И",
-            "БДМГ41",
-            "БДМГ41-01",
-            "БДМГ41-03",
-            "БДМГ08Р-02",
-            "БДМГ08Р-04",
-            "БДМГ08Р-05",
+            "БДЗА2-02",
+            "БДМГ-08Р-02",
+            "БДМГ-08Р-04",
+            "БДМГ-08Р-05",
+            "БДМГ-41",
+            "БДМГ-41-01",
+            "БДМГ-41-03",
             "ДКГ-АТ2503",
             "ДКГ-АТ2503А",
             "ДКС-96",
@@ -139,12 +127,16 @@
             "ДРГ-05",
             "МКС-01Р",
             "МКС-АТ1117",
+            "ПСО2-2еМ",
+            "ПСО2-4",
             "УДАБ-03П",
             "УДАС-02П",
             "УДАС-03П",
+            "УДБН-02Р",
             "УИ-27",
             "УИМ2-2",
-            "УИМ2-2Д"});
+            "УИМ2-2Д",
+            "EPD-G"});
             this.deviceType_comboBox.FormattingEnabled = true;
             this.deviceType_comboBox.Items.AddRange(new object[] {
             "альфа-радиометр",
@@ -153,12 +145,12 @@
             "БДГБ-02П",
             "БДГБ-02П1",
             "БДЗА2-02",
-            "БДМГ08Р-02",
-            "БДМГ08Р-04",
-            "БДМГ08Р-05",
-            "БДМГ41",
-            "БДМГ41-01",
-            "БДМГ41-03",
+            "БДМГ-08Р-02",
+            "БДМГ-08Р-04",
+            "БДМГ-08Р-05",
+            "БДМГ-41",
+            "БДМГ-41-01",
+            "БДМГ-41-03",
             "ДКГ-АТ2503",
             "ДКГ-АТ2503А",
             "ДКС-96",
@@ -166,9 +158,10 @@
             "ДРГ-01Т",
             "ДРГ-05",
             "МКС-01Р",
-            "МКСАТ1117",
+            "МКС-АТ1117",
             "ПСО2-2еМ",
             "ПСО2-4",
+            "УДАБ-03П",
             "УДАС-02П",
             "УДАС-03П",
             "УДБН-02Р",
@@ -211,7 +204,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(561, 7);
+            this.label6.Location = new System.Drawing.Point(574, 7);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 13);
             this.label6.TabIndex = 12;
@@ -248,7 +241,7 @@
             // 
             this.solutionNunber_textBox.Location = new System.Drawing.Point(351, 75);
             this.solutionNunber_textBox.Name = "solutionNunber_textBox";
-            this.solutionNunber_textBox.Size = new System.Drawing.Size(206, 20);
+            this.solutionNunber_textBox.Size = new System.Drawing.Size(220, 20);
             this.solutionNunber_textBox.TabIndex = 15;
             // 
             // label8
@@ -271,7 +264,7 @@
             // 
             // cancel_button
             // 
-            this.cancel_button.Location = new System.Drawing.Point(465, 102);
+            this.cancel_button.Location = new System.Drawing.Point(479, 101);
             this.cancel_button.Name = "cancel_button";
             this.cancel_button.Size = new System.Drawing.Size(92, 23);
             this.cancel_button.TabIndex = 22;
@@ -281,9 +274,9 @@
             // 
             // save_button
             // 
-            this.save_button.Location = new System.Drawing.Point(564, 102);
+            this.save_button.Location = new System.Drawing.Point(577, 101);
             this.save_button.Name = "save_button";
-            this.save_button.Size = new System.Drawing.Size(116, 23);
+            this.save_button.Size = new System.Drawing.Size(114, 23);
             this.save_button.TabIndex = 23;
             this.save_button.Text = "Сохранить";
             this.save_button.UseVisualStyleBackColor = true;
@@ -303,7 +296,7 @@
             // 
             this.StateSend_radioButton.AutoSize = true;
             this.StateSend_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateSend_radioButton.Location = new System.Drawing.Point(564, 66);
+            this.StateSend_radioButton.Location = new System.Drawing.Point(577, 65);
             this.StateSend_radioButton.Name = "StateSend_radioButton";
             this.StateSend_radioButton.Size = new System.Drawing.Size(19, 30);
             this.StateSend_radioButton.TabIndex = 25;
@@ -315,7 +308,7 @@
             // 
             this.StateOverdue_radioButton.AutoSize = true;
             this.StateOverdue_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateOverdue_radioButton.Location = new System.Drawing.Point(589, 66);
+            this.StateOverdue_radioButton.Location = new System.Drawing.Point(602, 65);
             this.StateOverdue_radioButton.Name = "StateOverdue_radioButton";
             this.StateOverdue_radioButton.Size = new System.Drawing.Size(19, 30);
             this.StateOverdue_radioButton.TabIndex = 26;
@@ -327,7 +320,7 @@
             // 
             this.StateStorage_radioButton.AutoSize = true;
             this.StateStorage_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateStorage_radioButton.Location = new System.Drawing.Point(638, 66);
+            this.StateStorage_radioButton.Location = new System.Drawing.Point(651, 65);
             this.StateStorage_radioButton.Name = "StateStorage_radioButton";
             this.StateStorage_radioButton.Size = new System.Drawing.Size(18, 30);
             this.StateStorage_radioButton.TabIndex = 27;
@@ -340,7 +333,7 @@
             // 
             this.StateConservation_radioButton.AutoSize = true;
             this.StateConservation_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateConservation_radioButton.Location = new System.Drawing.Point(614, 66);
+            this.StateConservation_radioButton.Location = new System.Drawing.Point(627, 65);
             this.StateConservation_radioButton.Name = "StateConservation_radioButton";
             this.StateConservation_radioButton.Size = new System.Drawing.Size(18, 30);
             this.StateConservation_radioButton.TabIndex = 28;
@@ -352,7 +345,7 @@
             // 
             this.StateNormal_radioButton.AutoSize = true;
             this.StateNormal_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateNormal_radioButton.Location = new System.Drawing.Point(660, 66);
+            this.StateNormal_radioButton.Location = new System.Drawing.Point(675, 65);
             this.StateNormal_radioButton.Name = "StateNormal_radioButton";
             this.StateNormal_radioButton.Size = new System.Drawing.Size(19, 30);
             this.StateNormal_radioButton.TabIndex = 29;
@@ -410,11 +403,32 @@
             this.verifiedToYear_comboBox.Size = new System.Drawing.Size(59, 21);
             this.verifiedToYear_comboBox.TabIndex = 31;
             // 
+            // sentDate_dateTimePicker
+            // 
+            this.sentDate_dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.sentDate_dateTimePicker.Location = new System.Drawing.Point(457, 26);
+            this.sentDate_dateTimePicker.Name = "sentDate_dateTimePicker";
+            this.sentDate_dateTimePicker.ShowCheckBox = true;
+            this.sentDate_dateTimePicker.Size = new System.Drawing.Size(114, 20);
+            this.sentDate_dateTimePicker.TabIndex = 32;
+            this.sentDate_dateTimePicker.ValueChanged += new System.EventHandler(this.SentDate_dateTimePicker_ValueChanged);
+            // 
+            // verificationDate_dateTimePicker
+            // 
+            this.verificationDate_dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.verificationDate_dateTimePicker.Location = new System.Drawing.Point(577, 26);
+            this.verificationDate_dateTimePicker.Name = "verificationDate_dateTimePicker";
+            this.verificationDate_dateTimePicker.ShowCheckBox = true;
+            this.verificationDate_dateTimePicker.Size = new System.Drawing.Size(114, 20);
+            this.verificationDate_dateTimePicker.TabIndex = 33;
+            // 
             // Change_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(692, 130);
+            this.ClientSize = new System.Drawing.Size(701, 135);
+            this.Controls.Add(this.verificationDate_dateTimePicker);
+            this.Controls.Add(this.sentDate_dateTimePicker);
             this.Controls.Add(this.verifiedToYear_comboBox);
             this.Controls.Add(this.decommissioned_checkBox);
             this.Controls.Add(this.StateNormal_radioButton);
@@ -436,8 +450,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.deviceType_comboBox);
             this.Controls.Add(this.deviceLocation_textBox);
-            this.Controls.Add(this.verificationDate_textBox);
-            this.Controls.Add(this.sentDate_textBox);
             this.Controls.Add(this.yearOfIssue_textBox);
             this.Controls.Add(this.factoryNumber_textBox);
             this.Controls.Add(this.label2);
@@ -462,8 +474,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox factoryNumber_textBox;
         private System.Windows.Forms.TextBox yearOfIssue_textBox;
-        private System.Windows.Forms.TextBox sentDate_textBox;
-        private System.Windows.Forms.TextBox verificationDate_textBox;
         private System.Windows.Forms.TextBox deviceLocation_textBox;
         private System.Windows.Forms.ComboBox deviceType_comboBox;
         private System.Windows.Forms.Label label3;
@@ -485,5 +495,7 @@
         private System.Windows.Forms.RadioButton StateNormal_radioButton;
         private System.Windows.Forms.CheckBox decommissioned_checkBox;
         private System.Windows.Forms.ComboBox verifiedToYear_comboBox;
+        private System.Windows.Forms.DateTimePicker sentDate_dateTimePicker;
+        private System.Windows.Forms.DateTimePicker verificationDate_dateTimePicker;
     }
 }

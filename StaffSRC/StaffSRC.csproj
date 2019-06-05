@@ -88,7 +88,16 @@
     <Compile Include="Change_device.Designer.cs">
       <DependentUpon>Change_device.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListMarking.cs" />
+    <Compile Include="Classes\ListMarking.cs" />
+    <Compile Include="Classes\Search.cs" />
+    <Compile Include="Classes\TreeViewFilter.cs" />
+    <Compile Include="ConnectionToSQL.cs" />
+    <Compile Include="ExportListSI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportListSI.Designer.cs">
+      <DependentUpon>ExportListSI.cs</DependentUpon>
+    </Compile>
     <Compile Include="PasswordInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,11 +136,15 @@
     <Compile Include="Uim_info.Designer.cs">
       <DependentUpon>Uim_info.cs</DependentUpon>
     </Compile>
+    <Compile Include="VerificationList.cs" />
     <EmbeddedResource Include="Add_device.resx">
       <DependentUpon>Add_device.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Change_device.resx">
       <DependentUpon>Change_device.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportListSI.resx">
+      <DependentUpon>ExportListSI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
@@ -167,16 +180,44 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Source\PDF\1.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Source\PDF\2.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Source\Title\times.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Source\Title\timesbd.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Source\Title\timesbi.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Source\Title\timesi.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon_new.ico" />
+    <Content Include="Icon_new.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="settings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Source\Icon\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\Icon\Icon_new.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\UI\down.png" />
+    <Content Include="Source\UI\right.png" />
     <Content Include="version.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
