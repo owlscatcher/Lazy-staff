@@ -19,6 +19,7 @@ using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
 using System.Security.Principal;
 using StaffSRC.Properties;
+using StaffSRC.Classes;
 
 using Spire.Pdf;
 
@@ -35,8 +36,8 @@ namespace StaffSRC
         public bool gan_state;
         public static bool administration;
 
-        Classes.ListMarking listMarking = new Classes.ListMarking();
-        Classes.Search Search = new Classes.Search();
+        ListMarking listMarking = new ListMarking();
+        Search Search = new Search();
 
         //-----------------------------------
         // Кнопка экспорта из DGV в Excel
@@ -153,8 +154,8 @@ namespace StaffSRC
         //-----------------------------------
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            string selectedRowsCount = dataGridView1.SelectedRows.Count.ToString();
-            CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: " + selectedRowsCount;
+            int visibleRowCount = dataGridView1.SelectedRows.OfType<DataGridViewRow>().Where(row => row.Visible).Count();
+            CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: " + visibleRowCount.ToString();
         }
 
         //-----------------------------------
@@ -413,6 +414,11 @@ namespace StaffSRC
                 dataGridView1.Columns[10].HeaderText = "Состояние";
                 dataGridView1.Columns[10].MinimumWidth = 60;
                 dataGridView1.Columns[10].Visible = false;
+
+                dataGridView1.Columns[11].HeaderText = "Дата Тех. Осв.";
+                dataGridView1.Columns[11].MinimumWidth = 60;
+                dataGridView1.Columns[11].Visible = true;
+
             });
 
             listMarking.Start(this);
@@ -533,7 +539,7 @@ namespace StaffSRC
                     MessageBox.Show(ex.ToString());
                 }
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 MessageBox.Show("Файл уже используется");
             }
@@ -867,17 +873,19 @@ namespace StaffSRC
                 workSheet.Cells[1, 7] = dataGridView1.Columns[6].HeaderText;
                 workSheet.Cells[1, 8] = dataGridView1.Columns[7].HeaderText;
                 workSheet.Cells[1, 9] = dataGridView1.Columns[8].HeaderText;
+                workSheet.Cells[1, 10] = dataGridView1.Columns[11].HeaderText;
 
                 //---------------------------------------------
                 // Экспортируем из DataGridView в Excel
                 //---------------------------------------------
+                workSheet.Range["A1:B" + (dataGridView1.Rows.OfType<DataGridViewRow>().Where(row => row.Visible).Count() + 1)].NumberFormat = "@";    // форматируем столбцы, что бы не терять 0 у БДГБ
 
                 int rowExcel = 2;                                                                                   // начинаем со строки 2, т.к. в 1 заголовки (в excel счет с 1, а не с 0)
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     Invoke((MethodInvoker)delegate
                     {
-                        progressBar1.Increment(1);                                                                      // увеличиваем прогресс бар
+                        progressBar1.Increment(1);                                                                  // увеличиваем прогресс бар
                 });
                     if (dataGridView1.Rows[i].Visible)
                     {
@@ -890,6 +898,7 @@ namespace StaffSRC
                         workSheet.Cells[rowExcel, 7] = dataGridView1.Rows[i].Cells[6].Value;
                         workSheet.Cells[rowExcel, 8] = dataGridView1.Rows[i].Cells[7].Value;
                         workSheet.Cells[rowExcel, 9] = dataGridView1.Rows[i].Cells[8].Value;
+                        workSheet.Cells[rowExcel, 10] = dataGridView1.Rows[i].Cells[11].Value;
 
                         ++rowExcel;
                     }
@@ -902,17 +911,18 @@ namespace StaffSRC
 
                 workSheet.Cells.Font.Name = "Time New Roman";                                                       // используем нужный шрифт
                 workSheet.Cells.Font.Size = 10;                                                                     // используемый нужный размер текста
-                for (int i = 1; i < 10; i++)                                                                        // делаем заголовок жирным
+
+                for (int i = 1; i < 11; i++)                                                                        // делаем заголовок жирным
                     (workSheet.Cells[1, i] as ExcelDLL.Range).Font.Bold = true;
 
                 (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
                 (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
 
-                for (int i = 1; i < 10; i++)                                                                          // устанавливаем ширину колонки по содержимому
+                for (int i = 1; i < 11; i++)                                                                          // устанавливаем ширину колонки по содержимому
                     workSheet.Columns[i].AutoFit();
 
                 // Сохраняем файл
-                string username = Environment.UserName;                                                            // узнаем имя пользователя
+                string username = Environment.UserName;                                                             // узнаем имя пользователя
                 string pathToXmlFile = @"C:\Documents and Settings\" + username + @"\Desktop\Export";               // указываем путь до рабочего стола
                 workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
 
