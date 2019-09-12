@@ -918,12 +918,21 @@ namespace StaffSRC
                 (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
                 (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
 
+                var rng = workSheet.Range["A1:J" + 
+                    (dataGridView1.Rows.OfType<DataGridViewRow>().Where(row => row.Visible).Count() + 1)];          // Указание области границ таблицы
+                rng.Borders.LineStyle = 1;                                                                          // Стиль границ
+                rng.Borders.ColorIndex = 0;                                                                         // Цвет
+                rng.Borders.TintAndShade = 0;
+                rng.Borders.Weight = 2;                                                                             // Толщина линии
+
                 for (int i = 1; i < 11; i++)                                                                          // устанавливаем ширину колонки по содержимому
                     workSheet.Columns[i].AutoFit();
 
                 // Сохраняем файл
                 string username = Environment.UserName;                                                             // узнаем имя пользователя
-                string pathToXmlFile = @"C:\Documents and Settings\" + username + @"\Desktop\Export";               // указываем путь до рабочего стола
+                DateTime dateTime = DateTime.Now;
+                string pathToXmlFile = (@"C:\Documents and Settings\" + username + @"\Desktop\Export " + 
+                    dateTime.ToString("dd-MM-yyyy") + "");                                                          // указываем путь до рабочего стола и именуем файл
                 workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
 
                 excelApp.Quit();
@@ -931,7 +940,7 @@ namespace StaffSRC
                 {
                     progressBar1.Visible = false;
                 });
-                MessageBox.Show("Экспорт завершен, файл с именем Export.xml расположен на рабочем столе");
+                MessageBox.Show("Экспорт завершен, файл с именем Export " + dateTime.ToString("dd-MM-yyyy") + ".xmlx расположен на рабочем столе");
             }
             catch (System.Runtime.InteropServices.COMException)
             {
