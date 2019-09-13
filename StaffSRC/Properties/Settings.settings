@@ -8,12 +8,6 @@
     <Setting Name="tableName" Type="System.String" Scope="User">
       <Value Profile="(Default)">[106_staff].[dbo].[staff]</Value>
     </Setting>
-    <Setting Name="tableNameUIM" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[106_staff].[dbo].[uim_info]</Value>
-    </Setting>
-    <Setting Name="tableNameRoom" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[106_staff].[dbo].[room_info]</Value>
-    </Setting>
     <Setting Name="password" Type="System.String" Scope="User">
       <Value Profile="(Default)">shieldadm</Value>
     </Setting>

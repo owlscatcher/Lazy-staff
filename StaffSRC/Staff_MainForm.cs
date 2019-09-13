@@ -52,15 +52,6 @@ namespace StaffSRC
         }
 
         //-----------------------------------
-        // Кнопка вызова справки по УИМ2-2
-        //-----------------------------------
-        private void uimInfo_button_Click(object sender, EventArgs e)
-        {
-            Uim_info uimInfo = new Uim_info();
-            uimInfo.Show();
-        }
-
-        //-----------------------------------
         // кнопка ПЕЧАТЬ
         //-----------------------------------
         private void PrintPdf_button_Click(object sender, EventArgs e)
@@ -99,19 +90,19 @@ namespace StaffSRC
                 if (administration==true)
                 {
                     groupBox2.Enabled = true;
-                    groupBox3.Enabled = true;
+                    Setting_button.Enabled = true;
                 }
                 else
                 {
                     groupBox2.Enabled = false;
-                    groupBox3.Enabled = false;
+                    Setting_button.Enabled = false;
                     administration = false;
                 }
             }
             else
             {
                 groupBox2.Enabled = false;
-                groupBox3.Enabled = false;
+                Setting_button.Enabled = false;
                 administration = false;
             }
         }
@@ -143,8 +134,7 @@ namespace StaffSRC
             administration = false;
 
             groupBox2.Enabled = false;
-            groupBox3.Enabled = false;
-
+            Setting_button.Enabled = false;
             printDateTimePicker.Checked = false;
 
         }
@@ -260,15 +250,6 @@ namespace StaffSRC
             else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
             return;
-        }
-
-        //----------------------------------
-        // Экспорт списков продления
-        //----------------------------------
-        private void ExportListSI_button_Click(object sender, EventArgs e)
-        {
-            ExportListSI exportListSI = new ExportListSI();
-            exportListSI.Show();
         }
 
         //------------------------------------

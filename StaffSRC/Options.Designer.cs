@@ -33,10 +33,6 @@
             this.ConnectionStr_Label = new System.Windows.Forms.Label();
             this.TableName_Label = new System.Windows.Forms.Label();
             this.TableName_TextBox = new System.Windows.Forms.TextBox();
-            this.TableNameUIM_TextBox = new System.Windows.Forms.TextBox();
-            this.TableNameRoom_TextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.Connection_groupBox = new System.Windows.Forms.GroupBox();
             this.Administration_groupBox = new System.Windows.Forms.GroupBox();
             this.NewAdminPass_label = new System.Windows.Forms.Label();
@@ -57,7 +53,7 @@
             // 
             // Save_button
             // 
-            this.Save_button.Location = new System.Drawing.Point(414, 227);
+            this.Save_button.Location = new System.Drawing.Point(414, 198);
             this.Save_button.Name = "Save_button";
             this.Save_button.Size = new System.Drawing.Size(147, 23);
             this.Save_button.TabIndex = 1;
@@ -87,54 +83,18 @@
             // 
             this.TableName_TextBox.Location = new System.Drawing.Point(131, 96);
             this.TableName_TextBox.Name = "TableName_TextBox";
-            this.TableName_TextBox.Size = new System.Drawing.Size(147, 20);
+            this.TableName_TextBox.Size = new System.Drawing.Size(418, 20);
             this.TableName_TextBox.TabIndex = 4;
-            // 
-            // TableNameUIM_TextBox
-            // 
-            this.TableNameUIM_TextBox.Location = new System.Drawing.Point(402, 99);
-            this.TableNameUIM_TextBox.Name = "TableNameUIM_TextBox";
-            this.TableNameUIM_TextBox.Size = new System.Drawing.Size(147, 20);
-            this.TableNameUIM_TextBox.TabIndex = 5;
-            // 
-            // TableNameRoom_TextBox
-            // 
-            this.TableNameRoom_TextBox.Location = new System.Drawing.Point(131, 122);
-            this.TableNameRoom_TextBox.Name = "TableNameRoom_TextBox";
-            this.TableNameRoom_TextBox.Size = new System.Drawing.Size(147, 20);
-            this.TableNameRoom_TextBox.TabIndex = 6;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(286, 102);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Имя таблицы с UIM:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 125);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(119, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Имя таблицы помещ.:";
             // 
             // Connection_groupBox
             // 
             this.Connection_groupBox.Controls.Add(this.ConnectionStr_Label);
-            this.Connection_groupBox.Controls.Add(this.label2);
             this.Connection_groupBox.Controls.Add(this.ConnectionStr_TextBox);
-            this.Connection_groupBox.Controls.Add(this.label1);
-            this.Connection_groupBox.Controls.Add(this.TableNameRoom_TextBox);
             this.Connection_groupBox.Controls.Add(this.TableName_Label);
-            this.Connection_groupBox.Controls.Add(this.TableNameUIM_TextBox);
             this.Connection_groupBox.Controls.Add(this.TableName_TextBox);
             this.Connection_groupBox.Location = new System.Drawing.Point(12, 12);
             this.Connection_groupBox.Name = "Connection_groupBox";
-            this.Connection_groupBox.Size = new System.Drawing.Size(561, 153);
+            this.Connection_groupBox.Size = new System.Drawing.Size(561, 124);
             this.Connection_groupBox.TabIndex = 9;
             this.Connection_groupBox.TabStop = false;
             this.Connection_groupBox.Text = "Параметры соединения:";
@@ -145,7 +105,7 @@
             this.Administration_groupBox.Controls.Add(this.NewAdminPass_TextBox);
             this.Administration_groupBox.Controls.Add(this.OldAdminPass_TextBox);
             this.Administration_groupBox.Controls.Add(this.OldAdminPass_label);
-            this.Administration_groupBox.Location = new System.Drawing.Point(12, 171);
+            this.Administration_groupBox.Location = new System.Drawing.Point(12, 142);
             this.Administration_groupBox.Name = "Administration_groupBox";
             this.Administration_groupBox.Size = new System.Drawing.Size(561, 50);
             this.Administration_groupBox.TabIndex = 10;
@@ -190,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 258);
+            this.ClientSize = new System.Drawing.Size(582, 226);
             this.Controls.Add(this.Administration_groupBox);
             this.Controls.Add(this.Connection_groupBox);
             this.Controls.Add(this.Save_button);
@@ -216,10 +176,6 @@
         private System.Windows.Forms.Label ConnectionStr_Label;
         private System.Windows.Forms.Label TableName_Label;
         private System.Windows.Forms.TextBox TableName_TextBox;
-        private System.Windows.Forms.TextBox TableNameUIM_TextBox;
-        private System.Windows.Forms.TextBox TableNameRoom_TextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox Connection_groupBox;
         private System.Windows.Forms.GroupBox Administration_groupBox;
         private System.Windows.Forms.TextBox NewAdminPass_TextBox;

@@ -97,12 +97,6 @@
     <Compile Include="Classes\Search.cs" />
     <Compile Include="Classes\TreeViewFilter.cs" />
     <Compile Include="ConnectionToSQL.cs" />
-    <Compile Include="ExportListSI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportListSI.Designer.cs">
-      <DependentUpon>ExportListSI.cs</DependentUpon>
-    </Compile>
     <Compile Include="PasswordInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,21 +129,11 @@
     <Compile Include="Toggle.xaml.cs">
       <DependentUpon>Toggle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Uim_info.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Uim_info.Designer.cs">
-      <DependentUpon>Uim_info.cs</DependentUpon>
-    </Compile>
-    <Compile Include="VerificationList.cs" />
     <EmbeddedResource Include="Add_device.resx">
       <DependentUpon>Add_device.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Change_device.resx">
       <DependentUpon>Change_device.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExportListSI.resx">
-      <DependentUpon>ExportListSI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
@@ -172,9 +156,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Uim_info.resx">
-      <DependentUpon>Uim_info.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
