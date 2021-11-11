@@ -44,6 +44,8 @@ namespace StaffSRC
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
+            manualDate_dateTimePicker.Value = DateTime.Now;
+
             dataGridView1.Rows.Add();
 
             dataGridView1.CurrentRow.Cells[0].Value = main.personnelNumber;

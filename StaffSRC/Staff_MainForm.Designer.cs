@@ -31,6 +31,7 @@ namespace StaffSRC
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("УИМ");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("БДАС");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("БДГБ");
@@ -58,13 +59,12 @@ namespace StaffSRC
             treeNode14,
             treeNode15,
             treeNode16});
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ExportListSI_button = new System.Windows.Forms.Button();
-            this.Admin_Label = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.Setting_button = new System.Windows.Forms.Button();
-            this.uimInfo_button = new System.Windows.Forms.Button();
+            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
+            this.ToggleSwitch = new StaffSRC.Toggle();
+            this.Admin_Label = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.ExportToXml_button = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -98,13 +98,14 @@ namespace StaffSRC
             this.separateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new StaffSRC.Toggle();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.StatusPanel.SuspendLayout();
@@ -120,10 +121,8 @@ namespace StaffSRC
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.ExportListSI_button);
-            this.splitContainer1.Panel1.Controls.Add(this.ToggleHost);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel1.Controls.Add(this.Admin_Label);
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
             this.splitContainer1.Panel1.Controls.Add(this.progressBar1);
             this.splitContainer1.Panel1.Controls.Add(this.ExportToXml_button);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
@@ -140,70 +139,65 @@ namespace StaffSRC
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
             // 
-            // ExportListSI_button
+            // splitContainer2
             // 
-            this.ExportListSI_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.Location = new System.Drawing.Point(96, 718);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.Setting_button);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.ToggleHost);
+            this.splitContainer2.Size = new System.Drawing.Size(71, 28);
+            this.splitContainer2.SplitterDistance = 26;
+            this.splitContainer2.TabIndex = 16;
+            // 
+            // Setting_button
+            // 
+            this.Setting_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportListSI_button.Location = new System.Drawing.Point(5, 484);
-            this.ExportListSI_button.Name = "ExportListSI_button";
-            this.ExportListSI_button.Size = new System.Drawing.Size(157, 23);
-            this.ExportListSI_button.TabIndex = 16;
-            this.ExportListSI_button.Text = "Списки продления СИ";
-            this.ExportListSI_button.UseVisualStyleBackColor = true;
-            this.ExportListSI_button.Click += new System.EventHandler(this.ExportListSI_button_Click);
+            this.Setting_button.BackColor = System.Drawing.Color.Transparent;
+            this.Setting_button.FlatAppearance.BorderSize = 0;
+            this.Setting_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Setting_button.Image = ((System.Drawing.Image)(resources.GetObject("Setting_button.Image")));
+            this.Setting_button.Location = new System.Drawing.Point(2, 3);
+            this.Setting_button.MaximumSize = new System.Drawing.Size(22, 22);
+            this.Setting_button.MinimumSize = new System.Drawing.Size(22, 22);
+            this.Setting_button.Name = "Setting_button";
+            this.Setting_button.Size = new System.Drawing.Size(22, 22);
+            this.Setting_button.TabIndex = 11;
+            this.Setting_button.UseVisualStyleBackColor = false;
+            this.Setting_button.Click += new System.EventHandler(this.Setting_button_Click);
+            // 
+            // ToggleHost
+            // 
+            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ToggleHost.Location = new System.Drawing.Point(3, 3);
+            this.ToggleHost.Name = "ToggleHost";
+            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
+            this.ToggleHost.TabIndex = 15;
+            this.ToggleHost.Text = "elementHost1";
+            this.ToggleHost.Child = this.ToggleSwitch;
             // 
             // Admin_Label
             // 
             this.Admin_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Admin_Label.AutoSize = true;
-            this.Admin_Label.Location = new System.Drawing.Point(9, 727);
+            this.Admin_Label.Location = new System.Drawing.Point(9, 724);
             this.Admin_Label.Name = "Admin_Label";
             this.Admin_Label.Size = new System.Drawing.Size(86, 13);
             this.Admin_Label.TabIndex = 14;
             this.Admin_Label.Text = "Администратор";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.Setting_button);
-            this.groupBox3.Controls.Add(this.uimInfo_button);
-            this.groupBox3.Location = new System.Drawing.Point(3, 356);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 75);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Опции";
-            // 
-            // Setting_button
-            // 
-            this.Setting_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Setting_button.Location = new System.Drawing.Point(2, 19);
-            this.Setting_button.Name = "Setting_button";
-            this.Setting_button.Size = new System.Drawing.Size(157, 23);
-            this.Setting_button.TabIndex = 11;
-            this.Setting_button.Text = "Настройки";
-            this.Setting_button.UseVisualStyleBackColor = true;
-            this.Setting_button.Click += new System.EventHandler(this.Setting_button_Click);
-            // 
-            // uimInfo_button
-            // 
-            this.uimInfo_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uimInfo_button.Location = new System.Drawing.Point(2, 48);
-            this.uimInfo_button.Name = "uimInfo_button";
-            this.uimInfo_button.Size = new System.Drawing.Size(157, 23);
-            this.uimInfo_button.TabIndex = 9;
-            this.uimInfo_button.Text = "Справка по УИМ2-2";
-            this.uimInfo_button.UseVisualStyleBackColor = true;
-            this.uimInfo_button.Click += new System.EventHandler(this.uimInfo_button_Click);
-            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(5, 513);
+            this.progressBar1.Location = new System.Drawing.Point(5, 503);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(157, 10);
             this.progressBar1.TabIndex = 8;
@@ -212,7 +206,7 @@ namespace StaffSRC
             // 
             this.ExportToXml_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportToXml_button.Location = new System.Drawing.Point(5, 529);
+            this.ExportToXml_button.Location = new System.Drawing.Point(5, 519);
             this.ExportToXml_button.Name = "ExportToXml_button";
             this.ExportToXml_button.Size = new System.Drawing.Size(157, 23);
             this.ExportToXml_button.TabIndex = 7;
@@ -306,7 +300,7 @@ namespace StaffSRC
             this.groupBox1.Controls.Add(this.overdue_label);
             this.groupBox1.Controls.Add(this.sent_label);
             this.groupBox1.Controls.Add(this.conservation_label);
-            this.groupBox1.Location = new System.Drawing.Point(5, 558);
+            this.groupBox1.Location = new System.Drawing.Point(5, 548);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(163, 166);
             this.groupBox1.TabIndex = 5;
@@ -581,16 +575,6 @@ namespace StaffSRC
             this.deleteToolStripMenuItem.Text = "Удалить";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // ToggleHost
-            // 
-            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToggleHost.Location = new System.Drawing.Point(129, 723);
-            this.ToggleHost.Name = "ToggleHost";
-            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
-            this.ToggleHost.TabIndex = 15;
-            this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
-            // 
             // Staff_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -600,7 +584,7 @@ namespace StaffSRC
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Radioactive Raccoon (v1.5.0b от 04/06/2019)";
+            this.Text = "Radioactive Raccoon (v1.5.2 от 13/09/2019)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -609,7 +593,10 @@ namespace StaffSRC
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -641,9 +628,7 @@ namespace StaffSRC
         private System.Windows.Forms.Label seporatingLine_label;
         private System.Windows.Forms.Button ExportToXml_button;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Button uimInfo_button;
         private System.Windows.Forms.Label allDevides_label;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button Setting_button;
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
@@ -661,10 +646,10 @@ namespace StaffSRC
         private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.Button ExportListSI_button;
         private ToolStripMenuItem separateToolStripMenuItem;
         private ToolStripMenuItem addToolStripMenuItem;
         private DateTimePicker printDateTimePicker;
+        private SplitContainer splitContainer2;
 
         public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
         public Label Conservation_label { get => conservation_label; set => conservation_label = value; }
