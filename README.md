@@ -1,6 +1,7 @@
 # Lazy staff v0.0.1
 ## This is a very early project where I studied the API .Net Framework.
 ### I apologize in advance for the pain caused to you (someday I will refactor it).
+![Снимок1](https://user-images.githubusercontent.com/46975515/141265618-44084263-a260-437f-af53-e926a18ab659.PNG)
 
 ## For what?..
 We very often had to fill out forms, double-check the dates of the dosimetric equipment, it was very difficult to look for some device and remember where we installed it
