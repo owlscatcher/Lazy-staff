@@ -12,7 +12,7 @@ namespace StaffSRC.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -44,30 +44,6 @@ namespace StaffSRC.Properties {
             }
             set {
                 this["tableName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[106_staff].[dbo].[uim_info]")]
-        public string tableNameUIM {
-            get {
-                return ((string)(this["tableNameUIM"]));
-            }
-            set {
-                this["tableNameUIM"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[106_staff].[dbo].[room_info]")]
-        public string tableNameRoom {
-            get {
-                return ((string)(this["tableNameRoom"]));
-            }
-            set {
-                this["tableNameRoom"] = value;
             }
         }
         

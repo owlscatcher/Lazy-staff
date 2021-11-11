@@ -45,7 +45,12 @@
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Utilities.Core, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Framework.14.3.0\lib\net45\Microsoft.Build.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities.Core, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Utilities.Core.14.3.0\lib\net45\Microsoft.Build.Utilities.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
@@ -92,12 +97,6 @@
     <Compile Include="Classes\Search.cs" />
     <Compile Include="Classes\TreeViewFilter.cs" />
     <Compile Include="ConnectionToSQL.cs" />
-    <Compile Include="ExportListSI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportListSI.Designer.cs">
-      <DependentUpon>ExportListSI.cs</DependentUpon>
-    </Compile>
     <Compile Include="PasswordInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,21 +129,11 @@
     <Compile Include="Toggle.xaml.cs">
       <DependentUpon>Toggle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Uim_info.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Uim_info.Designer.cs">
-      <DependentUpon>Uim_info.cs</DependentUpon>
-    </Compile>
-    <Compile Include="VerificationList.cs" />
     <EmbeddedResource Include="Add_device.resx">
       <DependentUpon>Add_device.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Change_device.resx">
       <DependentUpon>Change_device.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExportListSI.resx">
-      <DependentUpon>ExportListSI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
@@ -167,9 +156,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Uim_info.resx">
-      <DependentUpon>Uim_info.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
