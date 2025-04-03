@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -66,7 +67,7 @@ namespace LazyStaff
                 return;
             }
 
-            SqlConnection connection = new SqlConnection(main.connectionString);
+            var connection = new NpgsqlConnection(main.connectionString);
 
             string querry = "";
 
@@ -80,7 +81,7 @@ namespace LazyStaff
             else if (sentDate_dateTimePicker.Checked && verificationDate_dateTimePicker.Checked)        // если дата есть в дрвух полях
                 querry = ("INSERT INTO " + main.tableName + " (personnelNumber, factoryNumber, deviceType, yearOfIssue, sentDate, verificationDate, deviceLocation, verifiedTo, solutionNunber, gan, state) VALUES (" + personnelNumber_textBox.Text + ", '" + factoryNumber_textBox.Text + "', '" + deviceType_comboBox.Text + "', " + yearOfIssue_textBox.Text + ", '" + sentDate_dateTimePicker.Value.ToString("dd.MM.yyyy") + "', '" + verificationDate_dateTimePicker.Value.ToString("dd.MM.yyyy") + "', '" + deviceLocation_textBox.Text + "', '" + verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text + "', '" + solutionNunber_textBox.Text + "', '" + gan_state + "', " + state + ")");
 
-            SqlCommand command = new SqlCommand(querry, connection);
+            var command = new NpgsqlCommand(querry, connection);
 
             try
             {

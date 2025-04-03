@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -146,7 +147,7 @@ namespace LazyStaff
             {
                 Staff_MainForm main = this.Owner as Staff_MainForm;
 
-                SqlConnection connection = new SqlConnection(main.connectionString);
+                var connection = new NpgsqlConnection(main.connectionString);
 
                 // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервации, 5 - готовится к отправке
                 //                 6 - просрочен и на складе, 7 - готовится к отправке и на складе, 8 - списан
@@ -162,10 +163,10 @@ namespace LazyStaff
                     dataGridView1.CurrentRow.Cells[4].Value = date;
                     dataGridView1.CurrentRow.Cells[6].Value = "----";
                     dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-                    SqlCommand command = new SqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+                    var command = new NpgsqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
 
                     dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                    SqlCommand command2 = new SqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
+                    var command2 = new NpgsqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -188,10 +189,10 @@ namespace LazyStaff
                         dataGridView1.CurrentRow.Cells[4].Value = date;
                         dataGridView1.CurrentRow.Cells[6].Value = "----";
                         dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-                        SqlCommand command = new SqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+                        var command = new NpgsqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
 
                         dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                        SqlCommand command2 = new SqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
+                        var command2 = new NpgsqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
 
                         connection.Open();
                         command.ExecuteNonQuery();

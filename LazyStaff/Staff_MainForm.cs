@@ -1,27 +1,17 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.IO;
-using System.Reflection;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
-using System.Security.Principal;
 using LazyStaff.Properties;
 using LazyStaff.Classes;
-
-using Spire.Pdf;
+using Npgsql;
 
 namespace LazyStaff
 {
@@ -44,9 +34,6 @@ namespace LazyStaff
         //-----------------------------------
         private void ExportToXml_button_Click(object sender, EventArgs e)
         {
-
-            SqlConnection sqlConnection = new SqlConnection();
-
             Thread exportToExcel = new Thread(ExportToExcel);
             exportToExcel.Start();
         }
@@ -282,8 +269,8 @@ namespace LazyStaff
                 {
                     querry = "DELETE FROM " + tableName + " WHERE personnelNumber=" + id;
 
-                    SqlConnection connection = new SqlConnection(connectionString);
-                    SqlCommand command = new SqlCommand(querry, connection);
+                    var connection = new NpgsqlConnection(connectionString);
+                    var command = new NpgsqlCommand(querry, connection);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -320,9 +307,9 @@ namespace LazyStaff
         {
             dataSet.Clear();                                                                                    // Очистили DataSet
 
-            SqlConnection connection = new SqlConnection(connectionString);
+            var connection = new NpgsqlConnection(connectionString);
             string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(querry, connection);                                // создаем экземпляр dataAdapter для получения строк из sql db
+            var dataAdapter = new NpgsqlDataAdapter(querry, connection);                          // создаем экземпляр dataAdapter для получения строк из sql db
 
             try
             {
@@ -505,8 +492,8 @@ namespace LazyStaff
                 dataGridView1.CurrentRow.Cells[4].Value = date;
                 dataGridView1.CurrentRow.Cells[6].Value = "----";
                 dataGridView1.CurrentRow.Cells[10].Value = 2;
-                SqlConnection connection = new SqlConnection(connectionString);
-                SqlCommand command = new SqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+                var connection = new NpgsqlConnection(connectionString);
+                var command = new NpgsqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
 
                 try
                 {

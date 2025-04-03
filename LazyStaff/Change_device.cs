@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Npgsql;
+using System;
 using System.Windows.Forms;
 
 namespace LazyStaff
@@ -160,7 +153,7 @@ namespace LazyStaff
 
             verefiedToSumm = "" + verifiedToQuarter_comboBox.Text + "" + verifiedToYear_comboBox.Text + "";
 
-            SqlConnection connection = new SqlConnection(main.connectionString);
+            var connection = new NpgsqlConnection(main.connectionString);
             
             string querry = "";
             // разрешение конфликта пустых строк DateTime и ms sql 
@@ -173,7 +166,7 @@ namespace LazyStaff
             else if (sentDate_dateTimePicker.Checked && verificationDate_dateTimePicker.Checked)     // если дата есть в дрвух полях
                 querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= '" + sentDate_dateTimePicker.Value.ToString("dd.MM.yyyy") + "', verificationDate= '" + verificationDate_dateTimePicker.Value.ToString("dd.MM.yyyy") + "', deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
 
-            SqlCommand command = new SqlCommand(querry, connection);
+            var command = new NpgsqlCommand(querry, connection);
             connection.Open();
             command.ExecuteNonQuery();
 
