@@ -2,15 +2,8 @@
 using iTextSharp.text.pdf;
 using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LazyStaff
@@ -163,10 +156,16 @@ namespace LazyStaff
                     dataGridView1.CurrentRow.Cells[4].Value = date;
                     dataGridView1.CurrentRow.Cells[6].Value = "----";
                     dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-                    var command = new NpgsqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+
+                    var q1 = "UPDATE " + main.tableName + " SET sentDate=@sentDate, deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value;
+                    var command = new NpgsqlCommand(q1, connection);
+                    command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
+                    command.Parameters[0].Value = date;
 
                     dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                    var command2 = new NpgsqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
+                    var q2 = "UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value;
+                    var command2 = new NpgsqlCommand(q2, connection);
+
 
                     connection.Open();
                     command.ExecuteNonQuery();

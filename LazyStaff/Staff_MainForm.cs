@@ -12,6 +12,7 @@ using ExcelDLL = Microsoft.Office.Interop.Excel;
 using LazyStaff.Properties;
 using LazyStaff.Classes;
 using Npgsql;
+using System.ComponentModel;
 
 namespace LazyStaff
 {
@@ -308,7 +309,7 @@ namespace LazyStaff
             dataSet.Clear();                                                                                    // Очистили DataSet
 
             var connection = new NpgsqlConnection(connectionString);
-            string querry = ("SELECT * FROM " + tableName + "");                                                // запрос к sql db на получение строк
+            string querry = ($"SELECT * FROM {tableName} ORDER BY personnelnumber");                                                // запрос к sql db на получение строк
             var dataAdapter = new NpgsqlDataAdapter(querry, connection);                          // создаем экземпляр dataAdapter для получения строк из sql db
 
             try
@@ -341,7 +342,7 @@ namespace LazyStaff
             }
 
             dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor
-            dataTable = dataSet.Tables["Monitor"].Copy();                                                       
+            dataTable = dataSet.Tables["Monitor"].Copy();    
             connection.Close();                                                                                 // закрываем соединение
 
             Invoke((MethodInvoker)delegate

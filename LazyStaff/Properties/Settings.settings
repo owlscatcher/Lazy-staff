@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="connectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server=localhost\SPORTAPP;Database=106_staff;User Id=root;Password=1234</Value>
+      <Value Profile="(Default)">Host=192.168.88.100;Username=arms;Password=U?QWrb.KMP7v$xdh;Database=arms_devices;</Value>
     </Setting>
     <Setting Name="tableName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[106_staff].[dbo].[staff]</Value>
+      <Value Profile="(Default)">devices</Value>
     </Setting>
     <Setting Name="password" Type="System.String" Scope="User">
       <Value Profile="(Default)">shieldadm</Value>
