@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using Npgsql;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -160,7 +161,7 @@ namespace LazyStaff
                     var q1 = "UPDATE " + main.tableName + " SET sentDate=@sentDate, deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value;
                     var command = new NpgsqlCommand(q1, connection);
                     command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
-                    command.Parameters[0].Value = date;
+                    command.Parameters[0].Value = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
                     dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
                     var q2 = "UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value;
