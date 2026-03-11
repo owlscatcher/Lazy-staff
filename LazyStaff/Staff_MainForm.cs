@@ -14,6 +14,8 @@ using LazyStaff.Classes;
 using Npgsql;
 using System.ComponentModel;
 using System.Collections.Generic;
+using LazyStaff.Helpers;
+using System.Globalization;
 
 namespace LazyStaff
 {
@@ -27,16 +29,8 @@ namespace LazyStaff
         public int index, state;
         public bool gan_state;
         public static bool administration = true;
-
-        public enum MetrologicalControlType
-        {
-            Verification = 0,
-            Calibration = 1,
-            AsReference = 2,
-            InputControl = 3,
-            OutOfTown = 4,
-            Repair = 5
-        };
+        public string rbMetrologicalControlTypeName = string.Empty;
+        public string rbRepairTypeName = string.Empty;
 
         ListMarking listMarking = new ListMarking();
         Search Search = new Search();
@@ -102,9 +96,25 @@ namespace LazyStaff
                 {"Иногородняя организация", MetrologicalControlType.OutOfTown}
             };
 
-            metrologicalControlType_ComboBox.DataSource = metrologicalControlSet.ToList();
-            metrologicalControlType_ComboBox.DisplayMember = "Key";
-            metrologicalControlType_ComboBox.ValueMember = "Value";
+            cbMetrologicalControlType.DataSource = metrologicalControlSet.ToList();
+            cbMetrologicalControlType.DisplayMember = "Key";
+            cbMetrologicalControlType.ValueMember = "Value";
+
+            Dictionary<string, RepairType> repairTypeSet = new Dictionary<string, RepairType>
+            {
+                {"Текущий", RepairType.Current},
+                {"Средний", RepairType.Medium},
+                {"Капитальный", RepairType.Major},
+                {"На месте эксплуатации", RepairType.OnSite},
+                {"Иногородняя организация", RepairType.OutOfTown}
+            };
+
+            cbRepairType.DataSource = repairTypeSet.ToList();
+            cbRepairType.DisplayMember = "Key";
+            cbRepairType.ValueMember = "Value";
+
+            rbMetrologicalControlTypeName = rbMetrologicalControlType.Name;
+            rbRepairTypeName = rbRepairType.Name;
         }
 
         //-----------------------------------
@@ -380,106 +390,44 @@ namespace LazyStaff
         //--------------------------------------------------------------
         private void PDF()
         {
-            string oldFile = Application.StartupPath + @"\\Source\\PDF\\1_new.pdf";                                 // путь к исходному шаблону .pdf
-            string newFile = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                 // путь экспорта заполненного .pdf
-
-            PdfReader reader = new PdfReader(oldFile);                                                          // создаем ридер для iTextSharp
-            iTextSharp.text.Rectangle size = reader.GetPageSizeWithRotation(1);
-            string checkedChar = "+";
-
             try
             {
-                using (FileStream fileStream = new FileStream(newFile, FileMode.Create, FileAccess.Write))             // создаем экспортируемый файл
+                var date = printDateTimePicker.Checked ? printDateTimePicker.Value.ToString("dd.MM.yyyy") : DateTime.Now.ToString("dd.MM.yyyy");
+                PrintDevice device = new PrintDevice
                 {
-                    using (PdfStamper stamper = new PdfStamper(reader, fileStream))
-                    {
-                        PdfContentByte contentByte = stamper.GetOverContent(1);
-                        BaseFont bf = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);      // настройка шрифтов
-                        //BaseFont charFont = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\ariblk.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                        contentByte.SetColorFill(BaseColor.BLUE);
-                        contentByte.SetFontAndSize(bf, 12);
+                    TabelNumber = Convert.ToString(dataGridView1.Rows[index].Cells[0].Value),
+                    SerialNumber = Convert.ToString(dataGridView1.Rows[index].Cells[1].Value),
+                    Type = Convert.ToString(dataGridView1.Rows[index].Cells[2].Value),
+                    YearOfRelease = Convert.ToString(dataGridView1.Rows[index].Cells[3].Value),
+                    DateToPrint = date,
+                    IsMetrologicalControlType = rbMetrologicalControlType.Checked,
+                    IsRepairType = rbRepairType.Checked,
+                    McSelected = (MetrologicalControlType)cbMetrologicalControlType.SelectedValue,
+                    RepairSelected = (RepairType)cbRepairType.SelectedValue
+                };
 
-                        contentByte.BeginText();                                                                        // пишем текст в новый .pdf
+                PrintDeviceHelper.FillPdf(device);
 
-                        string text = String.Empty;
+                // меняем статус устройства на "Отправлен" и изменяем дату отправки
+                dataGridView1.CurrentRow.Cells[4].Value = date;
+                dataGridView1.CurrentRow.Cells[6].Value = "----";
+                dataGridView1.CurrentRow.Cells[10].Value = 2;
+                var connection = new NpgsqlConnection(connectionString);
+                var q1 = "UPDATE " + tableName + " SET sentDate=@sentDate, deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value;
+                var command = new NpgsqlCommand(q1, connection);
+                command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
+                command.Parameters[0].Value = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-                        var main_start = 142;
-                        var add_start = 690;
-
-                        text = Convert.ToString(dataGridView1.Rows[index].Cells[0].Value);                              // Поле: Табульный номер
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 506, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 506, 0);
-
-                        text = Convert.ToString(dataGridView1.Rows[index].Cells[1].Value);                              // Поле: Заводской номер
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 472, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 472, 0);
-
-                        text = Convert.ToString(dataGridView1.Rows[index].Cells[2].Value);                              // Поле: Тип
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 424, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 424, 0);
-
-                        text = Convert.ToString(dataGridView1.Rows[index].Cells[3].Value);                              // Поле: год выпуска
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 380, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 380, 0);
-
-                        string date;
-                        if (!printDateTimePicker.Checked)
-                            date = DateTime.Now.ToString("dd.MM.yyyy");
-                        else
-                            date = printDateTimePicker.Value.ToString("dd.MM.yyyy");
-                        text = Convert.ToString(date);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 165, 28, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 590, 29, 0);
-
-                        contentByte.SetFontAndSize(bf, 10);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Пчельников А.С.", 49, 28, 0);
-                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Пчельников А.С.", 590, 56, 0);
-
-                        contentByte.SetFontAndSize(bf, 16);
-                        text = checkedChar;
-                        switch (metrologicalControlType_ComboBox.SelectedValue)
-                        {
-                            case MetrologicalControlType.Verification:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 158, 0);
-                                break;
-                            case MetrologicalControlType.Calibration:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 132, 0);
-                                break;
-                            case MetrologicalControlType.AsReference:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 108, 0);
-                                break;
-                            case MetrologicalControlType.InputControl:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 82, 0);
-                                break;
-                            case MetrologicalControlType.OutOfTown:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 55, 0);
-                                break;
-                            default:
-                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 158, 0);
-                                break;
-                        }
-
-                        contentByte.EndText();
-
-                        // меняем статус устройства на "Отправлен" и изменяем дату отправки
-                        dataGridView1.CurrentRow.Cells[4].Value = date;
-                        dataGridView1.CurrentRow.Cells[6].Value = "----";
-                        dataGridView1.CurrentRow.Cells[10].Value = 2;
-                        var connection = new NpgsqlConnection(connectionString);
-                        var command = new NpgsqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
-
-                        try
-                        {
-                            connection.Open();
-                            command.ExecuteNonQuery();
-                            connection.Close();
-                            connection.Dispose();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.ToString());
-                        }
-                    }
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    connection.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
                 }
             }
             catch (IOException)
@@ -492,23 +440,14 @@ namespace LazyStaff
             }
         }
         //---------------------------------------------------
-        // Метод вывода на печать .pdf файла чрез Spire.PDF
+        // Метод вывода на печать
         //---------------------------------------------------
         public void PrintPdfFile()
         {
-            string newFile = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                 // путь экспорта заполненного .pdf
-
-            Spire.Pdf.PdfDocument pdfdocument = new Spire.Pdf.PdfDocument();                                    // создаём экземпляр
-            pdfdocument.LoadFromFile(newFile);                                                                  // загружаем файл
-
-            //pdfdocument.PrinterName = "My Printer";
-
-            pdfdocument.PrintDocument.PrinterSettings.Copies = 1;                                               // количество копий (можно не указывать)
-            pdfdocument.PrintDocument.Print();
-            pdfdocument.Dispose();
-
+            PrintDeviceHelper.PrintPdfFile();
             listMarking.Start(this);
         }
+
         //---------------------------------------
         // получаем индекс выделенной строки
         //---------------------------------------
@@ -672,6 +611,18 @@ namespace LazyStaff
                 });
                 MessageBox.Show("Для работы требуется установленный Microsoft Office Excel\n\nКод ошибки: 0x80040154 (System.Runtime.InteropServices.COMException)");
             }
+        }
+
+        private void WorkTypesRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            var clickedButon = (RadioButton)sender;
+            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlTypeName;
+            bool isRepairTypeClicked = clickedButon.Name == rbRepairTypeName;
+
+            cbRepairType.Enabled = isRepairTypeClicked;
+            cbMetrologicalControlType.Enabled = isMetrologicalControlTypeClicked;
+
+            if (cbRepairType.Enabled == false && cbMetrologicalControlType.Enabled == false) cbMetrologicalControlType.Enabled = true;
         }
     }
 }

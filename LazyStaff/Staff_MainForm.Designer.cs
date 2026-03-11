@@ -63,7 +63,13 @@ namespace LazyStaff
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.ExportToXml_button = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.metrologicalControlType_ComboBox = new System.Windows.Forms.ComboBox();
+            this.rbRepairType = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbRepairType = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.rbMetrologicalControlType = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbMetrologicalControlType = new System.Windows.Forms.ComboBox();
             this.printDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.PrintPdf_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -91,8 +97,6 @@ namespace LazyStaff
             this.separateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -153,34 +157,110 @@ namespace LazyStaff
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.rbRepairType);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.cbRepairType);
             this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.rbMetrologicalControlType);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.metrologicalControlType_ComboBox);
+            this.groupBox2.Controls.Add(this.cbMetrologicalControlType);
             this.groupBox2.Controls.Add(this.printDateTimePicker);
             this.groupBox2.Controls.Add(this.PrintPdf_button);
             this.groupBox2.Location = new System.Drawing.Point(3, 208);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(163, 134);
+            this.groupBox2.Size = new System.Drawing.Size(163, 180);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Настройка печати";
             // 
-            // metrologicalControlType_ComboBox
+            // rbRepairType
             // 
-            this.metrologicalControlType_ComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.rbRepairType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.metrologicalControlType_ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.metrologicalControlType_ComboBox.FormattingEnabled = true;
-            this.metrologicalControlType_ComboBox.Location = new System.Drawing.Point(8, 32);
-            this.metrologicalControlType_ComboBox.Name = "metrologicalControlType_ComboBox";
-            this.metrologicalControlType_ComboBox.Size = new System.Drawing.Size(148, 21);
-            this.metrologicalControlType_ComboBox.TabIndex = 8;
+            this.rbRepairType.AutoSize = true;
+            this.rbRepairType.Location = new System.Drawing.Point(8, 80);
+            this.rbRepairType.Name = "rbRepairType";
+            this.rbRepairType.Size = new System.Drawing.Size(14, 13);
+            this.rbRepairType.TabIndex = 10;
+            this.rbRepairType.UseVisualStyleBackColor = true;
+            this.rbRepairType.Click += new System.EventHandler(this.WorkTypesRadioButton_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Enabled = false;
+            this.label3.Location = new System.Drawing.Point(5, 61);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Вид рем. работ";
+            // 
+            // cbRepairType
+            // 
+            this.cbRepairType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRepairType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRepairType.Enabled = false;
+            this.cbRepairType.FormattingEnabled = true;
+            this.cbRepairType.Location = new System.Drawing.Point(28, 77);
+            this.cbRepairType.Name = "cbRepairType";
+            this.cbRepairType.Size = new System.Drawing.Size(105, 21);
+            this.cbRepairType.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 106);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Дата отправки";
+            // 
+            // rbMetrologicalControlType
+            // 
+            this.rbMetrologicalControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rbMetrologicalControlType.AutoSize = true;
+            this.rbMetrologicalControlType.Checked = true;
+            this.rbMetrologicalControlType.Location = new System.Drawing.Point(8, 35);
+            this.rbMetrologicalControlType.Name = "rbMetrologicalControlType";
+            this.rbMetrologicalControlType.Size = new System.Drawing.Size(14, 13);
+            this.rbMetrologicalControlType.TabIndex = 8;
+            this.rbMetrologicalControlType.TabStop = true;
+            this.rbMetrologicalControlType.UseVisualStyleBackColor = true;
+            this.rbMetrologicalControlType.Click += new System.EventHandler(this.WorkTypesRadioButton_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Вид метр. работ";
+            // 
+            // cbMetrologicalControlType
+            // 
+            this.cbMetrologicalControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMetrologicalControlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMetrologicalControlType.FormattingEnabled = true;
+            this.cbMetrologicalControlType.Location = new System.Drawing.Point(28, 32);
+            this.cbMetrologicalControlType.Name = "cbMetrologicalControlType";
+            this.cbMetrologicalControlType.Size = new System.Drawing.Size(105, 21);
+            this.cbMetrologicalControlType.TabIndex = 9;
             // 
             // printDateTimePicker
             // 
             this.printDateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.printDateTimePicker.Location = new System.Drawing.Point(6, 76);
+            this.printDateTimePicker.Location = new System.Drawing.Point(6, 122);
             this.printDateTimePicker.Name = "printDateTimePicker";
             this.printDateTimePicker.ShowCheckBox = true;
             this.printDateTimePicker.Size = new System.Drawing.Size(150, 20);
@@ -190,7 +270,7 @@ namespace LazyStaff
             // 
             this.PrintPdf_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PrintPdf_button.Location = new System.Drawing.Point(6, 102);
+            this.PrintPdf_button.Location = new System.Drawing.Point(6, 148);
             this.PrintPdf_button.Name = "PrintPdf_button";
             this.PrintPdf_button.Size = new System.Drawing.Size(150, 23);
             this.PrintPdf_button.TabIndex = 1;
@@ -430,7 +510,7 @@ namespace LazyStaff
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.ContextMenuStrip = this.dataGrid_contextMenuStrip;
             this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 26);
+            this.dataGridView1.Location = new System.Drawing.Point(-2, 26);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -488,28 +568,6 @@ namespace LazyStaff
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.deleteToolStripMenuItem.Text = "Удалить";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Вид метр. работ";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Дата отправки";
             // 
             // Staff_MainForm
             // 
@@ -574,9 +632,13 @@ namespace LazyStaff
         private ToolStripMenuItem separateToolStripMenuItem;
         private ToolStripMenuItem addToolStripMenuItem;
         private DateTimePicker printDateTimePicker;
-        private ComboBox metrologicalControlType_ComboBox;
+        private ComboBox cbMetrologicalControlType;
         private Label label2;
         private Label label1;
+        private RadioButton rbRepairType;
+        private Label label3;
+        private ComboBox cbRepairType;
+        private RadioButton rbMetrologicalControlType;
 
         public Label Conservation_label { get => conservation_label; set => conservation_label = value; }
         public Label Sent_label { get => sent_label; set => sent_label = value; }

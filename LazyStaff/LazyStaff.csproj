@@ -141,9 +141,13 @@
       <DependentUpon>Change_device.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\ListMarking.cs" />
+    <Compile Include="Classes\RepairTypesEnum.cs" />
+    <Compile Include="Classes\MetrologicalControlTypesEnum.cs" />
+    <Compile Include="Classes\PrintDevice.cs" />
     <Compile Include="Classes\Search.cs" />
     <Compile Include="Classes\TreeViewFilter.cs" />
     <Compile Include="ConnectionToSQL.cs" />
+    <Compile Include="Helpers\PrintDeviceHelper.cs" />
     <Compile Include="PasswordInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,6 +256,7 @@
     <Content Include="Source\UI\down.png" />
     <Content Include="Source\UI\right.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

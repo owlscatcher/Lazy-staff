@@ -45,16 +45,21 @@
             this.Replace_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Print_chechBox = new System.Windows.Forms.CheckBox();
-            this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
-            this.test_radioButton = new System.Windows.Forms.RadioButton();
-            this.repairs_radioButton = new System.Windows.Forms.RadioButton();
-            this.manualDate_checkBox = new System.Windows.Forms.CheckBox();
+            this.typeOfWorkPanel = new System.Windows.Forms.Panel();
             this.manualDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.rbRepairType = new System.Windows.Forms.RadioButton();
+            this.cbMetrologicalControlType = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.rbMetrologicalControlType = new System.Windows.Forms.RadioButton();
+            this.cbRepairType = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.manualDate_checkBox = new System.Windows.Forms.CheckBox();
+            this.Print_chechBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.typeOfWorkPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -84,7 +89,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(776, 59);
+            this.dataGridView1.Size = new System.Drawing.Size(776, 94);
             this.dataGridView1.TabIndex = 0;
             // 
             // personnelNumber
@@ -166,19 +171,19 @@
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.dataGridView2.Location = new System.Drawing.Point(12, 117);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 126);
             this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(776, 251);
+            this.dataGridView2.Size = new System.Drawing.Size(776, 295);
             this.dataGridView2.TabIndex = 1;
             // 
             // search_textBox
             // 
             this.search_textBox.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.search_textBox.Location = new System.Drawing.Point(12, 90);
+            this.search_textBox.Location = new System.Drawing.Point(12, 100);
             this.search_textBox.Name = "search_textBox";
             this.search_textBox.Size = new System.Drawing.Size(776, 20);
             this.search_textBox.TabIndex = 2;
@@ -190,7 +195,7 @@
             // 
             // Replace_button
             // 
-            this.Replace_button.Location = new System.Drawing.Point(520, 387);
+            this.Replace_button.Location = new System.Drawing.Point(657, 429);
             this.Replace_button.Name = "Replace_button";
             this.Replace_button.Size = new System.Drawing.Size(131, 23);
             this.Replace_button.TabIndex = 3;
@@ -200,7 +205,7 @@
             // 
             // Cancel_button
             // 
-            this.Cancel_button.Location = new System.Drawing.Point(657, 387);
+            this.Cancel_button.Location = new System.Drawing.Point(657, 460);
             this.Cancel_button.Name = "Cancel_button";
             this.Cancel_button.Size = new System.Drawing.Size(131, 23);
             this.Cancel_button.TabIndex = 5;
@@ -211,18 +216,110 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.manualDate_dateTimePicker);
+            this.groupBox1.Controls.Add(this.typeOfWorkPanel);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.manualDate_checkBox);
             this.groupBox1.Controls.Add(this.Print_chechBox);
-            this.groupBox1.Controls.Add(this.entranceControl_radioButton);
-            this.groupBox1.Controls.Add(this.test_radioButton);
-            this.groupBox1.Controls.Add(this.repairs_radioButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 374);
+            this.groupBox1.Location = new System.Drawing.Point(12, 423);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(425, 59);
+            this.groupBox1.Size = new System.Drawing.Size(639, 63);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройка печати:";
+            // 
+            // typeOfWorkPanel
+            // 
+            this.typeOfWorkPanel.Controls.Add(this.rbRepairType);
+            this.typeOfWorkPanel.Controls.Add(this.cbMetrologicalControlType);
+            this.typeOfWorkPanel.Controls.Add(this.label2);
+            this.typeOfWorkPanel.Controls.Add(this.label3);
+            this.typeOfWorkPanel.Controls.Add(this.rbMetrologicalControlType);
+            this.typeOfWorkPanel.Controls.Add(this.cbRepairType);
+            this.typeOfWorkPanel.Location = new System.Drawing.Point(154, 13);
+            this.typeOfWorkPanel.Name = "typeOfWorkPanel";
+            this.typeOfWorkPanel.Size = new System.Drawing.Size(479, 29);
+            this.typeOfWorkPanel.TabIndex = 20;
+            // 
+            // manualDate_dateTimePicker
+            // 
+            this.manualDate_dateTimePicker.Location = new System.Drawing.Point(154, 40);
+            this.manualDate_dateTimePicker.Name = "manualDate_dateTimePicker";
+            this.manualDate_dateTimePicker.Size = new System.Drawing.Size(233, 20);
+            this.manualDate_dateTimePicker.TabIndex = 8;
+            this.manualDate_dateTimePicker.Value = new System.DateTime(2019, 5, 31, 7, 49, 8, 0);
+            this.manualDate_dateTimePicker.ValueChanged += new System.EventHandler(this.ManualDate_dateTimePicker_ValueChanged);
+            // 
+            // rbRepairType
+            // 
+            this.rbRepairType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rbRepairType.AutoSize = true;
+            this.rbRepairType.Location = new System.Drawing.Point(239, 3);
+            this.rbRepairType.Name = "rbRepairType";
+            this.rbRepairType.Size = new System.Drawing.Size(14, 13);
+            this.rbRepairType.TabIndex = 17;
+            this.rbRepairType.UseVisualStyleBackColor = true;
+            this.rbRepairType.Click += new System.EventHandler(this.WorkTypesRadioButton_CheckedChanged);
+            // 
+            // cbMetrologicalControlType
+            // 
+            this.cbMetrologicalControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMetrologicalControlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMetrologicalControlType.FormattingEnabled = true;
+            this.cbMetrologicalControlType.Location = new System.Drawing.Point(120, 0);
+            this.cbMetrologicalControlType.Name = "cbMetrologicalControlType";
+            this.cbMetrologicalControlType.Size = new System.Drawing.Size(113, 21);
+            this.cbMetrologicalControlType.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(25, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Вид метр. работ";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Enabled = false;
+            this.label3.Location = new System.Drawing.Point(258, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Вид рем. работ";
+            // 
+            // rbMetrologicalControlType
+            // 
+            this.rbMetrologicalControlType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rbMetrologicalControlType.AutoSize = true;
+            this.rbMetrologicalControlType.Checked = true;
+            this.rbMetrologicalControlType.Location = new System.Drawing.Point(6, 1);
+            this.rbMetrologicalControlType.Name = "rbMetrologicalControlType";
+            this.rbMetrologicalControlType.Size = new System.Drawing.Size(14, 13);
+            this.rbMetrologicalControlType.TabIndex = 14;
+            this.rbMetrologicalControlType.TabStop = true;
+            this.rbMetrologicalControlType.UseVisualStyleBackColor = true;
+            this.rbMetrologicalControlType.Click += new System.EventHandler(this.WorkTypesRadioButton_CheckedChanged);
+            // 
+            // cbRepairType
+            // 
+            this.cbRepairType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRepairType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRepairType.Enabled = false;
+            this.cbRepairType.FormattingEnabled = true;
+            this.cbRepairType.Location = new System.Drawing.Point(353, 0);
+            this.cbRepairType.Name = "cbRepairType";
+            this.cbRepairType.Size = new System.Drawing.Size(113, 21);
+            this.cbRepairType.TabIndex = 18;
             // 
             // label1
             // 
@@ -232,50 +329,6 @@
             this.label1.Size = new System.Drawing.Size(9, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "|";
-            // 
-            // Print_chechBox
-            // 
-            this.Print_chechBox.AutoSize = true;
-            this.Print_chechBox.Location = new System.Drawing.Point(7, 13);
-            this.Print_chechBox.Name = "Print_chechBox";
-            this.Print_chechBox.Size = new System.Drawing.Size(132, 17);
-            this.Print_chechBox.TabIndex = 8;
-            this.Print_chechBox.Text = "Отправить на печать";
-            this.Print_chechBox.UseVisualStyleBackColor = true;
-            this.Print_chechBox.CheckedChanged += new System.EventHandler(this.Print_chechBox_CheckedChanged);
-            // 
-            // entranceControl_radioButton
-            // 
-            this.entranceControl_radioButton.AutoSize = true;
-            this.entranceControl_radioButton.Location = new System.Drawing.Point(304, 13);
-            this.entranceControl_radioButton.Name = "entranceControl_radioButton";
-            this.entranceControl_radioButton.Size = new System.Drawing.Size(117, 17);
-            this.entranceControl_radioButton.TabIndex = 7;
-            this.entranceControl_radioButton.TabStop = true;
-            this.entranceControl_radioButton.Text = "Входной контроль";
-            this.entranceControl_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // test_radioButton
-            // 
-            this.test_radioButton.AutoSize = true;
-            this.test_radioButton.Location = new System.Drawing.Point(160, 13);
-            this.test_radioButton.Name = "test_radioButton";
-            this.test_radioButton.Size = new System.Drawing.Size(69, 17);
-            this.test_radioButton.TabIndex = 5;
-            this.test_radioButton.TabStop = true;
-            this.test_radioButton.Text = "Поверка";
-            this.test_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // repairs_radioButton
-            // 
-            this.repairs_radioButton.AutoSize = true;
-            this.repairs_radioButton.Location = new System.Drawing.Point(235, 13);
-            this.repairs_radioButton.Name = "repairs_radioButton";
-            this.repairs_radioButton.Size = new System.Drawing.Size(63, 17);
-            this.repairs_radioButton.TabIndex = 6;
-            this.repairs_radioButton.TabStop = true;
-            this.repairs_radioButton.Text = "Ремонт";
-            this.repairs_radioButton.UseVisualStyleBackColor = true;
             // 
             // manualDate_checkBox
             // 
@@ -288,20 +341,22 @@
             this.manualDate_checkBox.UseVisualStyleBackColor = true;
             this.manualDate_checkBox.CheckedChanged += new System.EventHandler(this.ManualDate_checkBox_CheckedChanged);
             // 
-            // manualDate_dateTimePicker
+            // Print_chechBox
             // 
-            this.manualDate_dateTimePicker.Location = new System.Drawing.Point(148, 33);
-            this.manualDate_dateTimePicker.Name = "manualDate_dateTimePicker";
-            this.manualDate_dateTimePicker.Size = new System.Drawing.Size(271, 20);
-            this.manualDate_dateTimePicker.TabIndex = 8;
-            this.manualDate_dateTimePicker.Value = new System.DateTime(2019, 5, 31, 7, 49, 8, 0);
-            this.manualDate_dateTimePicker.ValueChanged += new System.EventHandler(this.ManualDate_dateTimePicker_ValueChanged);
+            this.Print_chechBox.AutoSize = true;
+            this.Print_chechBox.Location = new System.Drawing.Point(7, 13);
+            this.Print_chechBox.Name = "Print_chechBox";
+            this.Print_chechBox.Size = new System.Drawing.Size(132, 17);
+            this.Print_chechBox.TabIndex = 8;
+            this.Print_chechBox.Text = "Отправить на печать";
+            this.Print_chechBox.UseVisualStyleBackColor = true;
+            this.Print_chechBox.CheckedChanged += new System.EventHandler(this.Print_chechBox_CheckedChanged);
             // 
             // ReplaceDevice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 443);
+            this.ClientSize = new System.Drawing.Size(800, 490);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Cancel_button);
             this.Controls.Add(this.Replace_button);
@@ -318,6 +373,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.typeOfWorkPanel.ResumeLayout(false);
+            this.typeOfWorkPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -344,10 +401,14 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox Print_chechBox;
-        private System.Windows.Forms.RadioButton entranceControl_radioButton;
-        private System.Windows.Forms.RadioButton test_radioButton;
-        private System.Windows.Forms.RadioButton repairs_radioButton;
         private System.Windows.Forms.CheckBox manualDate_checkBox;
         private System.Windows.Forms.DateTimePicker manualDate_dateTimePicker;
+        private System.Windows.Forms.RadioButton rbRepairType;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbRepairType;
+        private System.Windows.Forms.RadioButton rbMetrologicalControlType;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbMetrologicalControlType;
+        private System.Windows.Forms.Panel typeOfWorkPanel;
     }
 }

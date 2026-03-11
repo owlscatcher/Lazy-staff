@@ -1,10 +1,11 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
+﻿using LazyStaff.Classes;
+using LazyStaff.Helpers;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace LazyStaff
@@ -13,6 +14,8 @@ namespace LazyStaff
     {
         Classes.Search Search = new Classes.Search();
         string date = DateTime.Now.ToString("dd.MM.yyyy");
+        public string rbMetrologicalControlTypeName = string.Empty;
+        public string rbRepairTypeName = string.Empty;
 
         public ReplaceDevice()
         {
@@ -21,8 +24,8 @@ namespace LazyStaff
             // Включаем двойную буферизацию для DataGridView2
             typeof(DataGridView).InvokeMember(
                 "DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic 
-                | System.Reflection.BindingFlags.Instance 
+                System.Reflection.BindingFlags.NonPublic
+                | System.Reflection.BindingFlags.Instance
                 | System.Reflection.BindingFlags.SetProperty,
                 null,
                 dataGridView2,
@@ -33,6 +36,35 @@ namespace LazyStaff
 
             manualDate_dateTimePicker.CustomFormat = "MMMM dd, yyyy - dddd";
             manualDate_dateTimePicker.Format = DateTimePickerFormat.Custom;
+
+            Dictionary<string, MetrologicalControlType> metrologicalControlSet = new Dictionary<string, MetrologicalControlType>
+            {
+                {"Поверка", MetrologicalControlType.Verification},
+                {"Калибровка", MetrologicalControlType.Calibration},
+                {"В качестве эталона", MetrologicalControlType.AsReference},
+                {"Входной контроль", MetrologicalControlType.InputControl},
+                {"Иногородняя организация", MetrologicalControlType.OutOfTown}
+            };
+
+            cbMetrologicalControlType.DataSource = metrologicalControlSet.ToList();
+            cbMetrologicalControlType.DisplayMember = "Key";
+            cbMetrologicalControlType.ValueMember = "Value";
+
+            Dictionary<string, RepairType> repairTypeSet = new Dictionary<string, RepairType>
+            {
+                {"Текущий", RepairType.Current},
+                {"Средний", RepairType.Medium},
+                {"Капитальный", RepairType.Major},
+                {"На месте эксплуатации", RepairType.OnSite},
+                {"Иногородняя организация", RepairType.OutOfTown}
+            };
+
+            cbRepairType.DataSource = repairTypeSet.ToList();
+            cbRepairType.DisplayMember = "Key";
+            cbRepairType.ValueMember = "Value";
+
+            rbMetrologicalControlTypeName = rbMetrologicalControlType.Name;
+            rbRepairTypeName = rbRepairType.Name;
         }
 
         private void ReplaceDevice_Load(object sender, EventArgs e)
@@ -125,14 +157,7 @@ namespace LazyStaff
 
         private void Print_chechBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (Print_chechBox.Checked)
-                test_radioButton.Checked = true;
-            else
-            {
-                test_radioButton.Checked = false;
-                repairs_radioButton.Checked = false;
-                entranceControl_radioButton.Checked = false;
-            }
+            typeOfWorkPanel.Enabled = Print_chechBox.Checked;
         }
 
         private void Replace_button_Click(object sender, EventArgs e)
@@ -189,10 +214,14 @@ namespace LazyStaff
                         dataGridView1.CurrentRow.Cells[4].Value = date;
                         dataGridView1.CurrentRow.Cells[6].Value = "----";
                         dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-                        var command = new NpgsqlCommand("UPDATE " + main.tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+                        var q1 = "UPDATE " + main.tableName + " SET sentDate=@sentDate, deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value;
+                        var command = new NpgsqlCommand(q1, connection);
+                        command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
+                        command.Parameters[0].Value = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
                         dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                        var command2 = new NpgsqlCommand("UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value, connection);
+                        var q2 = "UPDATE " + main.tableName + " SET deviceLocation = '" + Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) + "', state= 0 WHERE personnelNumber= " + dataGridView2.CurrentRow.Cells[0].Value;
+                        var command2 = new NpgsqlCommand(q2, connection);
 
                         connection.Open();
                         command.ExecuteNonQuery();
@@ -208,87 +237,22 @@ namespace LazyStaff
 
                 if (Print_chechBox.Checked)
                 {
-                    string oldFile = Application.StartupPath + @"\\Source\\PDF\\1.pdf";                                 // путь к исходному шаблону .pdf
-                    string newFile = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                 // путь экспорта заполненного .pdf
-
-                    PdfReader reader = new PdfReader(oldFile);                                                          // создаем ридер для iTextSharp
-                    iTextSharp.text.Rectangle size = reader.GetPageSizeWithRotation(1);
-                    Document document = new Document(size);
-
                     try
                     {
-                        FileStream fileStream = new FileStream(newFile, FileMode.Create, FileAccess.Write);             // создаем экспортируемый файл
-                        PdfWriter writer = PdfWriter.GetInstance(document, fileStream);
-                        document.Open();
-
-                        PdfContentByte contentByte = writer.DirectContent;
-                        BaseFont bf = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);      // настройка шрифтов
-                        contentByte.SetColorFill(BaseColor.BLUE);
-                        contentByte.SetFontAndSize(bf, 12);
-
-                        contentByte.BeginText();                                                                        // пишем текст в новый .pdf
-
-                        string text = "106";                                                                            // Поле: Здание
-                        contentByte.ShowTextAligned(1, text, 170, 531, 0);                                              // длина, ширина, поворот
-                        contentByte.ShowTextAligned(1, text, 638, 531, 0);
-
-                        text = "УРБ";                                                                                   // Поле: служба
-                        contentByte.ShowTextAligned(1, text, 255, 519, 0);
-                        contentByte.ShowTextAligned(1, text, 723, 519, 0);
-
-                        text = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);                              // Поле: Табульный номер
-                        contentByte.ShowTextAligned(1, text, 170, 488, 0);
-                        contentByte.ShowTextAligned(1, text, 694, 488, 0);
-
-                        text = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);                              // Поле: Заводской номер
-                        contentByte.ShowTextAligned(1, text, 170, 458, 0);
-                        contentByte.ShowTextAligned(1, text, 694, 458, 0);
-
-                        text = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);                              // Поле: Тип
-                        contentByte.ShowTextAligned(1, text, 160, 420, 0);
-                        contentByte.ShowTextAligned(1, text, 684, 420, 0);
-
-                        text = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);                              // Поле: год выпуска
-                        contentByte.ShowTextAligned(1, text, 170, 351, 0);
-                        contentByte.ShowTextAligned(1, text, 694, 351, 0);
-
-                        if (test_radioButton.Checked)
+                        PrintDevice device = new PrintDevice
                         {
-                            text = "___________";                                                                       // Поле: повеерка
-                            contentByte.ShowTextAligned(1, text, 103, 136, 0);
-                            contentByte.ShowTextAligned(1, text, 625, 136, 0);
+                            TabelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value),
+                            SerialNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value),
+                            Type = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value),
+                            YearOfRelease = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value),
+                            DateToPrint = date,
+                            IsMetrologicalControlType = rbMetrologicalControlType.Checked,
+                            IsRepairType = rbRepairType.Checked,
+                            McSelected = (MetrologicalControlType)cbMetrologicalControlType.SelectedValue,
+                            RepairSelected = (RepairType)cbRepairType.SelectedValue
+                        };
 
-                            text = "___________";                                                                       // Поле: по графику
-                            contentByte.ShowTextAligned(1, text, 215, 148, 0);
-                            contentByte.ShowTextAligned(1, text, 737, 148, 0);
-                        }
-
-                        if (repairs_radioButton.Checked)
-                        {
-                            text = "___________";                                                                       // Поле: ремонт
-                            contentByte.ShowTextAligned(1, text, 103, 124.3f, 0);
-                            contentByte.ShowTextAligned(1, text, 625, 124.3f, 0);
-                        }
-                        if (entranceControl_radioButton.Checked)
-                        {
-                            text = "____________";                                                                      // Поле: Входной контроль
-                            contentByte.ShowTextAligned(1, text, 107, 112, 0);
-                            contentByte.ShowTextAligned(1, text, 629, 112, 0);
-                        }
-
-                        text = Convert.ToString(date);
-                        contentByte.ShowTextAligned(1, text, 145, 41, 0);
-                        contentByte.ShowTextAligned(1, text, 672, 58, 0);
-
-                        contentByte.EndText();
-
-                        PdfImportedPage page = writer.GetImportedPage(reader, 1);
-                        contentByte.AddTemplate(page, 0, 0);
-
-                        document.Close();
-                        fileStream.Close();
-                        writer.Close();
-                        reader.Close();
+                        PrintDeviceHelper.FillPdf(device);
                     }
                     catch (System.IO.IOException)
                     {
@@ -336,6 +300,18 @@ namespace LazyStaff
                 date = manualDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
             else
                 date = DateTime.Now.ToString("dd.MM.yyyy");
+        }
+
+        private void WorkTypesRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            var clickedButon = (RadioButton)sender;
+            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlTypeName;
+            bool isRepairTypeClicked = clickedButon.Name == rbRepairTypeName;
+
+            cbRepairType.Enabled = isRepairTypeClicked;
+            cbMetrologicalControlType.Enabled = isMetrologicalControlTypeClicked;
+
+            if (cbRepairType.Enabled == false && cbMetrologicalControlType.Enabled == false) cbMetrologicalControlType.Enabled = true;
         }
     }
 }
