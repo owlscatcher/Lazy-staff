@@ -461,8 +461,6 @@ namespace LazyStaff
 
                         contentByte.EndText();
 
-                        return;
-
                         // меняем статус устройства на "Отправлен" и изменяем дату отправки
                         dataGridView1.CurrentRow.Cells[4].Value = date;
                         dataGridView1.CurrentRow.Cells[6].Value = "----";
