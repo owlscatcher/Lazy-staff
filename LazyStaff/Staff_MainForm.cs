@@ -13,6 +13,7 @@ using LazyStaff.Properties;
 using LazyStaff.Classes;
 using Npgsql;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace LazyStaff
 {
@@ -20,12 +21,22 @@ namespace LazyStaff
     {
         public DataSet dataSet = new DataSet();
         public DataTable dataTable = new DataTable();
-        public string password, querry, connectionString, tableName, personnelNumber, 
-            factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo, 
+        public string password, querry, connectionString, tableName, personnelNumber,
+            factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo,
             solutionNumber, sentDate, verificationDate, help_serachTB = "Введите Табульный/Заводской номер или дату продления";
         public int index, state;
         public bool gan_state;
-        public static bool administration;
+        public static bool administration = true;
+
+        public enum MetrologicalControlType
+        {
+            Verification = 0,
+            Calibration = 1,
+            AsReference = 2,
+            InputControl = 3,
+            OutOfTown = 4,
+            Repair = 5
+        };
 
         ListMarking listMarking = new ListMarking();
         Search Search = new Search();
@@ -58,44 +69,6 @@ namespace LazyStaff
         }
 
         //-----------------------------------
-        // Изменение положения toggle
-        //-----------------------------------
-        void ToggleSwitch_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (ToggleSwitch1.Toggled == true)
-            {
-                PasswordInput passwordInput = new PasswordInput();
-
-                passwordInput.StartPosition = FormStartPosition.Manual;
-
-                int x = Cursor.Position.X;
-                int y = Cursor.Position.Y - 20;
-
-                passwordInput.Location = new Point(Cursor.Position.X, y);
-
-                passwordInput.ShowDialog();
-
-                if (administration==true)
-                {
-                    groupBox2.Enabled = true;
-                    Setting_button.Enabled = true;
-                }
-                else
-                {
-                    groupBox2.Enabled = false;
-                    Setting_button.Enabled = false;
-                    administration = false;
-                }
-            }
-            else
-            {
-                groupBox2.Enabled = false;
-                Setting_button.Enabled = false;
-                administration = false;
-            }
-        }
-
-        //-----------------------------------
         // Инициализация
         //-----------------------------------
         public Staff_MainForm()
@@ -110,7 +83,6 @@ namespace LazyStaff
                 dataGridView1,
                 new object[] { true });
 
-            test_radioButton.Checked = true;
             progressBar1.Visible = false;
 
             // загрузка настроек 
@@ -118,13 +90,21 @@ namespace LazyStaff
             tableName = Settings.Default["tableName"].ToString();
             password = Settings.Default["password"].ToString();
 
-            ToggleSwitch1.MouseLeftButtonDown += new System.Windows.Input.MouseButtonEventHandler(ToggleSwitch_MouseLeftButtonDown);
-            administration = false;
+            groupBox2.Enabled = true;
+            printDateTimePicker.Checked = true;
 
-            groupBox2.Enabled = false;
-            Setting_button.Enabled = false;
-            printDateTimePicker.Checked = false;
+            Dictionary<string, MetrologicalControlType> metrologicalControlSet = new Dictionary<string, MetrologicalControlType>
+            {
+                {"Поверка", MetrologicalControlType.Verification},
+                {"Калибровка", MetrologicalControlType.Calibration},
+                {"В качестве эталона", MetrologicalControlType.AsReference},
+                {"Входной контроль", MetrologicalControlType.InputControl},
+                {"Иногородняя организация", MetrologicalControlType.OutOfTown}
+            };
 
+            metrologicalControlType_ComboBox.DataSource = metrologicalControlSet.ToList();
+            metrologicalControlType_ComboBox.DisplayMember = "Key";
+            metrologicalControlType_ComboBox.ValueMember = "Value";
         }
 
         //-----------------------------------
@@ -300,7 +280,6 @@ namespace LazyStaff
             dataGridUpdate.Start();
         }
 
-
         //----------------------------------------------------------------------------
         // Загрузка данных из DataGridView
         //----------------------------------------------------------------------------
@@ -342,7 +321,7 @@ namespace LazyStaff
             }
 
             dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor
-            dataTable = dataSet.Tables["Monitor"].Copy();    
+            dataTable = dataSet.Tables["Monitor"].Copy();
             connection.Close();                                                                                 // закрываем соединение
 
             Invoke((MethodInvoker)delegate
@@ -396,116 +375,113 @@ namespace LazyStaff
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
         }
 
-
         //--------------------------------------------------------------
         // Метод для рботы с PDF файлом
         //--------------------------------------------------------------
         private void PDF()
         {
-            string oldFile = Application.StartupPath + @"\\Source\\PDF\\1.pdf";                                 // путь к исходному шаблону .pdf
+            string oldFile = Application.StartupPath + @"\\Source\\PDF\\1_new.pdf";                                 // путь к исходному шаблону .pdf
             string newFile = Application.StartupPath + @"\\Source\\PDF\\2.pdf";                                 // путь экспорта заполненного .pdf
 
             PdfReader reader = new PdfReader(oldFile);                                                          // создаем ридер для iTextSharp
             iTextSharp.text.Rectangle size = reader.GetPageSizeWithRotation(1);
-            Document document = new Document(size);
+            string checkedChar = "+";
 
             try
             {
-                FileStream fileStream = new FileStream(newFile, FileMode.Create, FileAccess.Write);             // создаем экспортируемый файл
-                PdfWriter writer = PdfWriter.GetInstance(document, fileStream);
-                document.Open();
-
-                PdfContentByte contentByte = writer.DirectContent;
-                BaseFont bf = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);      // настройка шрифтов
-                contentByte.SetColorFill(BaseColor.BLUE);
-                contentByte.SetFontAndSize(bf, 12);
-
-                contentByte.BeginText();                                                                        // пишем текст в новый .pdf
-
-                string text = "106";                                                                            // Поле: Здание
-                contentByte.ShowTextAligned(1, text, 170, 531, 0);                                              // длина, ширина, поворот
-                contentByte.ShowTextAligned(1, text, 638, 531, 0);
-
-                text = "УРБ";                                                                                   // Поле: служба
-                contentByte.ShowTextAligned(1, text, 255, 519, 0);
-                contentByte.ShowTextAligned(1, text, 723, 519, 0);
-
-                text = Convert.ToString(dataGridView1.Rows[index].Cells[0].Value);                              // Поле: Табульный номер
-                contentByte.ShowTextAligned(1, text, 170, 488, 0);
-                contentByte.ShowTextAligned(1, text, 694, 488, 0);
-
-                text = Convert.ToString(dataGridView1.Rows[index].Cells[1].Value);                              // Поле: Заводской номер
-                contentByte.ShowTextAligned(1, text, 170, 458, 0);
-                contentByte.ShowTextAligned(1, text, 694, 458, 0);
-
-                text = Convert.ToString(dataGridView1.Rows[index].Cells[2].Value);                              // Поле: Тип
-                contentByte.ShowTextAligned(1, text, 160, 420, 0);
-                contentByte.ShowTextAligned(1, text, 684, 420, 0);
-
-                text = Convert.ToString(dataGridView1.Rows[index].Cells[3].Value);                              // Поле: год выпуска
-                contentByte.ShowTextAligned(1, text, 170, 351, 0);
-                contentByte.ShowTextAligned(1, text, 694, 351, 0);
-
-                if (test_radioButton.Checked)
+                using (FileStream fileStream = new FileStream(newFile, FileMode.Create, FileAccess.Write))             // создаем экспортируемый файл
                 {
-                    text = "___________";                                                                       // Поле: повеерка
-                    contentByte.ShowTextAligned(1, text, 103, 136, 0);
-                    contentByte.ShowTextAligned(1, text, 625, 136, 0);
+                    using (PdfStamper stamper = new PdfStamper(reader, fileStream))
+                    {
+                        PdfContentByte contentByte = stamper.GetOverContent(1);
+                        BaseFont bf = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);      // настройка шрифтов
+                        //BaseFont charFont = BaseFont.CreateFont(Application.StartupPath + @"\\Source\\Title\\ariblk.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                        contentByte.SetColorFill(BaseColor.BLUE);
+                        contentByte.SetFontAndSize(bf, 12);
 
-                    text = "___________";                                                                       // Поле: по графику
-                    contentByte.ShowTextAligned(1, text, 215, 148, 0);
-                    contentByte.ShowTextAligned(1, text, 737, 148, 0);
-                }
+                        contentByte.BeginText();                                                                        // пишем текст в новый .pdf
 
-                if (repairs_radioButton.Checked)
-                {
-                    text = "___________";                                                                       // Поле: ремонт
-                    contentByte.ShowTextAligned(1, text, 103, 124.3f, 0);
-                    contentByte.ShowTextAligned(1, text, 625, 124.3f, 0);
-                }
-                if (entranceControl_radioButton.Checked)
-                {
-                    text = "____________";                                                                      // Поле: Входной контроль
-                    contentByte.ShowTextAligned(1, text, 107, 112, 0);
-                    contentByte.ShowTextAligned(1, text, 629, 112, 0);
-                }
+                        string text = String.Empty;
 
-                string date;
-                if (!printDateTimePicker.Checked)
-                    date = DateTime.Now.ToString("dd.MM.yyyy");
-                else
-                    date = printDateTimePicker.Value.ToString("dd.MM.yyyy");
-                text = Convert.ToString(date);
-                contentByte.ShowTextAligned(1, text, 145, 41, 0);
-                contentByte.ShowTextAligned(1, text, 672, 58, 0);
+                        var main_start = 142;
+                        var add_start = 690;
 
-                contentByte.EndText();
+                        text = Convert.ToString(dataGridView1.Rows[index].Cells[0].Value);                              // Поле: Табульный номер
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 506, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 506, 0);
 
-                PdfImportedPage page = writer.GetImportedPage(reader, 1);
-                contentByte.AddTemplate(page, 0, 0);
+                        text = Convert.ToString(dataGridView1.Rows[index].Cells[1].Value);                              // Поле: Заводской номер
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 472, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 472, 0);
 
-                document.Close();
-                fileStream.Close();
-                writer.Close();
-                reader.Close();
+                        text = Convert.ToString(dataGridView1.Rows[index].Cells[2].Value);                              // Поле: Тип
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 424, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 424, 0);
 
-                // меняем статус устройства на "Отправлен" и изменяем дату отправки
-                dataGridView1.CurrentRow.Cells[4].Value = date;
-                dataGridView1.CurrentRow.Cells[6].Value = "----";
-                dataGridView1.CurrentRow.Cells[10].Value = 2;
-                var connection = new NpgsqlConnection(connectionString);
-                var command = new NpgsqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+                        text = Convert.ToString(dataGridView1.Rows[index].Cells[3].Value);                              // Поле: год выпуска
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, main_start, 380, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, add_start, 380, 0);
 
-                try
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    connection.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
+                        string date;
+                        if (!printDateTimePicker.Checked)
+                            date = DateTime.Now.ToString("dd.MM.yyyy");
+                        else
+                            date = printDateTimePicker.Value.ToString("dd.MM.yyyy");
+                        text = Convert.ToString(date);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 165, 28, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 590, 29, 0);
+
+                        contentByte.SetFontAndSize(bf, 10);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Пчельников А.С.", 49, 28, 0);
+                        contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Пчельников А.С.", 590, 56, 0);
+
+                        contentByte.SetFontAndSize(bf, 16);
+                        text = checkedChar;
+                        switch (metrologicalControlType_ComboBox.SelectedValue)
+                        {
+                            case MetrologicalControlType.Verification:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 158, 0);
+                                break;
+                            case MetrologicalControlType.Calibration:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 132, 0);
+                                break;
+                            case MetrologicalControlType.AsReference:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 108, 0);
+                                break;
+                            case MetrologicalControlType.InputControl:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 82, 0);
+                                break;
+                            case MetrologicalControlType.OutOfTown:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 55, 0);
+                                break;
+                            default:
+                                contentByte.ShowTextAligned(PdfContentByte.ALIGN_LEFT, text, 247, 158, 0);
+                                break;
+                        }
+
+                        contentByte.EndText();
+
+                        return;
+
+                        // меняем статус устройства на "Отправлен" и изменяем дату отправки
+                        dataGridView1.CurrentRow.Cells[4].Value = date;
+                        dataGridView1.CurrentRow.Cells[6].Value = "----";
+                        dataGridView1.CurrentRow.Cells[10].Value = 2;
+                        var connection = new NpgsqlConnection(connectionString);
+                        var command = new NpgsqlCommand("UPDATE " + tableName + " SET sentDate= '" + date + "', deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value, connection);
+
+                        try
+                        {
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            connection.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                    }
                 }
             }
             catch (IOException)
@@ -514,7 +490,7 @@ namespace LazyStaff
             }
             finally
             {
-                 PrintPdfFile();
+                PrintPdfFile();
             }
         }
         //---------------------------------------------------
@@ -554,7 +530,7 @@ namespace LazyStaff
         //------------------------------------
         private void search_textBox_Enter(object sender, EventArgs e)
         {
-            if(search_textBox.Text == "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
+            if (search_textBox.Text == "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
             {
                 search_textBox.TextChanged -= new System.EventHandler(search_textBox_TextChanged);      // Отписываемся от события TextChanged, что бы не дёргало таблицу
                 search_textBox.Text = "";                                                               // Очищаем TextBox
@@ -634,7 +610,7 @@ namespace LazyStaff
                     Invoke((MethodInvoker)delegate
                     {
                         progressBar1.Increment(1);                                                                  // увеличиваем прогресс бар
-                });
+                    });
                     if (dataGridView1.Rows[i].Visible)
                     {
                         workSheet.Cells[rowExcel, 1] = dataGridView1.Rows[i].Cells[0].Value;
@@ -666,7 +642,7 @@ namespace LazyStaff
                 (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
                 (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
 
-                var rng = workSheet.Range["A1:J" + 
+                var rng = workSheet.Range["A1:J" +
                     (dataGridView1.Rows.OfType<DataGridViewRow>().Where(row => row.Visible).Count() + 1)];          // Указание области границ таблицы
                 rng.Borders.LineStyle = 1;                                                                          // Стиль границ
                 rng.Borders.ColorIndex = 0;                                                                         // Цвет
@@ -679,7 +655,7 @@ namespace LazyStaff
                 // Сохраняем файл
                 string username = Environment.UserName;                                                             // узнаем имя пользователя
                 DateTime dateTime = DateTime.Now;
-                string pathToXmlFile = (@"C:\Documents and Settings\" + username + @"\Desktop\Export " + 
+                string pathToXmlFile = (@"C:\Documents and Settings\" + username + @"\Desktop\Export " +
                     dateTime.ToString("dd-MM-yyyy") + "");                                                          // указываем путь до рабочего стола и именуем файл
                 workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
 

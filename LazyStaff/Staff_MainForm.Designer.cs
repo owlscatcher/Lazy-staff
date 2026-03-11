@@ -31,7 +31,6 @@ namespace LazyStaff
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("УИМ");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("БДАС");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("БДГБ");
@@ -59,19 +58,13 @@ namespace LazyStaff
             treeNode14,
             treeNode15,
             treeNode16});
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Staff_MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.Setting_button = new System.Windows.Forms.Button();
-            this.ToggleHost = new System.Windows.Forms.Integration.ElementHost();
-            this.ToggleSwitch = new LazyStaff.Toggle();
-            this.Admin_Label = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.ExportToXml_button = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.metrologicalControlType_ComboBox = new System.Windows.Forms.ComboBox();
             this.printDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.entranceControl_radioButton = new System.Windows.Forms.RadioButton();
-            this.repairs_radioButton = new System.Windows.Forms.RadioButton();
-            this.test_radioButton = new System.Windows.Forms.RadioButton();
             this.PrintPdf_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.seporatingLine_label2 = new System.Windows.Forms.Label();
@@ -98,14 +91,12 @@ namespace LazyStaff
             this.separateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.StatusPanel.SuspendLayout();
@@ -121,8 +112,6 @@ namespace LazyStaff
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Panel1.Controls.Add(this.Admin_Label);
             this.splitContainer1.Panel1.Controls.Add(this.progressBar1);
             this.splitContainer1.Panel1.Controls.Add(this.ExportToXml_button);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
@@ -139,76 +128,22 @@ namespace LazyStaff
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 0;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(96, 718);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.Setting_button);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.ToggleHost);
-            this.splitContainer2.Size = new System.Drawing.Size(71, 28);
-            this.splitContainer2.SplitterDistance = 26;
-            this.splitContainer2.TabIndex = 16;
-            // 
-            // Setting_button
-            // 
-            this.Setting_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Setting_button.BackColor = System.Drawing.Color.Transparent;
-            this.Setting_button.FlatAppearance.BorderSize = 0;
-            this.Setting_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Setting_button.Image = ((System.Drawing.Image)(resources.GetObject("Setting_button.Image")));
-            this.Setting_button.Location = new System.Drawing.Point(2, 3);
-            this.Setting_button.MaximumSize = new System.Drawing.Size(22, 22);
-            this.Setting_button.MinimumSize = new System.Drawing.Size(22, 22);
-            this.Setting_button.Name = "Setting_button";
-            this.Setting_button.Size = new System.Drawing.Size(22, 22);
-            this.Setting_button.TabIndex = 11;
-            this.Setting_button.UseVisualStyleBackColor = false;
-            this.Setting_button.Click += new System.EventHandler(this.Setting_button_Click);
-            // 
-            // ToggleHost
-            // 
-            this.ToggleHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ToggleHost.Location = new System.Drawing.Point(3, 3);
-            this.ToggleHost.Name = "ToggleHost";
-            this.ToggleHost.Size = new System.Drawing.Size(33, 22);
-            this.ToggleHost.TabIndex = 15;
-            this.ToggleHost.Text = "elementHost1";
-            this.ToggleHost.Child = this.ToggleSwitch;
-            // 
-            // Admin_Label
-            // 
-            this.Admin_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Admin_Label.AutoSize = true;
-            this.Admin_Label.Location = new System.Drawing.Point(9, 724);
-            this.Admin_Label.Name = "Admin_Label";
-            this.Admin_Label.Size = new System.Drawing.Size(86, 13);
-            this.Admin_Label.TabIndex = 14;
-            this.Admin_Label.Text = "Администратор";
-            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(5, 503);
+            this.progressBar1.Location = new System.Drawing.Point(3, 527);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(157, 10);
+            this.progressBar1.Size = new System.Drawing.Size(161, 10);
             this.progressBar1.TabIndex = 8;
             // 
             // ExportToXml_button
             // 
             this.ExportToXml_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExportToXml_button.Location = new System.Drawing.Point(5, 519);
+            this.ExportToXml_button.Location = new System.Drawing.Point(3, 543);
             this.ExportToXml_button.Name = "ExportToXml_button";
-            this.ExportToXml_button.Size = new System.Drawing.Size(157, 23);
+            this.ExportToXml_button.Size = new System.Drawing.Size(163, 23);
             this.ExportToXml_button.TabIndex = 7;
             this.ExportToXml_button.Text = "Экспортировать в Excel";
             this.ExportToXml_button.UseVisualStyleBackColor = true;
@@ -218,68 +153,46 @@ namespace LazyStaff
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.metrologicalControlType_ComboBox);
             this.groupBox2.Controls.Add(this.printDateTimePicker);
-            this.groupBox2.Controls.Add(this.entranceControl_radioButton);
-            this.groupBox2.Controls.Add(this.repairs_radioButton);
-            this.groupBox2.Controls.Add(this.test_radioButton);
             this.groupBox2.Controls.Add(this.PrintPdf_button);
             this.groupBox2.Location = new System.Drawing.Point(3, 208);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(163, 142);
+            this.groupBox2.Size = new System.Drawing.Size(163, 134);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Настройка печати";
+            // 
+            // metrologicalControlType_ComboBox
+            // 
+            this.metrologicalControlType_ComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metrologicalControlType_ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.metrologicalControlType_ComboBox.FormattingEnabled = true;
+            this.metrologicalControlType_ComboBox.Location = new System.Drawing.Point(8, 32);
+            this.metrologicalControlType_ComboBox.Name = "metrologicalControlType_ComboBox";
+            this.metrologicalControlType_ComboBox.Size = new System.Drawing.Size(148, 21);
+            this.metrologicalControlType_ComboBox.TabIndex = 8;
             // 
             // printDateTimePicker
             // 
             this.printDateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.printDateTimePicker.Location = new System.Drawing.Point(4, 88);
+            this.printDateTimePicker.Location = new System.Drawing.Point(6, 76);
             this.printDateTimePicker.Name = "printDateTimePicker";
             this.printDateTimePicker.ShowCheckBox = true;
-            this.printDateTimePicker.Size = new System.Drawing.Size(153, 20);
+            this.printDateTimePicker.Size = new System.Drawing.Size(150, 20);
             this.printDateTimePicker.TabIndex = 5;
-            // 
-            // entranceControl_radioButton
-            // 
-            this.entranceControl_radioButton.AutoSize = true;
-            this.entranceControl_radioButton.Location = new System.Drawing.Point(12, 65);
-            this.entranceControl_radioButton.Name = "entranceControl_radioButton";
-            this.entranceControl_radioButton.Size = new System.Drawing.Size(117, 17);
-            this.entranceControl_radioButton.TabIndex = 4;
-            this.entranceControl_radioButton.TabStop = true;
-            this.entranceControl_radioButton.Text = "Входной контроль";
-            this.entranceControl_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // repairs_radioButton
-            // 
-            this.repairs_radioButton.AutoSize = true;
-            this.repairs_radioButton.Location = new System.Drawing.Point(12, 42);
-            this.repairs_radioButton.Name = "repairs_radioButton";
-            this.repairs_radioButton.Size = new System.Drawing.Size(63, 17);
-            this.repairs_radioButton.TabIndex = 3;
-            this.repairs_radioButton.TabStop = true;
-            this.repairs_radioButton.Text = "Ремонт";
-            this.repairs_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // test_radioButton
-            // 
-            this.test_radioButton.AutoSize = true;
-            this.test_radioButton.Location = new System.Drawing.Point(12, 19);
-            this.test_radioButton.Name = "test_radioButton";
-            this.test_radioButton.Size = new System.Drawing.Size(69, 17);
-            this.test_radioButton.TabIndex = 2;
-            this.test_radioButton.TabStop = true;
-            this.test_radioButton.Text = "Поверка";
-            this.test_radioButton.UseVisualStyleBackColor = true;
             // 
             // PrintPdf_button
             // 
             this.PrintPdf_button.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PrintPdf_button.Location = new System.Drawing.Point(2, 114);
+            this.PrintPdf_button.Location = new System.Drawing.Point(6, 102);
             this.PrintPdf_button.Name = "PrintPdf_button";
-            this.PrintPdf_button.Size = new System.Drawing.Size(157, 23);
+            this.PrintPdf_button.Size = new System.Drawing.Size(150, 23);
             this.PrintPdf_button.TabIndex = 1;
             this.PrintPdf_button.Text = "Печать предъявления";
             this.PrintPdf_button.UseVisualStyleBackColor = true;
@@ -289,6 +202,7 @@ namespace LazyStaff
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.AutoSize = true;
             this.groupBox1.Controls.Add(this.seporatingLine_label2);
             this.groupBox1.Controls.Add(this.decommissioned_label);
             this.groupBox1.Controls.Add(this.notgan_label);
@@ -300,9 +214,9 @@ namespace LazyStaff
             this.groupBox1.Controls.Add(this.overdue_label);
             this.groupBox1.Controls.Add(this.sent_label);
             this.groupBox1.Controls.Add(this.conservation_label);
-            this.groupBox1.Location = new System.Drawing.Point(5, 548);
+            this.groupBox1.Location = new System.Drawing.Point(3, 572);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(163, 166);
+            this.groupBox1.Size = new System.Drawing.Size(164, 175);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация:";
@@ -474,13 +388,13 @@ namespace LazyStaff
             // SyncStatusLabel_StatusPanel
             // 
             this.SyncStatusLabel_StatusPanel.Name = "SyncStatusLabel_StatusPanel";
-            this.SyncStatusLabel_StatusPanel.Size = new System.Drawing.Size(157, 17);
+            this.SyncStatusLabel_StatusPanel.Size = new System.Drawing.Size(158, 17);
             this.SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация:";
             // 
             // CountStatusLabel_StatusPanel
             // 
             this.CountStatusLabel_StatusPanel.Name = "CountStatusLabel_StatusPanel";
-            this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(207, 17);
+            this.CountStatusLabel_StatusPanel.Size = new System.Drawing.Size(208, 17);
             this.CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: ";
             // 
             // CountVisibleDevices_StatusLabel
@@ -575,6 +489,28 @@ namespace LazyStaff
             this.deleteToolStripMenuItem.Text = "Удалить";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Вид метр. работ";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Дата отправки";
+            // 
             // Staff_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -584,7 +520,7 @@ namespace LazyStaff
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Radioactive Raccoon (v1.5.3 от 04/04/2025)";
+            this.Text = "Radioactive Raccoon (v1.5.4 от 27/02/2026)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -593,10 +529,6 @@ namespace LazyStaff
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -621,21 +553,14 @@ namespace LazyStaff
         private System.Windows.Forms.Label overdue_label;
         private System.Windows.Forms.Label sent_label;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton entranceControl_radioButton;
-        private System.Windows.Forms.RadioButton repairs_radioButton;
-        private System.Windows.Forms.RadioButton test_radioButton;
         private System.Windows.Forms.Label storage_label;
         private System.Windows.Forms.Label seporatingLine_label;
         private System.Windows.Forms.Button ExportToXml_button;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label allDevides_label;
-        private System.Windows.Forms.Button Setting_button;
         private System.Windows.Forms.Label notgan_label;
         private System.Windows.Forms.Label gan_label;
         private System.Windows.Forms.Label seporatingLine_label3;
-        private System.Windows.Forms.Label Admin_Label;
-        private System.Windows.Forms.Integration.ElementHost ToggleHost;
-        private Toggle ToggleSwitch;
         private System.Windows.Forms.StatusStrip StatusPanel;
         private System.Windows.Forms.ToolStripStatusLabel SyncStatusLabel_StatusPanel;
         private System.Windows.Forms.ToolStripStatusLabel CountStatusLabel_StatusPanel;
@@ -649,9 +574,10 @@ namespace LazyStaff
         private ToolStripMenuItem separateToolStripMenuItem;
         private ToolStripMenuItem addToolStripMenuItem;
         private DateTimePicker printDateTimePicker;
-        private SplitContainer splitContainer2;
+        private ComboBox metrologicalControlType_ComboBox;
+        private Label label2;
+        private Label label1;
 
-        public Toggle ToggleSwitch1 { get => ToggleSwitch; set => ToggleSwitch = value; }
         public Label Conservation_label { get => conservation_label; set => conservation_label = value; }
         public Label Sent_label { get => sent_label; set => sent_label = value; }
         public Label Overdue_label { get => overdue_label; set => overdue_label = value; }
