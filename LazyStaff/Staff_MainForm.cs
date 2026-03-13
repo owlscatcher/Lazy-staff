@@ -29,8 +29,6 @@ namespace LazyStaff
         public int index, state;
         public bool gan_state;
         public static bool administration = true;
-        public string rbMetrologicalControlTypeName = string.Empty;
-        public string rbRepairTypeName = string.Empty;
 
         ListMarking listMarking = new ListMarking();
         Search Search = new Search();
@@ -112,9 +110,6 @@ namespace LazyStaff
             cbRepairType.DataSource = repairTypeSet.ToList();
             cbRepairType.DisplayMember = "Key";
             cbRepairType.ValueMember = "Value";
-
-            rbMetrologicalControlTypeName = rbMetrologicalControlType.Name;
-            rbRepairTypeName = rbRepairType.Name;
         }
 
         //-----------------------------------
@@ -616,8 +611,8 @@ namespace LazyStaff
         private void WorkTypesRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             var clickedButon = (RadioButton)sender;
-            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlTypeName;
-            bool isRepairTypeClicked = clickedButon.Name == rbRepairTypeName;
+            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlType.Name;
+            bool isRepairTypeClicked = clickedButon.Name == rbRepairType.Name;
 
             cbRepairType.Enabled = isRepairTypeClicked;
             cbMetrologicalControlType.Enabled = isMetrologicalControlTypeClicked;

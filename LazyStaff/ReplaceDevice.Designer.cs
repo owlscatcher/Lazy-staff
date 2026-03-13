@@ -45,8 +45,8 @@
             this.Replace_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.typeOfWorkPanel = new System.Windows.Forms.Panel();
             this.manualDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.typeOfWorkPanel = new System.Windows.Forms.Panel();
             this.rbRepairType = new System.Windows.Forms.RadioButton();
             this.cbMetrologicalControlType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -171,19 +171,19 @@
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.dataGridView2.Location = new System.Drawing.Point(12, 126);
+            this.dataGridView2.Location = new System.Drawing.Point(12, 138);
             this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(776, 295);
+            this.dataGridView2.Size = new System.Drawing.Size(776, 283);
             this.dataGridView2.TabIndex = 1;
             // 
             // search_textBox
             // 
             this.search_textBox.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.search_textBox.Location = new System.Drawing.Point(12, 100);
+            this.search_textBox.Location = new System.Drawing.Point(12, 112);
             this.search_textBox.Name = "search_textBox";
             this.search_textBox.Size = new System.Drawing.Size(776, 20);
             this.search_textBox.TabIndex = 2;
@@ -227,6 +227,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройка печати:";
             // 
+            // manualDate_dateTimePicker
+            // 
+            this.manualDate_dateTimePicker.Location = new System.Drawing.Point(154, 40);
+            this.manualDate_dateTimePicker.Name = "manualDate_dateTimePicker";
+            this.manualDate_dateTimePicker.Size = new System.Drawing.Size(233, 20);
+            this.manualDate_dateTimePicker.TabIndex = 8;
+            this.manualDate_dateTimePicker.Value = new System.DateTime(2019, 5, 31, 7, 49, 8, 0);
+            this.manualDate_dateTimePicker.ValueChanged += new System.EventHandler(this.ManualDate_dateTimePicker_ValueChanged);
+            // 
             // typeOfWorkPanel
             // 
             this.typeOfWorkPanel.Controls.Add(this.rbRepairType);
@@ -240,21 +249,12 @@
             this.typeOfWorkPanel.Size = new System.Drawing.Size(479, 29);
             this.typeOfWorkPanel.TabIndex = 20;
             // 
-            // manualDate_dateTimePicker
-            // 
-            this.manualDate_dateTimePicker.Location = new System.Drawing.Point(154, 40);
-            this.manualDate_dateTimePicker.Name = "manualDate_dateTimePicker";
-            this.manualDate_dateTimePicker.Size = new System.Drawing.Size(233, 20);
-            this.manualDate_dateTimePicker.TabIndex = 8;
-            this.manualDate_dateTimePicker.Value = new System.DateTime(2019, 5, 31, 7, 49, 8, 0);
-            this.manualDate_dateTimePicker.ValueChanged += new System.EventHandler(this.ManualDate_dateTimePicker_ValueChanged);
-            // 
             // rbRepairType
             // 
             this.rbRepairType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rbRepairType.AutoSize = true;
-            this.rbRepairType.Location = new System.Drawing.Point(239, 3);
+            this.rbRepairType.Location = new System.Drawing.Point(240, 3);
             this.rbRepairType.Name = "rbRepairType";
             this.rbRepairType.Size = new System.Drawing.Size(14, 13);
             this.rbRepairType.TabIndex = 17;
@@ -267,7 +267,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbMetrologicalControlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMetrologicalControlType.FormattingEnabled = true;
-            this.cbMetrologicalControlType.Location = new System.Drawing.Point(120, 0);
+            this.cbMetrologicalControlType.Location = new System.Drawing.Point(121, 0);
             this.cbMetrologicalControlType.Name = "cbMetrologicalControlType";
             this.cbMetrologicalControlType.Size = new System.Drawing.Size(113, 21);
             this.cbMetrologicalControlType.TabIndex = 16;
@@ -277,7 +277,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 0);
+            this.label2.Location = new System.Drawing.Point(26, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 13);
             this.label2.TabIndex = 15;
@@ -289,7 +289,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Enabled = false;
-            this.label3.Location = new System.Drawing.Point(258, 3);
+            this.label3.Location = new System.Drawing.Point(260, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 13);
             this.label3.TabIndex = 19;
@@ -316,7 +316,7 @@
             this.cbRepairType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRepairType.Enabled = false;
             this.cbRepairType.FormattingEnabled = true;
-            this.cbRepairType.Location = new System.Drawing.Point(353, 0);
+            this.cbRepairType.Location = new System.Drawing.Point(350, 0);
             this.cbRepairType.Name = "cbRepairType";
             this.cbRepairType.Size = new System.Drawing.Size(113, 21);
             this.cbRepairType.TabIndex = 18;

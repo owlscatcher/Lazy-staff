@@ -3,6 +3,7 @@ using LazyStaff.Helpers;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -14,8 +15,7 @@ namespace LazyStaff
     {
         Classes.Search Search = new Classes.Search();
         string date = DateTime.Now.ToString("dd.MM.yyyy");
-        public string rbMetrologicalControlTypeName = string.Empty;
-        public string rbRepairTypeName = string.Empty;
+        string personnelNumberOfRowToReplace = string.Empty;
 
         public ReplaceDevice()
         {
@@ -62,9 +62,6 @@ namespace LazyStaff
             cbRepairType.DataSource = repairTypeSet.ToList();
             cbRepairType.DisplayMember = "Key";
             cbRepairType.ValueMember = "Value";
-
-            rbMetrologicalControlTypeName = rbMetrologicalControlType.Name;
-            rbRepairTypeName = rbRepairType.Name;
         }
 
         private void ReplaceDevice_Load(object sender, EventArgs e)
@@ -87,7 +84,13 @@ namespace LazyStaff
             dataGridView1.CurrentRow.Cells[10].Value = main.state;
             dataGridView1.CurrentRow.Cells[9].Value = main.gan_state;
 
-            dataGridView2.DataSource = main.dataTable;
+            personnelNumberOfRowToReplace = main.personnelNumber;
+
+            //dataGridView2.DataSource = main.dataTable;
+
+            DataView dv = new DataView(main.dataTable);
+            dataGridView2.DataSource = dv;
+            dv.RowFilter = $"[personnelNumber] <> '{main.personnelNumber}'";
 
             // настройка вида отображаемых колонок           0 - Таб. №, 1 - Завод. №, 2 - Тип устройства, 3 - Год выпуска, 4 - Дата отправки, 5 - Дата ГП, 6 - Расположение, 7 - Продление
             dataGridView2.Columns[0].HeaderText = "Таб. №";
@@ -164,6 +167,11 @@ namespace LazyStaff
         {
             if (dataGridView2.SelectedRows.Count != 0)
             {
+                if (personnelNumberOfRowToReplace.ToLower() == dataGridView2.CurrentRow.Cells[0].Value.ToString().ToLower())
+                {
+                    MessageBox.Show("Нельзя заменить устройство на само себя. Выберите другое устройство для замены.");
+                    return;
+                }
                 Staff_MainForm main = this.Owner as Staff_MainForm;
 
                 var connection = new NpgsqlConnection(main.connectionString);
@@ -305,8 +313,8 @@ namespace LazyStaff
         private void WorkTypesRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             var clickedButon = (RadioButton)sender;
-            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlTypeName;
-            bool isRepairTypeClicked = clickedButon.Name == rbRepairTypeName;
+            bool isMetrologicalControlTypeClicked = clickedButon.Name == rbMetrologicalControlType.Name;
+            bool isRepairTypeClicked = clickedButon.Name == rbRepairType.Name;
 
             cbRepairType.Enabled = isRepairTypeClicked;
             cbMetrologicalControlType.Enabled = isMetrologicalControlTypeClicked;
