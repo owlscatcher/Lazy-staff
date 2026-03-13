@@ -1,8 +1,7 @@
-﻿using iTextSharp.text;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,6 +14,8 @@ using Npgsql;
 using System.ComponentModel;
 using System.Collections.Generic;
 using LazyStaff.Helpers;
+using LazyStaff.Models;
+using LazyStaff.Repositories;
 using System.Globalization;
 
 namespace LazyStaff
@@ -23,7 +24,8 @@ namespace LazyStaff
     {
         public DataSet dataSet = new DataSet();
         public DataTable dataTable = new DataTable();
-        public string password, querry, connectionString, tableName, personnelNumber,
+        private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
+        public string password, personnelNumber,
             factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo,
             solutionNumber, sentDate, verificationDate, help_serachTB = "Введите Табульный/Заводской номер или дату продления";
         public int index, state;
@@ -78,8 +80,6 @@ namespace LazyStaff
             progressBar1.Visible = false;
 
             // загрузка настроек 
-            connectionString = Settings.Default["connectionString"].ToString();
-            tableName = Settings.Default["tableName"].ToString();
             password = Settings.Default["password"].ToString();
 
             groupBox2.Enabled = true;
@@ -253,15 +253,7 @@ namespace LazyStaff
                 result = MessageBox.Show(message, caption, buttons);                                                            // Вывод диалогового окна
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    querry = "DELETE FROM " + tableName + " WHERE personnelNumber=" + id;
-
-                    var connection = new NpgsqlConnection(connectionString);
-                    var command = new NpgsqlCommand(querry, connection);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    connection.Dispose();
+                    _deviceRepository.Delete(int.Parse(id));
 
                     DataGridView_Load();
 
@@ -290,26 +282,22 @@ namespace LazyStaff
         //----------------------------------------------------------------------------
         public void DataGridView_Load()
         {
-            dataSet.Clear();                                                                                    // Очистили DataSet
-
-            var connection = new NpgsqlConnection(connectionString);
-            string querry = ($"SELECT * FROM {tableName} ORDER BY personnelnumber");                                                // запрос к sql db на получение строк
-            var dataAdapter = new NpgsqlDataAdapter(querry, connection);                          // создаем экземпляр dataAdapter для получения строк из sql db
+            dataSet.Clear();
 
             try
             {
-                connection.Open();
+                var devices = _deviceRepository.GetAll();
+                dataTable = DevicesToDataTable(devices);
             }
-            catch (SqlException)
+            catch (Npgsql.NpgsqlException)
             {
-                string message = "Не удалось подклюиться к базе данных. Открыть настройки?";                  // Формировани текста окна ошибки
+                string message = "Не удалось подклюиться к базе данных. Открыть настройки?";
                 string caption = "Ошибка";
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;                                            // Формирование кнопок Да/Нет
-                DialogResult result;                                                                            // В какую переменную вывести 
-                result = MessageBox.Show(message, caption, buttons);                                            // Вывод диалогового окна
-                if (result == System.Windows.Forms.DialogResult.Yes)                                            // Если нажмем кнопку Да
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    Options Option = new Options();                                                             // Открыть окно настроек
+                    Options Option = new Options();
                     Option.Owner = this;
                     Invoke((MethodInvoker)delegate
                     {
@@ -322,12 +310,8 @@ namespace LazyStaff
                     Application.Exit();
                     return;
                 }
-
+                return;
             }
-
-            dataAdapter.Fill(dataSet, "Monitor");                                                               // помещаем строки в dataSet, называем таблицу Monitor
-            dataTable = dataSet.Tables["Monitor"].Copy();
-            connection.Close();                                                                                 // закрываем соединение
 
             Invoke((MethodInvoker)delegate
             {
@@ -380,6 +364,41 @@ namespace LazyStaff
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
         }
 
+        private static DataTable DevicesToDataTable(IEnumerable<Device> devices)
+        {
+            var table = new DataTable();
+            table.Columns.Add("personnelnumber", typeof(int));
+            table.Columns.Add("factorynumber", typeof(int));
+            table.Columns.Add("devicetype", typeof(int));
+            table.Columns.Add("yearofissue", typeof(int));
+            table.Columns.Add("sentdate", typeof(DateTime));
+            table.Columns.Add("verificationdate", typeof(DateTime));
+            table.Columns.Add("devicelocation", typeof(string));
+            table.Columns.Add("verifiedto", typeof(DateTime));
+            table.Columns.Add("solutionnunber", typeof(string));
+            table.Columns.Add("gan", typeof(bool));
+            table.Columns.Add("state", typeof(int));
+            table.Columns.Add("dateoftechnicalinspection", typeof(DateTime));
+
+            foreach (var d in devices)
+            {
+                table.Rows.Add(
+                    d.Id,
+                    d.SerialId,
+                    d.DeviceTypeId,
+                    d.ReleaseYear,
+                    d.DateOfShipment == default ? (object)DBNull.Value : d.DateOfShipment,
+                    d.DateCheck == default ? (object)DBNull.Value : d.DateCheck,
+                    (object)d.Loaction ?? DBNull.Value,
+                    d.ValidTo == default ? (object)DBNull.Value : d.ValidTo,
+                    (object)d.Solution ?? DBNull.Value,
+                    d.IsGun,
+                    d.Status,
+                    d.DateOfTechnicalInspection == default ? (object)DBNull.Value : d.DateOfTechnicalInspection);
+            }
+            return table;
+        }
+
         //--------------------------------------------------------------
         // Метод для рботы с PDF файлом
         //--------------------------------------------------------------
@@ -403,31 +422,27 @@ namespace LazyStaff
 
                 PrintDeviceHelper.FillPdf(device);
 
-                // меняем статус устройства на "Отправлен" и изменяем дату отправки
+                int deviceId = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
+                Device dbDevice = _deviceRepository.GetById(deviceId);
+                if (dbDevice != null)
+                {
+                    dbDevice.DateOfShipment = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                    dbDevice.Loaction = "----";
+                    dbDevice.Status = 2;
+                    _deviceRepository.Update(dbDevice);
+                }
+
                 dataGridView1.CurrentRow.Cells[4].Value = date;
                 dataGridView1.CurrentRow.Cells[6].Value = "----";
                 dataGridView1.CurrentRow.Cells[10].Value = 2;
-                var connection = new NpgsqlConnection(connectionString);
-                var q1 = "UPDATE " + tableName + " SET sentDate=@sentDate, deviceLocation = '----', state= 2 WHERE personnelNumber= " + dataGridView1.CurrentRow.Cells[0].Value;
-                var command = new NpgsqlCommand(q1, connection);
-                command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
-                command.Parameters[0].Value = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-
-                try
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                    connection.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
             }
             catch (IOException)
             {
                 MessageBox.Show("Файл уже используется");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
             finally
             {

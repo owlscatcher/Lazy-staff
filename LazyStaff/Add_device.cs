@@ -1,11 +1,14 @@
-﻿using Npgsql;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
+using LazyStaff.Models;
+using LazyStaff.Repositories;
 
 namespace LazyStaff
 {
     public partial class Add_device : Form
     {
+        private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
         public int state, conservation, sent, overdue, storage;
         public bool gan_state;
 
@@ -59,39 +62,39 @@ namespace LazyStaff
                 return;
             }
 
-            var connection = new NpgsqlConnection(main.connectionString);
+            DateTime validTo;
+            DateTime.TryParse(verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text, CultureInfo.InvariantCulture, DateTimeStyles.None, out validTo);
 
-            string querry = "";
+            int deviceTypeId = 0;
+            if (deviceType_comboBox.SelectedValue != null)
+                int.TryParse(deviceType_comboBox.SelectedValue.ToString(), out deviceTypeId);
+            if (deviceTypeId == 0)
+                int.TryParse(deviceType_comboBox.Text, out deviceTypeId);
 
-            // разрешение конфликта пустых строк DateTime и ms sql 
-            if (!sentDate_dateTimePicker.Checked && !verificationDate_dateTimePicker.Checked)           // если отсутствует дата в поле отрпавки и поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("INSERT INTO " + main.tableName + " (personnelNumber, factoryNumber, deviceType, yearOfIssue, sentDate, verificationDate, deviceLocation, verifiedTo, solutionNunber, gan, state) VALUES (" + personnelNumber_textBox.Text + ", '" + factoryNumber_textBox.Text + "', '" + deviceType_comboBox.Text + "', " + yearOfIssue_textBox.Text + ", NULL, NULL, '" + deviceLocation_textBox.Text + "', '" + verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text + "', '" + solutionNunber_textBox.Text + "', '" + gan_state +"', " + state + ")");
-            else if (!sentDate_dateTimePicker.Checked)                                                  // если отсутствует дата в поле отрпавки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("INSERT INTO " + main.tableName + " (personnelNumber, factoryNumber, deviceType, yearOfIssue, sentDate, verificationDate, deviceLocation, verifiedTo, solutionNunber, gan, state) VALUES (" + personnelNumber_textBox.Text + ", '" + factoryNumber_textBox.Text + "', '" + deviceType_comboBox.Text + "', " + yearOfIssue_textBox.Text + ", NULL, @verificationDate, '" + deviceLocation_textBox.Text + "', '" + verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text + "', '" + solutionNunber_textBox.Text + "', '" + gan_state + "', " + state + ")");
-            else if (!verificationDate_dateTimePicker.Checked)                                          // если отсутствует дата в поле Гос поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("INSERT INTO " + main.tableName + " (personnelNumber, factoryNumber, deviceType, yearOfIssue, sentDate, verificationDate, deviceLocation, verifiedTo, solutionNunber, gan, state) VALUES (" + personnelNumber_textBox.Text + ", '" + factoryNumber_textBox.Text + "', '" + deviceType_comboBox.Text + "', " + yearOfIssue_textBox.Text + ", @sentDate, NULL, '" + deviceLocation_textBox.Text + "', '" + verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text + "', '" + solutionNunber_textBox.Text + "', '" + gan_state + "', " + state + ")");
-            else if (sentDate_dateTimePicker.Checked && verificationDate_dateTimePicker.Checked)        // если дата есть в дрвух полях
-                querry = ("INSERT INTO " + main.tableName + " (personnelNumber, factoryNumber, deviceType, yearOfIssue, sentDate, verificationDate, deviceLocation, verifiedTo, solutionNunber, gan, state) VALUES (" + personnelNumber_textBox.Text + ", '" + factoryNumber_textBox.Text + "', '" + deviceType_comboBox.Text + "', " + yearOfIssue_textBox.Text + ", @sentDate, @verificationDate, '" + deviceLocation_textBox.Text + "', '" + verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text + "', '" + solutionNunber_textBox.Text + "', '" + gan_state + "', " + state + ")");
-
-            var command = new NpgsqlCommand(querry, connection);
-            command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
-            command.Parameters.Add("@verificationDate", NpgsqlTypes.NpgsqlDbType.Date);
-
-            command.Parameters[0].Value = sentDate_dateTimePicker.Value;
-            command.Parameters[1].Value = verificationDate_dateTimePicker.Value;
+            var device = new Device
+            {
+                Id = int.Parse(personnelNumber_textBox.Text),
+                SerialId = int.Parse(factoryNumber_textBox.Text),
+                DeviceTypeId = deviceTypeId,
+                ReleaseYear = int.Parse(yearOfIssue_textBox.Text),
+                DateOfShipment = sentDate_dateTimePicker.Checked ? sentDate_dateTimePicker.Value : default,
+                DateCheck = verificationDate_dateTimePicker.Checked ? verificationDate_dateTimePicker.Value : default,
+                Loaction = deviceLocation_textBox.Text ?? "",
+                ValidTo = validTo,
+                Solution = solutionNunber_textBox.Text ?? "",
+                IsGun = gan_state,
+                Status = state
+            };
 
             try
             {
-                connection.Open();
-                command.ExecuteNonQuery();
+                _deviceRepository.Add(device);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                return;
             }
-            
-            connection.Close();
-            connection.Dispose();
 
             main.DataGridView_Load();
 
