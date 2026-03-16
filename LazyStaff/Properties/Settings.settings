@@ -1,18 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LazyStaff.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="connectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Host=192.168.88.100;Username=arms;Password=U?QWrb.KMP7v$xdh;Database=arms_devices;</Value>
-    </Setting>
-    <Setting Name="tableName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">devices</Value>
-    </Setting>
-    <Setting Name="password" Type="System.String" Scope="User">
-      <Value Profile="(Default)">shieldadm</Value>
-    </Setting>
-    <Setting Name="admin" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

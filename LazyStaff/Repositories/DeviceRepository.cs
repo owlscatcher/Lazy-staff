@@ -66,8 +66,8 @@ namespace LazyStaff.Repositories
 
             var sql =
                 $"INSERT INTO {_tableName} " +
-                "(personnelnumber, factorynumber, devicetype, yearofissue, sentdate, verificationdate, devicelocation, verifiedto, solutionnunber, gan, state, dateoftechnicalinspection) " +
-                "VALUES (@personnelNumber, @factoryNumber, @deviceType, @yearOfIssue, @sentDate, @verificationDate, @deviceLocation, @verifiedTo, @solutionNumber, @gan, @state, @dateOfTechnicalInspection)";
+                "(personnelnumber, factorynumber, devicetype, yearofissue, sentdate, verificationdate, devicelocation, verifiedto, solutionnunber, gan, state, techdate, mc_interval) " +
+                "VALUES (@personnelNumber, @factoryNumber, @deviceType, @yearOfIssue, @sentDate, @verificationDate, @deviceLocation, @verifiedTo, @solutionNumber, @gan, @state, @techdate, @mc_interval)";
 
             using (var command = new NpgsqlCommand(sql, connection))
             {
@@ -94,7 +94,8 @@ namespace LazyStaff.Repositories
                 "solutionnunber = @solutionNumber, " +
                 "gan = @gan, " +
                 "state = @state, " +
-                "dateoftechnicalinspection = @dateOfTechnicalInspection " +
+                "techdate = @techdate, " +
+                "mc_interval = @mc_interval " +
                 "WHERE personnelnumber = @personnelNumber";
 
             using (var command = new NpgsqlCommand(sql, connection))
@@ -133,10 +134,12 @@ namespace LazyStaff.Repositories
             return new Device
             {
                 Id = reader.GetInt32(reader.GetOrdinal("personnelnumber")),
-                SerialId = reader.GetInt32(reader.GetOrdinal("factorynumber")),
-                DeviceTypeId = reader.GetInt32(reader.GetOrdinal("devicetype")),
+                SerialId = reader.GetString(reader.GetOrdinal("factorynumber")),
+                DeviceTypeName = reader.GetString(reader.GetOrdinal("devicetype")),
                 ReleaseYear = reader.GetInt32(reader.GetOrdinal("yearofissue")),
-                Loaction = reader.GetString(reader.GetOrdinal("devicelocation")),
+                Loaction = reader.IsDBNull(reader.GetOrdinal("devicelocation"))
+                    ? String.Empty
+                    : reader.GetString(reader.GetOrdinal("devicelocation")),
                 Status = reader.GetInt32(reader.GetOrdinal("state")),
                 DateOfShipment = reader.IsDBNull(reader.GetOrdinal("sentdate"))
                     ? DateTime.MinValue
@@ -145,15 +148,16 @@ namespace LazyStaff.Repositories
                     ? DateTime.MinValue
                     : reader.GetDateTime(reader.GetOrdinal("verificationdate")),
                 ValidTo = reader.IsDBNull(reader.GetOrdinal("verifiedto"))
-                    ? DateTime.MinValue
-                    : reader.GetDateTime(reader.GetOrdinal("verifiedto")),
+                    ? String.Empty
+                    : reader.GetString(reader.GetOrdinal("verifiedto")),
                 Solution = reader.IsDBNull(reader.GetOrdinal("solutionnunber"))
-                    ? null
+                    ? String.Empty
                     : reader.GetString(reader.GetOrdinal("solutionnunber")),
                 IsGun = !reader.IsDBNull(reader.GetOrdinal("gan")) && reader.GetBoolean(reader.GetOrdinal("gan")),
-                DateOfTechnicalInspection = reader.IsDBNull(reader.GetOrdinal("dateoftechnicalinspection"))
-                    ? DateTime.MinValue
-                    : reader.GetDateTime(reader.GetOrdinal("dateoftechnicalinspection"))
+                DateOfTechnicalInspection = reader.IsDBNull(reader.GetOrdinal("techdate"))
+                    ? String.Empty
+                    : reader.GetString(reader.GetOrdinal("techdate")),
+                MetrologicalControlInterval = reader.GetInt32(reader.GetOrdinal("mc_interval"))
             };
         }
 
@@ -161,7 +165,7 @@ namespace LazyStaff.Repositories
         {
             command.Parameters.AddWithValue("@personnelNumber", device.Id);
             command.Parameters.AddWithValue("@factoryNumber", device.SerialId);
-            command.Parameters.AddWithValue("@deviceType", device.DeviceTypeId);
+            command.Parameters.AddWithValue("@deviceType", device.DeviceTypeName);
             command.Parameters.AddWithValue("@yearOfIssue", device.ReleaseYear);
 
             command.Parameters.AddWithValue("@sentDate",
@@ -171,13 +175,14 @@ namespace LazyStaff.Repositories
             command.Parameters.AddWithValue("@deviceLocation",
                 string.IsNullOrWhiteSpace(device.Loaction) ? (object)DBNull.Value : device.Loaction);
             command.Parameters.AddWithValue("@verifiedTo",
-                device.ValidTo == DateTime.MinValue ? (object)DBNull.Value : device.ValidTo);
+                string.IsNullOrWhiteSpace(device.ValidTo) ? (object)DBNull.Value : device.ValidTo);
             command.Parameters.AddWithValue("@solutionNumber",
                 string.IsNullOrWhiteSpace(device.Solution) ? (object)DBNull.Value : device.Solution);
             command.Parameters.AddWithValue("@gan", device.IsGun);
             command.Parameters.AddWithValue("@state", device.Status);
-            command.Parameters.AddWithValue("@dateOfTechnicalInspection",
-                device.DateOfTechnicalInspection == DateTime.MinValue ? (object)DBNull.Value : device.DateOfTechnicalInspection);
+            command.Parameters.AddWithValue("@techdate",
+                string.IsNullOrWhiteSpace(device.DateOfTechnicalInspection) ? (object)DBNull.Value : device.DateOfTechnicalInspection);
+            command.Parameters.AddWithValue("@mc_interval", device.MetrologicalControlInterval);
         }
     }
 }

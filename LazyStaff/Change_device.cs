@@ -50,11 +50,6 @@ namespace LazyStaff
         //-------------------------------------------
         private void Change_dev_Load(object sender, EventArgs e)
         {
-            personnelNumber_textBox.Enabled = false;
-            factoryNumber_textBox.Enabled = false;
-            deviceType_comboBox.Enabled = false;
-            yearOfIssue_textBox.Enabled = false;
-            
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
             personnelNumber_textBox.Text = main.personnelNumber;
@@ -161,13 +156,12 @@ namespace LazyStaff
                 gan_state = false;
 
             verefiedToSumm = "" + verifiedToQuarter_comboBox.Text + "" + verifiedToYear_comboBox.Text + "";
-            DateTime validTo = default;
-            DateTime.TryParse(verefiedToSumm, CultureInfo.InvariantCulture, DateTimeStyles.None, out validTo);
+            string validTo = verefiedToSumm;
 
             if (DeviceToEdit == null) return;
 
-            DeviceToEdit.SerialId = int.TryParse(factoryNumber_textBox.Text, out var serialId) ? serialId : DeviceToEdit.SerialId;
-            DeviceToEdit.DeviceTypeId = int.TryParse(deviceType_comboBox.Text, out var typeId) ? typeId : DeviceToEdit.DeviceTypeId;
+            DeviceToEdit.SerialId = factoryNumber_textBox.Text;
+            DeviceToEdit.DeviceTypeName = deviceType_comboBox.Text;
             DeviceToEdit.ReleaseYear = int.TryParse(yearOfIssue_textBox.Text, out var year) ? year : DeviceToEdit.ReleaseYear;
             DeviceToEdit.DateOfShipment = sentDate_dateTimePicker.Checked ? sentDate_dateTimePicker.Value : default;
             DeviceToEdit.DateCheck = verificationDate_dateTimePicker.Checked ? verificationDate_dateTimePicker.Value : default;

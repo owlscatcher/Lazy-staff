@@ -38,7 +38,7 @@ namespace LazyStaff.Classes
                     bool match = (device.Id.ToString().Contains(search)) ||
                                 (device.SerialId.ToString().Contains(search)) ||
                                 (device.Loaction != null && device.Loaction.Contains(search)) ||
-                                (device.ValidTo != default && device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture).Contains(search));
+                                (device.ValidTo != default && device.ValidTo.Contains(search));
                     gridView.Rows[i].Visible = match;
                 }
             }

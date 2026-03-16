@@ -15,6 +15,18 @@ namespace LazyStaff
         public Add_device()
         {
             InitializeComponent();
+            personnelNumber_textBox.Text = "0";
+            factoryNumber_textBox.Text = "0";
+        }
+
+        private void Cancel_button_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void PersonnelNumber_textBox_TextChanged(object sender, EventArgs e)
+        {
+            ValidateNumericFill(sender);
         }
 
         private void storage_checkBox_CheckStateChanged(object sender, EventArgs e)
@@ -62,20 +74,14 @@ namespace LazyStaff
                 return;
             }
 
-            DateTime validTo;
-            DateTime.TryParse(verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text, CultureInfo.InvariantCulture, DateTimeStyles.None, out validTo);
-
-            int deviceTypeId = 0;
-            if (deviceType_comboBox.SelectedValue != null)
-                int.TryParse(deviceType_comboBox.SelectedValue.ToString(), out deviceTypeId);
-            if (deviceTypeId == 0)
-                int.TryParse(deviceType_comboBox.Text, out deviceTypeId);
+            string validTo;
+            validTo = verifiedTo_textBox.Text + " " + verifiedToY_textBox.Text;
 
             var device = new Device
             {
                 Id = int.Parse(personnelNumber_textBox.Text),
-                SerialId = int.Parse(factoryNumber_textBox.Text),
-                DeviceTypeId = deviceTypeId,
+                SerialId = factoryNumber_textBox.Text,
+                DeviceTypeName = deviceType_comboBox.SelectedText,
                 ReleaseYear = int.Parse(yearOfIssue_textBox.Text),
                 DateOfShipment = sentDate_dateTimePicker.Checked ? sentDate_dateTimePicker.Value : default,
                 DateCheck = verificationDate_dateTimePicker.Checked ? verificationDate_dateTimePicker.Value : default,
@@ -107,6 +113,25 @@ namespace LazyStaff
             result = MessageBox.Show(message, caption, buttons);                                            // Вывод диалогового окна
             if (result == System.Windows.Forms.DialogResult.OK)
                 Close();
+        }
+
+        private void ValidateNumericFill(object sender)
+        {
+            var input = sender as TextBox;
+            bool successParse;
+
+            try
+            {
+                successParse = int.TryParse(input.Text, out int _validator);
+
+                if (!successParse)
+                    throw new ArgumentOutOfRangeException(paramName: "input", actualValue: input.Text, message: "Недопустимое значение");
+            }
+            catch (ArgumentOutOfRangeException exc)
+            {
+                MessageBox.Show(exc.Message);
+                input.Text = "0";
+            }
         }
     }
 }

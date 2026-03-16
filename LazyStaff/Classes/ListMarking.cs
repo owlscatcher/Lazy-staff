@@ -8,11 +8,7 @@ namespace LazyStaff.Classes
     class ListMarking
     {
         /// <summary>Минимальное число дней с поверки, чтобы подсветить "готовится к отправке" (за 30 дней до года).</summary>
-        private const int DaysBeforeExpiryToPrepareMin = 335;
-        /// <summary>Число дней с поверки = 1 год — граница "готовится к отправке".</summary>
-        private const int DaysOneYear = 365;
-        /// <summary>Число дней с поверки, начиная с которого прибор считается просроченным.</summary>
-        private const int DaysOverdueThreshold = 366;
+        private const int DaysBeforeExpiryToPrepareMin = 30;
 
         private const string ColorWhite = "#FFFFFF";
         private const string ColorOverdue = "#B40404";
@@ -46,15 +42,17 @@ namespace LazyStaff.Classes
                 if (isExcludedFromExpiryCheck || device.DateCheck == default)
                     continue;
 
-                int days = (int)currentDate.Subtract(device.DateCheck.Date).TotalDays;
-
-                if (days >= DaysBeforeExpiryToPrepareMin && days <= DaysOneYear)
+                var monthLength = 30;
+                var nextMcDate = device.DateCheck.AddDays((device.MetrologicalControlInterval * monthLength) + 5);
+                int days = (int)nextMcDate.Subtract(currentDate).TotalDays;
+                
+                if (days <= DaysBeforeExpiryToPrepareMin)
                 {
                     bool isOnStorage = device.Status == (int)Status.InStock || device.Status == (int)Status.PreparingForSendAndInStock;
                     device.Status = isOnStorage ? (int)Status.PreparingForSendAndInStock : (int)Status.PreparingForSend;
                     dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorPreparingForSend);
                 }
-                else if (days >= DaysOverdueThreshold)
+                else if (days <= 0)
                 {
                     bool isOnStorage = device.Status == (int)Status.InStock || device.Status == (int)Status.OverdueAndInStock;
                     device.Status = isOnStorage ? (int)Status.OverdueAndInStock : (int)Status.Overdue;

@@ -1,5 +1,3 @@
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System;
 using System.Drawing;
 using System.IO;
@@ -9,7 +7,6 @@ using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
 using LazyStaff.Properties;
 using LazyStaff.Classes;
-using Npgsql;
 using System.Collections.Generic;
 using System.ComponentModel;
 using LazyStaff.Helpers;
@@ -57,16 +54,6 @@ namespace LazyStaff
         }
 
         //-----------------------------------
-        // кнопка НАСТРОЙКИ
-        //-----------------------------------
-        private void Setting_button_Click(object sender, EventArgs e)
-        {
-            Options Option = new Options();                                                             // Открыть окно настроек
-            Option.Owner = this;
-            Option.Show();
-        }
-
-        //-----------------------------------
         // Инициализация
         //-----------------------------------
         public Staff_MainForm()
@@ -82,10 +69,6 @@ namespace LazyStaff
                 new object[] { true });
 
             progressBar1.Visible = false;
-
-            // загрузка настроек 
-            password = Settings.Default["password"].ToString();
-
             groupBox2.Enabled = true;
             printDateTimePicker.Checked = true;
 
@@ -138,22 +121,17 @@ namespace LazyStaff
         //---------------------------------
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration != true)
-            {
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-                return;
-            }
             var device = CurrentDevice;
             if (device == null) return;
 
             personnelNumber = device.Id.ToString();
             factoryNumber = device.SerialId.ToString();
-            deviceType = device.DeviceTypeId.ToString();
+            deviceType = device.DeviceTypeName.ToString();
             yearOfIssue = device.ReleaseYear.ToString();
             sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             deviceLocation = device.Loaction;
-            verifiedTo = device.ValidTo == default ? null : device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            verifiedTo = device.ValidTo;
             solutionNumber = device.Solution;
             state = device.Status;
             gan_state = device.IsGun;
@@ -177,12 +155,12 @@ namespace LazyStaff
 
             personnelNumber = device.Id.ToString();
             factoryNumber = device.SerialId.ToString();
-            deviceType = device.DeviceTypeId.ToString();
+            deviceType = device.DeviceTypeName.ToString();
             yearOfIssue = device.ReleaseYear.ToString();
             sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             deviceLocation = device.Loaction;
-            verifiedTo = device.ValidTo == default ? null : device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            verifiedTo = device.ValidTo;
             solutionNumber = device.Solution;
             state = device.Status;
             gan_state = device.IsGun;
@@ -296,7 +274,7 @@ namespace LazyStaff
             var cols = dataGridView1.Columns;
             if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; cols["Id"].DisplayIndex = 0; }
             if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; cols["SerialId"].DisplayIndex = 1; }
-            if (cols["DeviceTypeId"] != null) { cols["DeviceTypeId"].HeaderText = "Тип устройства"; cols["DeviceTypeId"].MinimumWidth = 40; cols["DeviceTypeId"].DisplayIndex = 2; }
+            if (cols["DeviceTypeName"] != null) { cols["DeviceTypeName"].HeaderText = "Тип устройства"; cols["DeviceTypeName"].MinimumWidth = 40; cols["DeviceTypeName"].DisplayIndex = 2; }
             if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; cols["ReleaseYear"].DisplayIndex = 3; }
             if (cols["DateOfShipment"] != null) { cols["DateOfShipment"].HeaderText = "Дата отправки"; cols["DateOfShipment"].DisplayIndex = 4; }
             if (cols["DateCheck"] != null) { cols["DateCheck"].HeaderText = "Дата ГП"; cols["DateCheck"].DisplayIndex = 5; }
@@ -328,7 +306,7 @@ namespace LazyStaff
                 {
                     TabelNumber = device.Id.ToString(),
                     SerialNumber = device.SerialId.ToString(),
-                    Type = device.DeviceTypeId.ToString(),
+                    Type = device.DeviceTypeName.ToString(),
                     YearOfRelease = device.ReleaseYear.ToString(),
                     DateToPrint = date,
                     IsMetrologicalControlType = rbMetrologicalControlType.Checked,
@@ -465,14 +443,14 @@ namespace LazyStaff
                     if (d == null) continue;
                     workSheet.Cells[rowExcel, 1] = d.Id;
                     workSheet.Cells[rowExcel, 2] = d.SerialId;
-                    workSheet.Cells[rowExcel, 3] = d.DeviceTypeId;
+                    workSheet.Cells[rowExcel, 3] = d.DeviceTypeName;
                     workSheet.Cells[rowExcel, 4] = d.ReleaseYear;
                     workSheet.Cells[rowExcel, 5] = d.DateOfShipment == default ? "" : d.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
                     workSheet.Cells[rowExcel, 6] = d.DateCheck == default ? "" : d.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
                     workSheet.Cells[rowExcel, 7] = d.Loaction ?? "";
-                    workSheet.Cells[rowExcel, 8] = d.ValidTo == default ? "" : d.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    workSheet.Cells[rowExcel, 8] = d.ValidTo ?? "";
                     workSheet.Cells[rowExcel, 9] = d.Solution ?? "";
-                    workSheet.Cells[rowExcel, 10] = d.DateOfTechnicalInspection == default ? "" : d.DateOfTechnicalInspection.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    workSheet.Cells[rowExcel, 10] = d.DateOfTechnicalInspection ?? "";
                     rowExcel++;
                     visibleCount++;
                 }

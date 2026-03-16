@@ -1,13 +1,10 @@
 using LazyStaff.Properties;
-using NLog;
 using System;
 
 namespace LazyStaff.Helpers
 {
     static class SettingsVariable
     {
-        static private Logger logger = LogManager.GetCurrentClassLogger();
-
         public static void SetValue(string name, object value)
         {
             Settings.Default[name] = value;
@@ -27,7 +24,6 @@ namespace LazyStaff.Helpers
             }
             catch (EnvirovmentVariableException ex)
             {
-                logger.Error(ex);
                 return null;
             }
         }

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -93,7 +92,7 @@ namespace LazyStaff
             var cols = grid.Columns;
             if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; }
             if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; }
-            if (cols["DeviceTypeId"] != null) { cols["DeviceTypeId"].HeaderText = "Тип устройства"; cols["DeviceTypeId"].MinimumWidth = 40; }
+            if (cols["DeviceTypeName"] != null) { cols["DeviceTypeName"].HeaderText = "Тип устройства"; cols["DeviceTypeName"].MinimumWidth = 40; }
             if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; }
             if (cols["DateOfShipment"] != null) cols["DateOfShipment"].HeaderText = "Дата отправки";
             if (cols["DateCheck"] != null) cols["DateCheck"].HeaderText = "Дата ГП";
@@ -187,7 +186,7 @@ namespace LazyStaff
                     {
                         TabelNumber = _deviceToReplace.Id.ToString(),
                         SerialNumber = _deviceToReplace.SerialId.ToString(),
-                        Type = _deviceToReplace.DeviceTypeId.ToString(),
+                        Type = _deviceToReplace.DeviceTypeName.ToString(),
                         YearOfRelease = _deviceToReplace.ReleaseYear.ToString(),
                         DateToPrint = date,
                         IsMetrologicalControlType = rbMetrologicalControlType.Checked,

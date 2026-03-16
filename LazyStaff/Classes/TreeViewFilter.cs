@@ -30,7 +30,7 @@ namespace LazyStaff.Classes
                 ApplyFilter(staff_MainForm, grid, row =>
                 {
                     var device = row.DataBoundItem as Device;
-                    return device != null && device.DeviceTypeId.ToString().Contains(selectedType);
+                    return device != null && device.DeviceTypeName.ToString().Contains(selectedType);
                 });
                 return;
             }

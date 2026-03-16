@@ -76,6 +76,7 @@
             this.cancel_button.TabIndex = 46;
             this.cancel_button.Text = "Отмена";
             this.cancel_button.UseVisualStyleBackColor = true;
+            this.cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
             // 
             // label9
             // 
@@ -170,6 +171,7 @@
             this.deviceType_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
             "альфа-радиометр",
             "БДАС-03П",
+            "БДАС-03И",
             "БДГБ-02И",
             "БДГБ-02П",
             "БДГБ-02П1",
@@ -182,26 +184,32 @@
             "БДМГ-41-03",
             "ДКГ-АТ2503",
             "ДКГ-АТ2503А",
+            "ДКГ-АТ2503В",
             "ДКС-96",
             "ДП-5В",
             "ДРГ-01Т",
             "ДРГ-05",
             "МКС-01Р",
             "МКС-АТ1117",
+            "МКС-АТ1117М",
             "ПСО2-2еМ",
             "ПСО2-4",
-            "УДАБ-03П",
-            "УДАС-02П",
-            "УДАС-03П",
+            "РМ-0.63 ГУЗ",
+            "РМ-2.5 ГУЗ",
+            "РМ-4 ГУЗ",
+            "УДАС-01И",
+            "УДАС-03И",
             "УДБН-02Р",
             "УИ-27",
             "УИМ2-2",
             "УИМ2-2Д",
+            "УИМ2-2И",
             "EPD-G"});
             this.deviceType_comboBox.FormattingEnabled = true;
             this.deviceType_comboBox.Items.AddRange(new object[] {
             "альфа-радиометр",
             "БДАС-03П",
+            "БДАС-03И",
             "БДГБ-02И",
             "БДГБ-02П",
             "БДГБ-02П1",
@@ -214,21 +222,26 @@
             "БДМГ-41-03",
             "ДКГ-АТ2503",
             "ДКГ-АТ2503А",
+            "ДКГ-АТ2503В",
             "ДКС-96",
             "ДП-5В",
             "ДРГ-01Т",
             "ДРГ-05",
             "МКС-01Р",
             "МКС-АТ1117",
+            "МКС-АТ1117М",
             "ПСО2-2еМ",
             "ПСО2-4",
-            "УДАБ-03П",
-            "УДАС-02П",
-            "УДАС-03П",
+            "РМ-0.63 ГУЗ",
+            "РМ-2.5 ГУЗ",
+            "РМ-4 ГУЗ",
+            "УДАС-01И",
+            "УДАС-03И",
             "УДБН-02Р",
             "УИ-27",
             "УИМ2-2",
             "УИМ2-2Д",
+            "УИМ2-2И",
             "EPD-G"});
             this.deviceType_comboBox.Location = new System.Drawing.Point(224, 25);
             this.deviceType_comboBox.Name = "deviceType_comboBox";
@@ -280,6 +293,7 @@
             this.personnelNumber_textBox.Name = "personnelNumber_textBox";
             this.personnelNumber_textBox.Size = new System.Drawing.Size(100, 20);
             this.personnelNumber_textBox.TabIndex = 24;
+            this.personnelNumber_textBox.TextChanged += new System.EventHandler(this.PersonnelNumber_textBox_TextChanged);
             // 
             // verifiedToY_textBox
             // 

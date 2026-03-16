@@ -22,17 +22,18 @@ namespace LazyStaff.Models
 	public class Device
 	{
         public int Id { get; set; }
-        public int SerialId { get; set; }
-        public int DeviceTypeId { get; set; }
+        public string SerialId { get; set; }
+        public string DeviceTypeName { get; set; }
         public int ReleaseYear { get; set; }
         public string Loaction { get; set; }
         public int Status { get; set; }
         public DateTime DateOfShipment { get; set; }
         public DateTime DateCheck { get; set; }
-        public DateTime ValidTo { get; set; }
+        public string ValidTo { get; set; }
         public string Solution { get; set; }
         public bool IsGun { get; set; }
-        public DateTime DateOfTechnicalInspection { get; set; }
+        public string DateOfTechnicalInspection { get; set; }
+        public int MetrologicalControlInterval { get; set; }
 
         public Device()
 		{

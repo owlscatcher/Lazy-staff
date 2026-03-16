@@ -22,54 +22,5 @@ namespace LazyStaff.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Host=192.168.88.100;Username=arms;Password=U?QWrb.KMP7v$xdh;Database=arms_devices" +
-            ";")]
-        public string connectionString {
-            get {
-                return ((string)(this["connectionString"]));
-            }
-            set {
-                this["connectionString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("devices")]
-        public string tableName {
-            get {
-                return ((string)(this["tableName"]));
-            }
-            set {
-                this["tableName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("shieldadm")]
-        public string password {
-            get {
-                return ((string)(this["password"]));
-            }
-            set {
-                this["password"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool admin {
-            get {
-                return ((bool)(this["admin"]));
-            }
-            set {
-                this["admin"] = value;
-            }
-        }
     }
 }

@@ -578,7 +578,7 @@ namespace LazyStaff
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Staff_MainForm";
-            this.Text = "Radioactive Raccoon (v1.5.4 от 27/02/2026)";
+            this.Text = "Radioactive Raccoon (v1.5.4.1 от 16/03/2026)";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.Staff_MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);

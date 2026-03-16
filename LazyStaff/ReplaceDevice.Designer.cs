@@ -71,18 +71,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.personnelNumber,
-            this.factoryNumber,
-            this.deviceType,
-            this.yearOfIssue,
-            this.sentDate,
-            this.verificationDate,
-            this.deviceLocation,
-            this.verifiedTo,
-            this.solutionNumber,
-            this.gan_state,
-            this.state});
             this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.Name = "dataGridView1";
@@ -91,74 +79,6 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(776, 94);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // personnelNumber
-            // 
-            this.personnelNumber.HeaderText = "Таб. №";
-            this.personnelNumber.Name = "personnelNumber";
-            this.personnelNumber.ReadOnly = true;
-            // 
-            // factoryNumber
-            // 
-            this.factoryNumber.HeaderText = "Завод. №";
-            this.factoryNumber.Name = "factoryNumber";
-            this.factoryNumber.ReadOnly = true;
-            // 
-            // deviceType
-            // 
-            this.deviceType.HeaderText = "Тип устройства";
-            this.deviceType.Name = "deviceType";
-            this.deviceType.ReadOnly = true;
-            // 
-            // yearOfIssue
-            // 
-            this.yearOfIssue.HeaderText = "Год выпуска";
-            this.yearOfIssue.Name = "yearOfIssue";
-            this.yearOfIssue.ReadOnly = true;
-            // 
-            // sentDate
-            // 
-            this.sentDate.HeaderText = "Дата отправки";
-            this.sentDate.Name = "sentDate";
-            this.sentDate.ReadOnly = true;
-            // 
-            // verificationDate
-            // 
-            this.verificationDate.HeaderText = "Дата ГП";
-            this.verificationDate.Name = "verificationDate";
-            this.verificationDate.ReadOnly = true;
-            // 
-            // deviceLocation
-            // 
-            this.deviceLocation.HeaderText = "Расположение";
-            this.deviceLocation.Name = "deviceLocation";
-            this.deviceLocation.ReadOnly = true;
-            // 
-            // verifiedTo
-            // 
-            this.verifiedTo.HeaderText = "Продление";
-            this.verifiedTo.Name = "verifiedTo";
-            this.verifiedTo.ReadOnly = true;
-            // 
-            // solutionNumber
-            // 
-            this.solutionNumber.HeaderText = "Тех. решение";
-            this.solutionNumber.Name = "solutionNumber";
-            this.solutionNumber.ReadOnly = true;
-            // 
-            // gan_state
-            // 
-            this.gan_state.HeaderText = "ГАН";
-            this.gan_state.Name = "gan_state";
-            this.gan_state.ReadOnly = true;
-            this.gan_state.Visible = false;
-            // 
-            // state
-            // 
-            this.state.HeaderText = "Состояние";
-            this.state.Name = "state";
-            this.state.ReadOnly = true;
-            this.state.Visible = false;
             // 
             // dataGridView2
             // 
