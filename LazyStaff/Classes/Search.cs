@@ -1,5 +1,8 @@
-﻿using System;
+using System;
+using System.Globalization;
 using System.Windows.Forms;
+using LazyStaff.Helpers;
+using LazyStaff.Models;
 
 namespace LazyStaff.Classes
 {
@@ -7,49 +10,45 @@ namespace LazyStaff.Classes
     {
         public void Start(Form currentForm, DataGridView gridView, TextBox search_textBox)
         {
-            ToolStripStatusLabel CountVisibleDevices_StatusLabel = null;
-            if (currentForm is Staff_MainForm)
-            {
-                currentForm = (Staff_MainForm)currentForm;
-                Staff_MainForm form = (Staff_MainForm)currentForm;
-                CountVisibleDevices_StatusLabel = form.CountVisibleDevices_StatusLabel1;
-            }
-            if (currentForm is ReplaceDevice)
-            {
-                currentForm = (ReplaceDevice)currentForm;
-                ReplaceDevice form = (ReplaceDevice)currentForm;
-                CountVisibleDevices_StatusLabel = null;
-            }
+            ToolStripStatusLabel countLabel = null;
+            if (currentForm is Staff_MainForm mainForm)
+                countLabel = mainForm.CountVisibleDevices_StatusLabel1;
 
+            string text = search_textBox.Text ?? "";
+            if (text == "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
+                text = "";
 
-            if (search_textBox.Text != "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
+            try
             {
-                try
+                gridView.CurrentCell = null;
+                string search = text.Trim();
+                for (int i = 0; i < gridView.Rows.Count; i++)
                 {
-                    gridView.CurrentCell = null;
-                    for (int i = 0; i < gridView.Rows.Count; i++)
+                    var device = gridView.Rows[i].DataBoundItem as Device;
+                    if (device == null)
                     {
-                        if ((gridView.Rows[i].Cells[0].Value.ToString().Contains(search_textBox.Text)) 
-                            || (gridView.Rows[i].Cells[1].Value.ToString().Contains(search_textBox.Text) 
-                            || (gridView.Rows[i].Cells[6].Value.ToString().Contains(search_textBox.Text) 
-                            || (gridView.Rows[i].Cells[7].Value.ToString().Contains(search_textBox.Text)))))            // Фильтр по Табельному номеру
-                            gridView.Rows[i].Visible = true;
-                        else
-                            gridView.Rows[i].Visible = false;
-
-                        if (search_textBox.Text == "")
-                        {
-                            gridView.Rows[i].Visible = true;
-                        }
+                        gridView.Rows[i].Visible = true;
+                        continue;
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.StackTrace);
+                    if (string.IsNullOrEmpty(search))
+                    {
+                        gridView.Rows[i].Visible = true;
+                        continue;
+                    }
+                    bool match = (device.Id.ToString().Contains(search)) ||
+                                (device.SerialId.ToString().Contains(search)) ||
+                                (device.Loaction != null && device.Loaction.Contains(search)) ||
+                                (device.ValidTo != default && device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture).Contains(search));
+                    gridView.Rows[i].Visible = match;
                 }
             }
-            if (CountVisibleDevices_StatusLabel != null)
-                CountVisibleDevices_StatusLabel.Text = ("Отображено приборов: " + gridView.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.StackTrace);
+            }
+
+            if (countLabel != null)
+                countLabel.Text = "Отображено приборов: " + gridView.Rows.GetRowCount(DataGridViewElementStates.Visible);
         }
     }
 }

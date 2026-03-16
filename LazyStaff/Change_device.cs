@@ -1,15 +1,24 @@
-﻿using Npgsql;
+using LazyStaff.Helpers;
+using LazyStaff.Models;
+using LazyStaff.Repositories;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace LazyStaff
 {
     public partial class Change_device : Form
     {
+        private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
+        private Classes.ListMarking listMarking = new Classes.ListMarking();
+
+        /// <summary>Устройство, которое редактируется (из коллекции главной формы).</summary>
+        public Device DeviceToEdit { get; set; }
+
         public int state;
         public bool gan_state;
         public string verifiedToQuarter, verifiedToYear, verefiedToSumm;
-        Classes.ListMarking listMarking = new Classes.ListMarking();
+
         public Change_device()
         {
             InitializeComponent();
@@ -54,15 +63,15 @@ namespace LazyStaff
             yearOfIssue_textBox.Text = main.yearOfIssue;
             deviceLocation_textBox.Text = main.deviceLocation;
 
-            // Если в БД даты NULL --> датаПикеры потухшие
+            // Если в БД даты NULL --> датаПикеры потухшие (парсим в инвариантной культуре)
             if (main.sentDate is null)
                 sentDate_dateTimePicker.Checked = false;
-            else
-                sentDate_dateTimePicker.Value = Convert.ToDateTime(main.sentDate);
+            else if (DateTime.TryParseExact(main.sentDate, Constants.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var sentDate))
+                sentDate_dateTimePicker.Value = sentDate;
             if (main.verificationDate is null)
                 verificationDate_dateTimePicker.Checked = false;
-            else
-                verificationDate_dateTimePicker.Value = Convert.ToDateTime(main.verificationDate);
+            else if (DateTime.TryParseExact(main.verificationDate, Constants.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var verifDate))
+                verificationDate_dateTimePicker.Value = verifDate;
 
             // разбиваем дату верификации на квартал и год
 
@@ -129,22 +138,22 @@ namespace LazyStaff
         {
             Staff_MainForm main = this.Owner as Staff_MainForm;
 
-            if (StateOverdue_radioButton.Checked == false && 
-                StateSend_radioButton.Checked == false && 
-                StateConservation_radioButton.Checked == false && 
+            if (StateOverdue_radioButton.Checked == false &&
+                StateSend_radioButton.Checked == false &&
+                StateConservation_radioButton.Checked == false &&
                 StateStorage_radioButton.Checked == false &&
                 StateNormal_radioButton.Checked == true)
-                state = 0;
+                state = (int)Status.Normal;
             if (StateOverdue_radioButton.Checked == true)
-                state = 1;
+                state = (int)Status.Overdue;
             if (StateSend_radioButton.Checked == true)
-                state = 2;
+                state = (int)Status.Sended;
             if (StateStorage_radioButton.Checked == true)
-                state = 3;
+                state = (int)Status.InStock;
             if (StateConservation_radioButton.Checked == true)
-                state = 4;
+                state = (int)Status.Canned;
             if (decommissioned_checkBox.Checked == true)
-                state = 8;
+                state = (int)Status.WrittenOff;
 
             if (gan_checkBox.Checked)
                 gan_state = true;
@@ -152,54 +161,25 @@ namespace LazyStaff
                 gan_state = false;
 
             verefiedToSumm = "" + verifiedToQuarter_comboBox.Text + "" + verifiedToYear_comboBox.Text + "";
+            DateTime validTo = default;
+            DateTime.TryParse(verefiedToSumm, CultureInfo.InvariantCulture, DateTimeStyles.None, out validTo);
 
-            var connection = new NpgsqlConnection(main.connectionString);
-            
-            string querry = "";
-            // разрешение конфликта пустых строк DateTime и ms sql 
-            if (!sentDate_dateTimePicker.Checked && !verificationDate_dateTimePicker.Checked)     // если отсутствует дата в поле отрпавки и поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
-            else if (!sentDate_dateTimePicker.Checked)                                            // если отсутствует дата в поле отрпавки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate= NULL, verificationDate=@verificationDate, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
-            else if (!verificationDate_dateTimePicker.Checked)                                    // если отсутствует дата в поле Гос поверки, пишем в базу NULL, иначе будет выставлена дата 01.01.1900
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate=@sentDate, verificationDate= NULL, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
-            else if (sentDate_dateTimePicker.Checked && verificationDate_dateTimePicker.Checked)     // если дата есть в дрвух полях
-                querry = ("UPDATE " + main.tableName + " SET factoryNumber= '" + factoryNumber_textBox.Text + "', deviceType= '" + deviceType_comboBox.Text + "', yearOfIssue= " + yearOfIssue_textBox.Text + ", sentDate=@sentDate, verificationDate=@verificationDate, deviceLocation= '" + deviceLocation_textBox.Text + "', verifiedTo= '" + verefiedToSumm + "', solutionNunber= '" + solutionNunber_textBox.Text + "', state= " + state + ", gan= '" + gan_state + "' WHERE personnelNumber= " + main.personnelNumber);
-            
-            var command = new NpgsqlCommand(querry, connection);
-            command.Parameters.Add("@sentDate", NpgsqlTypes.NpgsqlDbType.Date);
-            command.Parameters.Add("@verificationDate", NpgsqlTypes.NpgsqlDbType.Date);
+            if (DeviceToEdit == null) return;
 
-            command.Parameters[0].Value = sentDate_dateTimePicker.Value;
-            command.Parameters[1].Value = verificationDate_dateTimePicker.Value;
+            DeviceToEdit.SerialId = int.TryParse(factoryNumber_textBox.Text, out var serialId) ? serialId : DeviceToEdit.SerialId;
+            DeviceToEdit.DeviceTypeId = int.TryParse(deviceType_comboBox.Text, out var typeId) ? typeId : DeviceToEdit.DeviceTypeId;
+            DeviceToEdit.ReleaseYear = int.TryParse(yearOfIssue_textBox.Text, out var year) ? year : DeviceToEdit.ReleaseYear;
+            DeviceToEdit.DateOfShipment = sentDate_dateTimePicker.Checked ? sentDate_dateTimePicker.Value : default;
+            DeviceToEdit.DateCheck = verificationDate_dateTimePicker.Checked ? verificationDate_dateTimePicker.Value : default;
+            DeviceToEdit.Loaction = deviceLocation_textBox.Text ?? "";
+            DeviceToEdit.ValidTo = validTo;
+            DeviceToEdit.Solution = solutionNunber_textBox.Text ?? "";
+            DeviceToEdit.Status = state;
+            DeviceToEdit.IsGun = gan_state;
 
-
-            connection.Open();
-            command.ExecuteNonQuery();
-
-            // обновление записи в гриде
-            main.dataGridView1.CurrentRow.Cells[0].Value = personnelNumber_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[1].Value = factoryNumber_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[2].Value = deviceType_comboBox.Text;
-            main.dataGridView1.CurrentRow.Cells[3].Value = yearOfIssue_textBox.Text;
-            if (!sentDate_dateTimePicker.Checked)
-                main.dataGridView1.CurrentRow.Cells[4].Value = DBNull.Value;
-            else
-                main.dataGridView1.CurrentRow.Cells[4].Value = sentDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
-            if (!verificationDate_dateTimePicker.Checked)
-                main.dataGridView1.CurrentRow.Cells[5].Value = DBNull.Value;
-            else
-                main.dataGridView1.CurrentRow.Cells[5].Value = verificationDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
-            main.dataGridView1.CurrentRow.Cells[6].Value = deviceLocation_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[7].Value = verefiedToSumm;
-            main.dataGridView1.CurrentRow.Cells[8].Value = solutionNunber_textBox.Text;
-            main.dataGridView1.CurrentRow.Cells[10].Value = state;
-            main.dataGridView1.CurrentRow.Cells[9].Value = gan_state;
-
-            // Маркируем список
-
+            _deviceRepository.Update(DeviceToEdit);
+            main.DataGridView_Load();
             listMarking.Start(main);
-
             Close();
         }
     }

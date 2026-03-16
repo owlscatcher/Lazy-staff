@@ -1,8 +1,12 @@
-﻿using System;
+using System;
 
 namespace LazyStaff.Models
 {
-    enum Status
+    /// <summary>
+    /// Состояние прибора. Числовые значения хранятся в БД (колонка state) и в DataGridView (колонка 10).
+    /// Менять значения нельзя — должны совпадать с предыдущей реализацией и ListMarking.
+    /// </summary>
+    public enum Status
     {
         Normal = 0,
         Overdue = 1,

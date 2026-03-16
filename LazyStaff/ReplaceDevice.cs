@@ -1,6 +1,7 @@
 using LazyStaff.Classes;
 using LazyStaff.Helpers;
 using LazyStaff.Models;
+using System.Globalization;
 using LazyStaff.Repositories;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,9 @@ namespace LazyStaff
     public partial class ReplaceDevice : Form
     {
         private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
+        private Device _deviceToReplace;
         Classes.Search Search = new Classes.Search();
-        string date = DateTime.Now.ToString("dd.MM.yyyy");
+        string date = DateTime.Now.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
         string personnelNumberOfRowToReplace = string.Empty;
 
         public ReplaceDevice()
@@ -68,66 +70,40 @@ namespace LazyStaff
 
         private void ReplaceDevice_Load(object sender, EventArgs e)
         {
-            Staff_MainForm main = this.Owner as Staff_MainForm;
+            var main = Owner as Staff_MainForm;
+            if (main == null) return;
+
+            _deviceToReplace = main.CurrentDevice;
+            if (_deviceToReplace == null) return;
 
             manualDate_dateTimePicker.Value = DateTime.Now;
+            personnelNumberOfRowToReplace = _deviceToReplace.Id.ToString();
 
-            dataGridView1.Rows.Add();
+            dataGridView1.DataSource = new List<Device> { _deviceToReplace };
+            ConfigureDeviceGridColumns(dataGridView1);
 
-            dataGridView1.CurrentRow.Cells[0].Value = main.personnelNumber;
-            dataGridView1.CurrentRow.Cells[1].Value = main.factoryNumber;
-            dataGridView1.CurrentRow.Cells[2].Value = main.deviceType;
-            dataGridView1.CurrentRow.Cells[3].Value = main.yearOfIssue;
-            dataGridView1.CurrentRow.Cells[4].Value = main.sentDate;
-            dataGridView1.CurrentRow.Cells[5].Value = main.verificationDate;
-            dataGridView1.CurrentRow.Cells[6].Value = main.deviceLocation;
-            dataGridView1.CurrentRow.Cells[7].Value = main.verifiedTo;
-            dataGridView1.CurrentRow.Cells[8].Value = main.solutionNumber;
-            dataGridView1.CurrentRow.Cells[10].Value = main.state;
-            dataGridView1.CurrentRow.Cells[9].Value = main.gan_state;
-
-            personnelNumberOfRowToReplace = main.personnelNumber;
-
-            //dataGridView2.DataSource = main.dataTable;
-
-            DataView dv = new DataView(main.dataTable);
-            dataGridView2.DataSource = dv;
-            dv.RowFilter = $"[personnelNumber] <> '{main.personnelNumber}'";
-
-            // настройка вида отображаемых колонок           0 - Таб. №, 1 - Завод. №, 2 - Тип устройства, 3 - Год выпуска, 4 - Дата отправки, 5 - Дата ГП, 6 - Расположение, 7 - Продление
-            dataGridView2.Columns[0].HeaderText = "Таб. №";
-            dataGridView2.Columns[0].MinimumWidth = 30;
-
-            dataGridView2.Columns[1].HeaderText = "Завод. №";
-            dataGridView2.Columns[1].MinimumWidth = 30;
-
-            dataGridView2.Columns[2].HeaderText = "Тип устройства";
-            dataGridView2.Columns[2].MinimumWidth = 40;
-
-            dataGridView2.Columns[3].HeaderText = "Год выпуска";
-            dataGridView2.Columns[3].MinimumWidth = 40;
-
-            dataGridView2.Columns[4].HeaderText = "Дата отправки";
-
-            dataGridView2.Columns[5].HeaderText = "Дата ГП";
-
-            dataGridView2.Columns[6].HeaderText = "Расположение";
-            dataGridView2.Columns[6].MinimumWidth = 50;
-
-            dataGridView2.Columns[7].HeaderText = "Продление";
-            dataGridView2.Columns[7].MinimumWidth = 55;
-
-            dataGridView2.Columns[8].HeaderText = "Тех. решение";
-            dataGridView2.Columns[8].MinimumWidth = 60;
-
-            dataGridView2.Columns[9].HeaderText = "ГАН";
-            dataGridView2.Columns[9].MinimumWidth = 60;
-            dataGridView2.Columns[9].Visible = false;
-
-            dataGridView2.Columns[10].HeaderText = "Состояние";
-            dataGridView2.Columns[10].MinimumWidth = 60;
-            dataGridView2.Columns[10].Visible = false;
+            var otherDevices = main.Devices?.Where(d => d.Id != _deviceToReplace.Id).ToList() ?? new List<Device>();
+            dataGridView2.DataSource = otherDevices;
+            ConfigureDeviceGridColumns(dataGridView2);
         }
+
+        private static void ConfigureDeviceGridColumns(DataGridView grid)
+        {
+            if (grid.Columns.Count == 0) return;
+            var cols = grid.Columns;
+            if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; }
+            if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; }
+            if (cols["DeviceTypeId"] != null) { cols["DeviceTypeId"].HeaderText = "Тип устройства"; cols["DeviceTypeId"].MinimumWidth = 40; }
+            if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; }
+            if (cols["DateOfShipment"] != null) cols["DateOfShipment"].HeaderText = "Дата отправки";
+            if (cols["DateCheck"] != null) cols["DateCheck"].HeaderText = "Дата ГП";
+            if (cols["Loaction"] != null) { cols["Loaction"].HeaderText = "Расположение"; cols["Loaction"].MinimumWidth = 50; }
+            if (cols["ValidTo"] != null) { cols["ValidTo"].HeaderText = "Продление"; cols["ValidTo"].MinimumWidth = 55; }
+            if (cols["Solution"] != null) { cols["Solution"].HeaderText = "Тех. решение"; cols["Solution"].MinimumWidth = 60; }
+            if (cols["IsGun"] != null) { cols["IsGun"].HeaderText = "ГАН"; cols["IsGun"].Visible = false; }
+            if (cols["Status"] != null) { cols["Status"].HeaderText = "Состояние"; cols["Status"].Visible = false; }
+        }
+
         //------------------------------------
         // фильтр поиска в datagridview
         //------------------------------------
@@ -167,120 +143,72 @@ namespace LazyStaff
 
         private void Replace_button_Click(object sender, EventArgs e)
         {
-            if (dataGridView2.SelectedRows.Count != 0)
+            if (dataGridView2.SelectedRows.Count == 0)
             {
-                if (personnelNumberOfRowToReplace.ToLower() == dataGridView2.CurrentRow.Cells[0].Value.ToString().ToLower())
-                {
-                    MessageBox.Show("Нельзя заменить устройство на само себя. Выберите другое устройство для замены.");
-                    return;
-                }
-                Staff_MainForm main = this.Owner as Staff_MainForm;
-
-                // значения stage: 0 - норма (установлен, поверен), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервации, 5 - готовится к отправке
-                //                 6 - просрочен и на складе, 7 - готовится к отправке и на складе, 8 - списан
-
-                // dataGridView1.Rows[i].Cells[10].Value - stage (состояние прибора)
-                // dataGridView1.Rows[i].Cells[5].Value  - дата гос.поверки
-                // dataGridView1.Rows[i].Cells[6].Value - Расположение
-
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value) != "")
-                {
-                    dataGridView2.CurrentRow.Cells[6].Value = dataGridView1.CurrentRow.Cells[6].Value;
-
-                    dataGridView1.CurrentRow.Cells[4].Value = date;
-                    dataGridView1.CurrentRow.Cells[6].Value = "----";
-                    dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-
-                    int idSent = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
-                    int idReplacement = Convert.ToInt32(dataGridView2.CurrentRow.Cells[0].Value);
-                    Device deviceSent = _deviceRepository.GetById(idSent);
-                    Device deviceReplacement = _deviceRepository.GetById(idReplacement);
-                    if (deviceSent != null && deviceReplacement != null)
-                    {
-                        deviceSent.DateOfShipment = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                        deviceSent.Loaction = "----";
-                        deviceSent.Status = 2;
-                        _deviceRepository.Update(deviceSent);
-
-                        deviceReplacement.Loaction = Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) ?? "";
-                        deviceReplacement.Status = 0;
-                        _deviceRepository.Update(deviceReplacement);
-                    }
-
-                    dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                }
-                else
-                {
-                    string message = "Не указано расположение первого прибора. \nВсё равно внести изменения?";
-                    string caption = "Подтверждение:";
-                    MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-                    DialogResult result = MessageBox.Show(message, caption, buttons);
-                    if (result == System.Windows.Forms.DialogResult.OK)
-                    {
-                        dataGridView2.CurrentRow.Cells[6].Value = dataGridView1.CurrentRow.Cells[6].Value;
-
-                        dataGridView1.CurrentRow.Cells[4].Value = date;
-                        dataGridView1.CurrentRow.Cells[6].Value = "----";
-                        dataGridView1.CurrentRow.Cells[10].Value = 2;   // 2 - state (отправлен)
-
-                        int idSent = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
-                        int idReplacement = Convert.ToInt32(dataGridView2.CurrentRow.Cells[0].Value);
-                        Device deviceSent = _deviceRepository.GetById(idSent);
-                        Device deviceReplacement = _deviceRepository.GetById(idReplacement);
-                        if (deviceSent != null && deviceReplacement != null)
-                        {
-                            deviceSent.DateOfShipment = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                            deviceSent.Loaction = "----";
-                            deviceSent.Status = 2;
-                            _deviceRepository.Update(deviceSent);
-
-                            deviceReplacement.Loaction = Convert.ToString(dataGridView2.CurrentRow.Cells[6].Value) ?? "";
-                            deviceReplacement.Status = 0;
-                            _deviceRepository.Update(deviceReplacement);
-                        }
-
-                        dataGridView2.CurrentRow.Cells[10].Value = 0;   // 0 - state (установлен)
-                    }
-                    else
-                        return;
-                }
-
-                if (Print_chechBox.Checked)
-                {
-                    try
-                    {
-                        PrintDevice device = new PrintDevice
-                        {
-                            TabelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value),
-                            SerialNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value),
-                            Type = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value),
-                            YearOfRelease = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value),
-                            DateToPrint = date,
-                            IsMetrologicalControlType = rbMetrologicalControlType.Checked,
-                            IsRepairType = rbRepairType.Checked,
-                            McSelected = (MetrologicalControlType)cbMetrologicalControlType.SelectedValue,
-                            RepairSelected = (RepairType)cbRepairType.SelectedValue
-                        };
-
-                        PrintDeviceHelper.FillPdf(device);
-                    }
-                    catch (System.IO.IOException)
-                    {
-                        MessageBox.Show("Файл уже используется");
-                    }
-                    finally
-                    {
-                        main.PrintPdfFile();
-                    }
-                }
-
-                main.DataGridView_Load();
-                main.dataGridView1.Refresh();
-
-                Close();
-            }
-            else
                 MessageBox.Show("Выберите устройство из второй таблицы, которым требуется заменить");
+                return;
+            }
+
+            var deviceReplacement = dataGridView2.CurrentRow?.DataBoundItem as Device;
+            if (deviceReplacement == null) return;
+            if (_deviceToReplace == null) return;
+            if (deviceReplacement.Id == _deviceToReplace.Id)
+            {
+                MessageBox.Show("Нельзя заменить устройство на само себя. Выберите другое устройство для замены.");
+                return;
+            }
+
+            var main = Owner as Staff_MainForm;
+            if (main == null) return;
+
+            bool hasLocation = !string.IsNullOrWhiteSpace(_deviceToReplace.Loaction);
+            if (!hasLocation)
+            {
+                var result = MessageBox.Show("Не указано расположение первого прибора. \nВсё равно внести изменения?", "Подтверждение:", MessageBoxButtons.OKCancel);
+                if (result != DialogResult.OK) return;
+            }
+
+            string locationToAssign = _deviceToReplace.Loaction ?? "";
+
+            _deviceToReplace.DateOfShipment = DateTime.ParseExact(date, Constants.DateFormat, CultureInfo.InvariantCulture);
+            _deviceToReplace.Loaction = "----";
+            _deviceToReplace.Status = (int)Status.Sended;
+            _deviceRepository.Update(_deviceToReplace);
+
+            deviceReplacement.Loaction = locationToAssign;
+            deviceReplacement.Status = (int)Status.Normal;
+            _deviceRepository.Update(deviceReplacement);
+
+            if (Print_chechBox.Checked)
+            {
+                try
+                {
+                    var printDevice = new PrintDevice
+                    {
+                        TabelNumber = _deviceToReplace.Id.ToString(),
+                        SerialNumber = _deviceToReplace.SerialId.ToString(),
+                        Type = _deviceToReplace.DeviceTypeId.ToString(),
+                        YearOfRelease = _deviceToReplace.ReleaseYear.ToString(),
+                        DateToPrint = date,
+                        IsMetrologicalControlType = rbMetrologicalControlType.Checked,
+                        IsRepairType = rbRepairType.Checked,
+                        McSelected = (MetrologicalControlType)cbMetrologicalControlType.SelectedValue,
+                        RepairSelected = (RepairType)cbRepairType.SelectedValue
+                    };
+                    PrintDeviceHelper.FillPdf(printDevice);
+                }
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show("Файл уже используется");
+                }
+                finally
+                {
+                    main.PrintPdfFile();
+                }
+            }
+
+            main.DataGridView_Load();
+            Close();
         }
 
         private void Cancel_button_Click(object sender, EventArgs e)
@@ -296,20 +224,20 @@ namespace LazyStaff
             if (manualDate_checkBox.Checked)
             {
                 manualDate_dateTimePicker.Enabled = true;
-                date = manualDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
+                date = manualDate_dateTimePicker.Value.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             }
             else
             {
                 manualDate_dateTimePicker.Enabled = false;
-                date = DateTime.Now.ToString("dd.MM.yyyy");
+                date = DateTime.Now.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             }
         }
         private void ManualDate_dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             if (manualDate_checkBox.Checked)
-                date = manualDate_dateTimePicker.Value.ToString("dd.MM.yyyy");
+                date = manualDate_dateTimePicker.Value.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
             else
-                date = DateTime.Now.ToString("dd.MM.yyyy");
+                date = DateTime.Now.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
         }
 
         private void WorkTypesRadioButton_CheckedChanged(object sender, EventArgs e)

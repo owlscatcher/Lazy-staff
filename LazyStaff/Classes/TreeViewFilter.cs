@@ -1,169 +1,127 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
+using LazyStaff.Models;
 
 namespace LazyStaff.Classes
 {
     class TreeViewFilter
     {
+        private const int TreeIndexAll = 0;
+        private const int TreeIndexPreparing = 1;
+        private const int TreeIndexOverdue = 2;
+        private const int TreeIndexCanned = 3;
+        private const int TreeIndexSent = 4;
+        private const int TreeIndexStorage = 5;
+        private const int TreeIndexSpecial = 6;
+        private const int TreeIndexGan = 0;
+        private const int TreeIndexNotGan = 1;
+        private const int TreeIndexDecommissioned = 2;
+
+        private const int RootLevel = 0;
+
         public void Filter(Staff_MainForm staff_MainForm, int level, int index)
         {
-            if (level != 0)
+            DataGridView grid = staff_MainForm.dataGridView1;
+            TreeNodeCollection rootNodes = staff_MainForm.TreeView.Nodes;
+
+            if (level != RootLevel)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
+                string selectedType = staff_MainForm.TreeView.SelectedNode?.Text ?? "";
+                ApplyFilter(staff_MainForm, grid, row =>
                 {
-                    if (!staff_MainForm.dataGridView1.Rows[i].Cells[2].Value.ToString().Contains(staff_MainForm.TreeView.SelectedNode.Text.ToString()))
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                    var device = row.DataBoundItem as Device;
+                    return device != null && device.DeviceTypeId.ToString().Contains(selectedType);
+                });
+                return;
             }
 
-            //--------------------------------------------------------------------------------
-
-            //***************************
-            // Фильтры по типу устройств
-            //***************************
-            if (staff_MainForm.TreeView.Nodes[0].IsSelected)                                                             // Фильтр для всех
+            if (rootNodes[TreeIndexAll].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilter(staff_MainForm, grid, _ => true);
+                return;
             }
 
-            //**********************************
-            // Фильтр консервировнных устройств
-            //**********************************
-
-            // значения stage: 0 - норма (установлен, поверен | маркируется в default), 1 - просрочен, 2 - отправлен, 3 - на складе, 4 - консервация
-
-            if (staff_MainForm.TreeView.Nodes[3].IsSelected)
+            if (rootNodes[TreeIndexCanned].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 4)                 // где 1 - отправлен, 0 - нет
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Canned);
+                return;
             }
 
-            //********************************
-            // Фильтр готовящихся устройств
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[1].IsSelected)
+            if (rootNodes[TreeIndexPreparing].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 5 || Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 5 - Прибор готовится на отправку
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.PreparingForSend, (int)Status.PreparingForSendAndInStock);
+                return;
             }
 
-            //********************************
-            // Фильтр отправленных устройств
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[4].IsSelected)
+            if (rootNodes[TreeIndexSent].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 2)                // где 1 - отправлен, 0 - нет
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Sended);
+                return;
             }
 
-            //********************************
-            // Фильтр просроченных устройств
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[2].IsSelected)
+            if (rootNodes[TreeIndexOverdue].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 1 || Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 6)                // где 1 - отправлен, 0 - нет
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Overdue, (int)Status.OverdueAndInStock);
+                return;
             }
 
-            //********************************
-            // Фильтр устройств на складе
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[5].IsSelected)
+            if (rootNodes[TreeIndexStorage].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 3 || Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 6 || Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 7)                // где 1 - отправлен, 0 - нет
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.InStock, (int)Status.OverdueAndInStock, (int)Status.PreparingForSendAndInStock);
+                return;
             }
 
-            //********************************
-            // Фильтр устройств ГАН
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[6].Nodes[0].IsSelected)
+            TreeNodeCollection specialNodes = rootNodes[TreeIndexSpecial].Nodes;
+            if (specialNodes[TreeIndexGan].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToBoolean(staff_MainForm.dataGridView1.Rows[i].Cells[9].Value) == true)                       // где true - ГАН, false - не ГАН
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
-            }
-            //********************************
-            // Фильтр устройств не ГАН
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[6].Nodes[1].IsSelected)
-            {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToBoolean(staff_MainForm.dataGridView1.Rows[i].Cells[9].Value) == false)                       // где true - ГАН, false - не ГАН
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByGan(staff_MainForm, grid, isGan: true);
+                return;
             }
 
-            //********************************
-            // Фильтр списанных устройств
-            //********************************
-            if (staff_MainForm.TreeView.Nodes[6].Nodes[2].IsSelected)
+            if (specialNodes[TreeIndexNotGan].IsSelected)
             {
-                staff_MainForm.dataGridView1.CurrentCell = null;
-                for (int i = 0; i < staff_MainForm.dataGridView1.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(staff_MainForm.dataGridView1.Rows[i].Cells[10].Value) == 8)                            // где 8 - списан
-                        staff_MainForm.dataGridView1.Rows[i].Visible = true;
-                    else
-                        staff_MainForm.dataGridView1.Rows[i].Visible = false;
-                }
-                staff_MainForm.CountVisibleDevices_StatusLabel1.Text = ("Отображено приборов: " + staff_MainForm.dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible).ToString());
+                ApplyFilterByGan(staff_MainForm, grid, isGan: false);
+                return;
             }
+
+            if (specialNodes[TreeIndexDecommissioned].IsSelected)
+            {
+                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.WrittenOff);
+            }
+        }
+
+        private static void ApplyFilter(Staff_MainForm form, DataGridView grid, Func<DataGridViewRow, bool> isVisible)
+        {
+            grid.CurrentCell = null;
+            for (int i = 0; i < grid.Rows.Count; i++)
+                grid.Rows[i].Visible = isVisible(grid.Rows[i]);
+            UpdateVisibleCount(form, grid);
+        }
+
+        private static void ApplyFilterByStatus(Staff_MainForm form, DataGridView grid, params int[] allowedStatuses)
+        {
+            ApplyFilter(form, grid, row =>
+            {
+                var device = row.DataBoundItem as Device;
+                if (device == null) return false;
+                foreach (int s in allowedStatuses)
+                    if (device.Status == s) return true;
+                return false;
+            });
+        }
+
+        private static void ApplyFilterByGan(Staff_MainForm form, DataGridView grid, bool isGan)
+        {
+            ApplyFilter(form, grid, row =>
+            {
+                var device = row.DataBoundItem as Device;
+                return device != null && device.IsGun == isGan;
+            });
+        }
+
+        private static void UpdateVisibleCount(Staff_MainForm form, DataGridView grid)
+        {
+            form.CountVisibleDevices_StatusLabel1.Text = "Отображено приборов: " + grid.Rows.GetRowCount(DataGridViewElementStates.Visible);
         }
     }
 }

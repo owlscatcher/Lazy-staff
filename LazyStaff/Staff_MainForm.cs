@@ -1,7 +1,6 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -11,8 +10,8 @@ using ExcelDLL = Microsoft.Office.Interop.Excel;
 using LazyStaff.Properties;
 using LazyStaff.Classes;
 using Npgsql;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using LazyStaff.Helpers;
 using LazyStaff.Models;
 using LazyStaff.Repositories;
@@ -22,8 +21,7 @@ namespace LazyStaff
 {
     public partial class Staff_MainForm : Form
     {
-        public DataSet dataSet = new DataSet();
-        public DataTable dataTable = new DataTable();
+        private BindingList<Device> _devices = new BindingList<Device>();
         private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
         public string password, personnelNumber,
             factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo,
@@ -31,6 +29,12 @@ namespace LazyStaff
         public int index, state;
         public bool gan_state;
         public static bool administration = true;
+
+        /// <summary>Текущее выбранное устройство в гриде (источник данных — коллекция).</summary>
+        public Device CurrentDevice => dataGridView1.CurrentRow?.DataBoundItem as Device;
+
+        /// <summary>Коллекция устройств — единственный источник данных для грида.</summary>
+        public IList<Device> Devices => _devices;
 
         ListMarking listMarking = new ListMarking();
         Search Search = new Search();
@@ -134,80 +138,57 @@ namespace LazyStaff
         //---------------------------------
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Отрабатывает клик по кнопке
-            if (administration == true)
+            if (administration != true)
             {
-                // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
-                personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
-
-                personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
-                factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
-
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
-                {
-                    sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
-                }
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
-                {
-                    verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
-                }
-
-                deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
-                solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
-
-                ReplaceDevice ReplaceDevice = new ReplaceDevice();
-                ReplaceDevice.Owner = this;
-                ReplaceDevice.Show();
-            }
-            else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
+                return;
+            }
+            var device = CurrentDevice;
+            if (device == null) return;
+
+            personnelNumber = device.Id.ToString();
+            factoryNumber = device.SerialId.ToString();
+            deviceType = device.DeviceTypeId.ToString();
+            yearOfIssue = device.ReleaseYear.ToString();
+            sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            deviceLocation = device.Loaction;
+            verifiedTo = device.ValidTo == default ? null : device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            solutionNumber = device.Solution;
+            state = device.Status;
+            gan_state = device.IsGun;
+
+            var replaceForm = new ReplaceDevice();
+            replaceForm.Owner = this;
+            replaceForm.Show();
         }
         //-----------------------------------
         // Изменение устройства
         //-----------------------------------
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration == true)
+            if (administration != true)
             {
-                // обнуляем глобальные переменные, что бы избежать заполнение строк неверной информацией
-                personnelNumber = null; factoryNumber = null; deviceType = null; yearOfIssue = null; sentDate = null; verificationDate = null; deviceLocation = null; verifiedTo = null; solutionNumber = null;
-
-                personnelNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[0].Value);
-                factoryNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                deviceType = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                yearOfIssue = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
-
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value) != "")
-                {
-                    sentDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value).ToShortDateString();
-                }
-                if (Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value) != "")
-                {
-                    verificationDate = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[5].Value).ToShortDateString();
-                }
-
-                deviceLocation = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                if (dataGridView1.CurrentRow.Cells[7].Value != DBNull.Value)
-                    verifiedTo = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
-                else
-                    verifiedTo = null;
-                solutionNumber = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                state = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                gan_state = Convert.ToBoolean(dataGridView1.CurrentRow.Cells[9].Value);
-
-                Change_device ChangeDev = new Change_device();
-                ChangeDev.Owner = this;
-                ChangeDev.Show();
-            }
-            else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
+                return;
+            }
+            var device = CurrentDevice;
+            if (device == null) return;
+
+            personnelNumber = device.Id.ToString();
+            factoryNumber = device.SerialId.ToString();
+            deviceType = device.DeviceTypeId.ToString();
+            yearOfIssue = device.ReleaseYear.ToString();
+            sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            deviceLocation = device.Loaction;
+            verifiedTo = device.ValidTo == default ? null : device.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+            solutionNumber = device.Solution;
+            state = device.Status;
+            gan_state = device.IsGun;
+
+            var changeForm = new Change_device { Owner = this, DeviceToEdit = device };
+            changeForm.Show();
         }
         //---------------------------------
         // Добавление устройства
@@ -242,29 +223,24 @@ namespace LazyStaff
         //-----------------------------------
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration == true)
+            if (administration != true)
             {
-                string id = (dataGridView1.Rows[index].Cells[0].Value).ToString();
-
-                string message = "Удалить устройство с табульным №" + id + " из базы данных";                                       // Формировани текста окна ошибки
-                string caption = "Подтверждение:";
-                MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-                DialogResult result;
-                result = MessageBox.Show(message, caption, buttons);                                                            // Вывод диалогового окна
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    _deviceRepository.Delete(int.Parse(id));
-
-                    DataGridView_Load();
-
-                    dataGridView1.Refresh();
-
-                    MessageBox.Show("Устройство удалёно!");
-                }
-            }
-            else
                 MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
+                return;
+            }
+            var device = CurrentDevice;
+            if (device == null) return;
+
+            var result = MessageBox.Show(
+                "Удалить устройство с табульным №" + device.Id + " из базы данных",
+                "Подтверждение:",
+                MessageBoxButtons.OKCancel);
+            if (result != DialogResult.OK) return;
+
+            _deviceRepository.Delete(device.Id);
+            _devices.Remove(device);
+            UpdateVisibleCountLabel();
+            MessageBox.Show("Устройство удалёно!");
         }
 
         //-----------------------------------
@@ -278,125 +254,63 @@ namespace LazyStaff
         }
 
         //----------------------------------------------------------------------------
-        // Загрузка данных из DataGridView
+        // Загрузка данных из БД в коллекцию и привязка к гриду
         //----------------------------------------------------------------------------
         public void DataGridView_Load()
         {
-            dataSet.Clear();
-
             try
             {
-                var devices = _deviceRepository.GetAll();
-                dataTable = DevicesToDataTable(devices);
+                var list = _deviceRepository.GetAll().ToList();
+                _devices = new BindingList<Device>(list);
             }
             catch (Npgsql.NpgsqlException)
             {
-                string message = "Не удалось подклюиться к базе данных. Открыть настройки?";
-                string caption = "Ошибка";
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                DialogResult result = MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                var result = MessageBox.Show(
+                    "Не удалось подклюиться к базе данных. Открыть настройки?",
+                    "Ошибка",
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
-                    Options Option = new Options();
-                    Option.Owner = this;
-                    Invoke((MethodInvoker)delegate
-                    {
-                        Option.Show();
-                    });
+                    var opt = new Options { Owner = this };
+                    Invoke((MethodInvoker)(() => opt.Show()));
                     return;
                 }
-                if (result == System.Windows.Forms.DialogResult.No)
-                {
+                if (result == DialogResult.No)
                     Application.Exit();
-                    return;
-                }
                 return;
             }
 
             Invoke((MethodInvoker)delegate
             {
-                dataGridView1.DataSource = dataTable;                                                               // заводим источик данный
-                                                                                                                    //dataGridView1.DataMember = "Monitor";                                                             // создаем DataMemder
-
-                // настройка вида отображаемых колонок           
-                dataGridView1.Columns[0].HeaderText = "Таб. №";
-                dataGridView1.Columns[0].MinimumWidth = 30;
-
-                dataGridView1.Columns[1].HeaderText = "Завод. №";
-                dataGridView1.Columns[1].MinimumWidth = 30;
-
-                dataGridView1.Columns[2].HeaderText = "Тип устройства";
-                dataGridView1.Columns[2].MinimumWidth = 40;
-
-                dataGridView1.Columns[3].HeaderText = "Год выпуска";
-                dataGridView1.Columns[3].MinimumWidth = 40;
-
-                dataGridView1.Columns[4].HeaderText = "Дата отправки";
-
-                dataGridView1.Columns[5].HeaderText = "Дата ГП";
-
-                dataGridView1.Columns[6].HeaderText = "Расположение";
-                dataGridView1.Columns[6].MinimumWidth = 50;
-
-                dataGridView1.Columns[7].HeaderText = "Продление";
-                dataGridView1.Columns[7].MinimumWidth = 55;
-
-                dataGridView1.Columns[8].HeaderText = "Тех. решение";
-                dataGridView1.Columns[8].MinimumWidth = 60;
-
-                dataGridView1.Columns[9].HeaderText = "ГАН";
-                dataGridView1.Columns[9].MinimumWidth = 60;
-                dataGridView1.Columns[9].Visible = false;
-
-                dataGridView1.Columns[10].HeaderText = "Состояние";
-                dataGridView1.Columns[10].MinimumWidth = 60;
-                dataGridView1.Columns[10].Visible = false;
-
-                dataGridView1.Columns[11].HeaderText = "Дата Тех. Осв.";
-                dataGridView1.Columns[11].MinimumWidth = 60;
-                dataGridView1.Columns[11].Visible = true;
-
+                dataGridView1.DataSource = _devices;
+                ConfigureGridColumns();
             });
 
             listMarking.Start(this);
-
-            DateTime dateTime = DateTime.Now;
-            SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + dateTime.ToString();
+            SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + DateTime.Now.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
-        private static DataTable DevicesToDataTable(IEnumerable<Device> devices)
+        private void ConfigureGridColumns()
         {
-            var table = new DataTable();
-            table.Columns.Add("personnelnumber", typeof(int));
-            table.Columns.Add("factorynumber", typeof(int));
-            table.Columns.Add("devicetype", typeof(int));
-            table.Columns.Add("yearofissue", typeof(int));
-            table.Columns.Add("sentdate", typeof(DateTime));
-            table.Columns.Add("verificationdate", typeof(DateTime));
-            table.Columns.Add("devicelocation", typeof(string));
-            table.Columns.Add("verifiedto", typeof(DateTime));
-            table.Columns.Add("solutionnunber", typeof(string));
-            table.Columns.Add("gan", typeof(bool));
-            table.Columns.Add("state", typeof(int));
-            table.Columns.Add("dateoftechnicalinspection", typeof(DateTime));
+            if (dataGridView1.Columns.Count == 0) return;
+            var cols = dataGridView1.Columns;
+            if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; cols["Id"].DisplayIndex = 0; }
+            if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; cols["SerialId"].DisplayIndex = 1; }
+            if (cols["DeviceTypeId"] != null) { cols["DeviceTypeId"].HeaderText = "Тип устройства"; cols["DeviceTypeId"].MinimumWidth = 40; cols["DeviceTypeId"].DisplayIndex = 2; }
+            if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; cols["ReleaseYear"].DisplayIndex = 3; }
+            if (cols["DateOfShipment"] != null) { cols["DateOfShipment"].HeaderText = "Дата отправки"; cols["DateOfShipment"].DisplayIndex = 4; }
+            if (cols["DateCheck"] != null) { cols["DateCheck"].HeaderText = "Дата ГП"; cols["DateCheck"].DisplayIndex = 5; }
+            if (cols["Loaction"] != null) { cols["Loaction"].HeaderText = "Расположение"; cols["Loaction"].MinimumWidth = 50; cols["Loaction"].DisplayIndex = 6; }
+            if (cols["ValidTo"] != null) { cols["ValidTo"].HeaderText = "Продление"; cols["ValidTo"].MinimumWidth = 55; cols["ValidTo"].DisplayIndex = 7; }
+            if (cols["Solution"] != null) { cols["Solution"].HeaderText = "Тех. решение"; cols["Solution"].MinimumWidth = 60; cols["Solution"].DisplayIndex = 8; }
+            if (cols["IsGun"] != null) { cols["IsGun"].HeaderText = "ГАН"; cols["IsGun"].MinimumWidth = 60; cols["IsGun"].Visible = false; cols["IsGun"].DisplayIndex = 9; }
+            if (cols["Status"] != null) { cols["Status"].HeaderText = "Состояние"; cols["Status"].MinimumWidth = 60; cols["Status"].Visible = false; cols["Status"].DisplayIndex = 10; }
+            if (cols["DateOfTechnicalInspection"] != null) { cols["DateOfTechnicalInspection"].HeaderText = "Дата Тех. Осв."; cols["DateOfTechnicalInspection"].MinimumWidth = 60; cols["DateOfTechnicalInspection"].DisplayIndex = 11; }
+        }
 
-            foreach (var d in devices)
-            {
-                table.Rows.Add(
-                    d.Id,
-                    d.SerialId,
-                    d.DeviceTypeId,
-                    d.ReleaseYear,
-                    d.DateOfShipment == default ? (object)DBNull.Value : d.DateOfShipment,
-                    d.DateCheck == default ? (object)DBNull.Value : d.DateCheck,
-                    (object)d.Loaction ?? DBNull.Value,
-                    d.ValidTo == default ? (object)DBNull.Value : d.ValidTo,
-                    (object)d.Solution ?? DBNull.Value,
-                    d.IsGun,
-                    d.Status,
-                    d.DateOfTechnicalInspection == default ? (object)DBNull.Value : d.DateOfTechnicalInspection);
-            }
-            return table;
+        private void UpdateVisibleCountLabel()
+        {
+            CountVisibleDevices_StatusLabel1.Text = "Отображено приборов: " + dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Visible);
         }
 
         //--------------------------------------------------------------
@@ -404,15 +318,18 @@ namespace LazyStaff
         //--------------------------------------------------------------
         private void PDF()
         {
+            var device = CurrentDevice;
+            if (device == null) return;
+
             try
             {
-                var date = printDateTimePicker.Checked ? printDateTimePicker.Value.ToString("dd.MM.yyyy") : DateTime.Now.ToString("dd.MM.yyyy");
-                PrintDevice device = new PrintDevice
+                var date = printDateTimePicker.Checked ? printDateTimePicker.Value.ToString(Constants.DateFormat, CultureInfo.InvariantCulture) : DateTime.Now.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                var printDevice = new PrintDevice
                 {
-                    TabelNumber = Convert.ToString(dataGridView1.Rows[index].Cells[0].Value),
-                    SerialNumber = Convert.ToString(dataGridView1.Rows[index].Cells[1].Value),
-                    Type = Convert.ToString(dataGridView1.Rows[index].Cells[2].Value),
-                    YearOfRelease = Convert.ToString(dataGridView1.Rows[index].Cells[3].Value),
+                    TabelNumber = device.Id.ToString(),
+                    SerialNumber = device.SerialId.ToString(),
+                    Type = device.DeviceTypeId.ToString(),
+                    YearOfRelease = device.ReleaseYear.ToString(),
                     DateToPrint = date,
                     IsMetrologicalControlType = rbMetrologicalControlType.Checked,
                     IsRepairType = rbRepairType.Checked,
@@ -420,21 +337,13 @@ namespace LazyStaff
                     RepairSelected = (RepairType)cbRepairType.SelectedValue
                 };
 
-                PrintDeviceHelper.FillPdf(device);
+                PrintDeviceHelper.FillPdf(printDevice);
 
-                int deviceId = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
-                Device dbDevice = _deviceRepository.GetById(deviceId);
-                if (dbDevice != null)
-                {
-                    dbDevice.DateOfShipment = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                    dbDevice.Loaction = "----";
-                    dbDevice.Status = 2;
-                    _deviceRepository.Update(dbDevice);
-                }
-
-                dataGridView1.CurrentRow.Cells[4].Value = date;
-                dataGridView1.CurrentRow.Cells[6].Value = "----";
-                dataGridView1.CurrentRow.Cells[10].Value = 2;
+                device.DateOfShipment = DateTime.ParseExact(date, Constants.DateFormat, CultureInfo.InvariantCulture);
+                device.Loaction = "----";
+                device.Status = (int)Status.Sended;
+                _deviceRepository.Update(device);
+                _devices.ResetItem(_devices.IndexOf(device));
             }
             catch (IOException)
             {
@@ -535,45 +444,39 @@ namespace LazyStaff
                 // Заполняем заголовки колонок
                 //---------------------------------------------
 
-                workSheet.Cells[1, 1] = dataGridView1.Columns[0].HeaderText;
-                workSheet.Cells[1, 2] = dataGridView1.Columns[1].HeaderText;
-                workSheet.Cells[1, 3] = dataGridView1.Columns[2].HeaderText;
-                workSheet.Cells[1, 4] = dataGridView1.Columns[3].HeaderText;
-                workSheet.Cells[1, 5] = dataGridView1.Columns[4].HeaderText;
-                workSheet.Cells[1, 6] = dataGridView1.Columns[5].HeaderText;
-                workSheet.Cells[1, 7] = dataGridView1.Columns[6].HeaderText;
-                workSheet.Cells[1, 8] = dataGridView1.Columns[7].HeaderText;
-                workSheet.Cells[1, 9] = dataGridView1.Columns[8].HeaderText;
-                workSheet.Cells[1, 10] = dataGridView1.Columns[11].HeaderText;
+                workSheet.Cells[1, 1] = "Таб. №";
+                workSheet.Cells[1, 2] = "Завод. №";
+                workSheet.Cells[1, 3] = "Тип устройства";
+                workSheet.Cells[1, 4] = "Год выпуска";
+                workSheet.Cells[1, 5] = "Дата отправки";
+                workSheet.Cells[1, 6] = "Дата ГП";
+                workSheet.Cells[1, 7] = "Расположение";
+                workSheet.Cells[1, 8] = "Продление";
+                workSheet.Cells[1, 9] = "Тех. решение";
+                workSheet.Cells[1, 10] = "Дата Тех. Осв.";
 
-                //---------------------------------------------
-                // Экспортируем из DataGridView в Excel
-                //---------------------------------------------
-                workSheet.Range["A1:B" + (dataGridView1.Rows.OfType<DataGridViewRow>().Where(row => row.Visible).Count() + 1)].NumberFormat = "@";    // форматируем столбцы, что бы не терять 0 у БДГБ
-
-                int rowExcel = 2;                                                                                   // начинаем со строки 2, т.к. в 1 заголовки (в excel счет с 1, а не с 0)
+                int rowExcel = 2;
+                int visibleCount = 0;
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    Invoke((MethodInvoker)delegate
-                    {
-                        progressBar1.Increment(1);                                                                  // увеличиваем прогресс бар
-                    });
-                    if (dataGridView1.Rows[i].Visible)
-                    {
-                        workSheet.Cells[rowExcel, 1] = dataGridView1.Rows[i].Cells[0].Value;
-                        workSheet.Cells[rowExcel, 2] = dataGridView1.Rows[i].Cells[1].Value;
-                        workSheet.Cells[rowExcel, 3] = dataGridView1.Rows[i].Cells[2].Value;
-                        workSheet.Cells[rowExcel, 4] = dataGridView1.Rows[i].Cells[3].Value;
-                        workSheet.Cells[rowExcel, 5] = dataGridView1.Rows[i].Cells[4].Value;
-                        workSheet.Cells[rowExcel, 6] = dataGridView1.Rows[i].Cells[5].Value;
-                        workSheet.Cells[rowExcel, 7] = dataGridView1.Rows[i].Cells[6].Value;
-                        workSheet.Cells[rowExcel, 8] = dataGridView1.Rows[i].Cells[7].Value;
-                        workSheet.Cells[rowExcel, 9] = dataGridView1.Rows[i].Cells[8].Value;
-                        workSheet.Cells[rowExcel, 10] = dataGridView1.Rows[i].Cells[11].Value;
-
-                        ++rowExcel;
-                    }
+                    Invoke((MethodInvoker)delegate { progressBar1.Increment(1); });
+                    if (!dataGridView1.Rows[i].Visible) continue;
+                    var d = dataGridView1.Rows[i].DataBoundItem as Device;
+                    if (d == null) continue;
+                    workSheet.Cells[rowExcel, 1] = d.Id;
+                    workSheet.Cells[rowExcel, 2] = d.SerialId;
+                    workSheet.Cells[rowExcel, 3] = d.DeviceTypeId;
+                    workSheet.Cells[rowExcel, 4] = d.ReleaseYear;
+                    workSheet.Cells[rowExcel, 5] = d.DateOfShipment == default ? "" : d.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    workSheet.Cells[rowExcel, 6] = d.DateCheck == default ? "" : d.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    workSheet.Cells[rowExcel, 7] = d.Loaction ?? "";
+                    workSheet.Cells[rowExcel, 8] = d.ValidTo == default ? "" : d.ValidTo.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    workSheet.Cells[rowExcel, 9] = d.Solution ?? "";
+                    workSheet.Cells[rowExcel, 10] = d.DateOfTechnicalInspection == default ? "" : d.DateOfTechnicalInspection.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
+                    rowExcel++;
+                    visibleCount++;
                 }
+                workSheet.Range["A1:B" + (visibleCount + 1)].NumberFormat = "@";
 
                 //--------------------------------------------
                 // Настройка форматирвоания вывода
@@ -589,8 +492,7 @@ namespace LazyStaff
                 (workSheet.Cells as ExcelDLL.Range).HorizontalAlignment = ExcelDLL.XlHAlign.xlHAlignCenter;         // выравнивание вертикали по центру
                 (workSheet.Cells as ExcelDLL.Range).VerticalAlignment = ExcelDLL.XlVAlign.xlVAlignCenter;           // выравнивание горизонтали по центру
 
-                var rng = workSheet.Range["A1:J" +
-                    (dataGridView1.Rows.OfType<DataGridViewRow>().Where(row => row.Visible).Count() + 1)];          // Указание области границ таблицы
+                var rng = workSheet.Range["A1:J" + (visibleCount + 1)];
                 rng.Borders.LineStyle = 1;                                                                          // Стиль границ
                 rng.Borders.ColorIndex = 0;                                                                         // Цвет
                 rng.Borders.TintAndShade = 0;
@@ -603,7 +505,7 @@ namespace LazyStaff
                 string username = Environment.UserName;                                                             // узнаем имя пользователя
                 DateTime dateTime = DateTime.Now;
                 string pathToXmlFile = (@"C:\Documents and Settings\" + username + @"\Desktop\Export " +
-                    dateTime.ToString("dd-MM-yyyy") + "");                                                          // указываем путь до рабочего стола и именуем файл
+                    dateTime.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture) + "");
                 workSheet.SaveAs(pathToXmlFile);                                                                    // сохраняем файл
 
                 excelApp.Quit();
@@ -611,7 +513,7 @@ namespace LazyStaff
                 {
                     progressBar1.Visible = false;
                 });
-                MessageBox.Show("Экспорт завершен, файл с именем Export " + dateTime.ToString("dd-MM-yyyy") + ".xmlx расположен на рабочем столе");
+                MessageBox.Show("Экспорт завершен, файл с именем Export " + dateTime.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture) + ".xmlx расположен на рабочем столе");
             }
             catch (System.Runtime.InteropServices.COMException)
             {

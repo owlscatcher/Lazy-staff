@@ -1,4 +1,4 @@
-﻿using LazyStaff.Properties;
+using LazyStaff.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,13 +32,11 @@ namespace LazyStaff
             Settings.Default["connectionString"] = (ConnectionStr_TextBox.Text).ToString();
             Settings.Default.Save();
             ConnectionStr_TextBox.Text = Settings.Default["connectionString"].ToString();
-            main.connectionString = Settings.Default["connectionString"].ToString();                // Обновление переменной
-
+            // Подключение и таблица теперь берутся из переменных окружения (DatabaseConnectionSettings)
 
             Settings.Default["tableName"] = (TableName_TextBox.Text).ToString();
             Settings.Default.Save();
             TableName_TextBox.Text = Settings.Default["tableName"].ToString();
-            main.tableName = Settings.Default["tableName"].ToString();                              // Обновление переменной
 
             if (admin_pass == OldAdminPass_TextBox.Text)
             {

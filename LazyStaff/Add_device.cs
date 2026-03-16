@@ -36,19 +36,19 @@ namespace LazyStaff
                     StateConservation_radioButton.Checked == false &&
                     StateStorage_radioButton.Checked == false &&
                     StateNormal_radioButton.Checked == true)
-                    state = 0;
+                    state = (int)Status.Normal;
                 if (StateOverdue_radioButton.Checked == true)
-                    state = 1;
+                    state = (int)Status.Overdue;
                 if (StateSend_radioButton.Checked == true)
-                    state = 2;
+                    state = (int)Status.Sended;
                 if (StateConservation_radioButton.Checked == true)
-                    state = 4;
+                    state = (int)Status.Canned;
                 if (StateStorage_radioButton.Checked == true)
-                    state = 3;
+                    state = (int)Status.InStock;
             }
             else
             {
-                state = 8;
+                state = (int)Status.WrittenOff;
             }
 
             if (gan_checkBox.Checked)
