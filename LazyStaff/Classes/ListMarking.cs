@@ -18,6 +18,77 @@ namespace LazyStaff.Classes
         private const string ColorPreparingForSend = "#F3F781";
         private const string ColorDecommissioned = "#6E6E6E";
 
+        public void CommonMark(DataGridView table)
+        {
+            DateTime currentDate = DateTime.Now.Date;
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                var device = table.Rows[i].DataBoundItem as Device;
+                if (device == null) continue;
+
+                bool isExcludedFromExpiryCheck = device.Status == (int)Status.Sended || device.Status == (int)Status.Canned || device.Status == (int)Status.WrittenOff;
+                if (isExcludedFromExpiryCheck || device.DateCheck == default)
+                    continue;
+
+                var monthLength = 30;
+                var nextMcDate = device.DateCheck.AddDays((device.MetrologicalControlInterval * monthLength) + 5);
+                int days = (int)nextMcDate.Subtract(currentDate).TotalDays;
+
+                if (days <= DaysBeforeExpiryToPrepareMin)
+                {
+                    bool isOnStorage = device.Status == (int)Status.InStock || device.Status == (int)Status.PreparingForSendAndInStock;
+                    device.Status = isOnStorage ? (int)Status.PreparingForSendAndInStock : (int)Status.PreparingForSend;
+                    table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorPreparingForSend);
+                }
+                else if (days <= 0)
+                {
+                    bool isOnStorage = device.Status == (int)Status.InStock || device.Status == (int)Status.OverdueAndInStock;
+                    device.Status = isOnStorage ? (int)Status.OverdueAndInStock : (int)Status.Overdue;
+                    table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorOverdue);
+                }
+            }
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                var device = table.Rows[i].DataBoundItem as Device;
+                if (device == null) continue;
+
+                switch ((Status)device.Status)
+                {
+                    case Status.Normal:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorWhite);
+                        break;
+                    case Status.Overdue:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorOverdue);
+                        break;
+                    case Status.Sended:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorSent);
+                        break;
+                    case Status.InStock:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorStorage);
+                        break;
+                    case Status.Canned:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorConservation);
+                        break;
+                    case Status.PreparingForSend:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorPreparingForSend);
+                        break;
+                    case Status.OverdueAndInStock:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorOverdue);
+                        break;
+                    case Status.PreparingForSendAndInStock:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorPreparingForSend);
+                        break;
+                    case Status.WrittenOff:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorDecommissioned);
+                        break;
+                    default:
+                        table.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml(ColorWhite);
+                        break;
+                }
+            }
+        }
         public void Start(Staff_MainForm staff_MainForm)
         {
             DataGridView dataGridView1 = staff_MainForm.dataGridView1;

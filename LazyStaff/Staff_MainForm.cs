@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
-using LazyStaff.Properties;
 using LazyStaff.Classes;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,10 +21,9 @@ namespace LazyStaff
         private readonly IDeviceRepository _deviceRepository = new DeviceRepository();
         public string password, personnelNumber,
             factoryNumber, deviceType, yearOfIssue, deviceLocation, verifiedTo,
-            solutionNumber, sentDate, verificationDate, help_serachTB = "Введите Табульный/Заводской номер или дату продления";
-        public int index, state;
+            solutionNumber, sentDate, verificationDate, sphereSreumName, help_serachTB = "Введите Табульный/Заводской номер или дату продления";
+        public int index, state, mcInterval, sphereSreumId, passportId;
         public bool gan_state;
-        public static bool administration = true;
 
         /// <summary>Текущее выбранное устройство в гриде (источник данных — коллекция).</summary>
         public Device CurrentDevice => dataGridView1.CurrentRow?.DataBoundItem as Device;
@@ -124,64 +122,33 @@ namespace LazyStaff
             var device = CurrentDevice;
             if (device == null) return;
 
-            personnelNumber = device.Id.ToString();
-            factoryNumber = device.SerialId.ToString();
-            deviceType = device.DeviceTypeName.ToString();
-            yearOfIssue = device.ReleaseYear.ToString();
-            sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
-            verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
-            deviceLocation = device.Loaction;
-            verifiedTo = device.ValidTo;
-            solutionNumber = device.Solution;
-            state = device.Status;
-            gan_state = device.IsGun;
+            var replaceForm = new ReplaceDevice { DeviceToReplace = device, DevicesList = _devices.Where(d => d.Id != device.Id).ToList() ?? new List<Device>() };
+            replaceForm.ShowDialog();
 
-            var replaceForm = new ReplaceDevice();
-            replaceForm.Owner = this;
-            replaceForm.Show();
+            DataGridView_Load();
         }
         //-----------------------------------
         // Изменение устройства
         //-----------------------------------
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration != true)
-            {
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-                return;
-            }
             var device = CurrentDevice;
             if (device == null) return;
 
-            personnelNumber = device.Id.ToString();
-            factoryNumber = device.SerialId.ToString();
-            deviceType = device.DeviceTypeName.ToString();
-            yearOfIssue = device.ReleaseYear.ToString();
-            sentDate = device.DateOfShipment == default ? null : device.DateOfShipment.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
-            verificationDate = device.DateCheck == default ? null : device.DateCheck.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
-            deviceLocation = device.Loaction;
-            verifiedTo = device.ValidTo;
-            solutionNumber = device.Solution;
-            state = device.Status;
-            gan_state = device.IsGun;
+            var changeForm = new Change_device { DeviceToEdit = device };
+            changeForm.ShowDialog();
 
-            var changeForm = new Change_device { Owner = this, DeviceToEdit = device };
-            changeForm.Show();
+            DataGridView_Load();
         }
         //---------------------------------
         // Добавление устройства
         //---------------------------------
         private void AddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration == true)
-            {
-                Add_device AddDevice = new Add_device();
-                AddDevice.Owner = this;
-                AddDevice.Show();
-            }
-            else
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-            return;
+            Add_device AddDevice = new Add_device();
+            AddDevice.ShowDialog();
+
+            DataGridView_Load();
         }
 
         //------------------------------------
@@ -201,11 +168,6 @@ namespace LazyStaff
         //-----------------------------------
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (administration != true)
-            {
-                MessageBox.Show("Недостаточно прав для редактирования, обратитесь к администратору");
-                return;
-            }
             var device = CurrentDevice;
             if (device == null) return;
 
@@ -246,14 +208,9 @@ namespace LazyStaff
                 var result = MessageBox.Show(
                     "Не удалось подклюиться к базе данных. Открыть настройки?",
                     "Ошибка",
-                    MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    var opt = new Options { Owner = this };
-                    Invoke((MethodInvoker)(() => opt.Show()));
-                    return;
-                }
-                if (result == DialogResult.No)
+                    MessageBoxButtons.OK);
+
+                if (result == DialogResult.OK)
                     Application.Exit();
                 return;
             }
@@ -272,18 +229,22 @@ namespace LazyStaff
         {
             if (dataGridView1.Columns.Count == 0) return;
             var cols = dataGridView1.Columns;
-            if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; cols["Id"].DisplayIndex = 0; }
-            if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; cols["SerialId"].DisplayIndex = 1; }
-            if (cols["DeviceTypeName"] != null) { cols["DeviceTypeName"].HeaderText = "Тип устройства"; cols["DeviceTypeName"].MinimumWidth = 40; cols["DeviceTypeName"].DisplayIndex = 2; }
-            if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; cols["ReleaseYear"].DisplayIndex = 3; }
-            if (cols["DateOfShipment"] != null) { cols["DateOfShipment"].HeaderText = "Дата отправки"; cols["DateOfShipment"].DisplayIndex = 4; }
-            if (cols["DateCheck"] != null) { cols["DateCheck"].HeaderText = "Дата ГП"; cols["DateCheck"].DisplayIndex = 5; }
-            if (cols["Loaction"] != null) { cols["Loaction"].HeaderText = "Расположение"; cols["Loaction"].MinimumWidth = 50; cols["Loaction"].DisplayIndex = 6; }
-            if (cols["ValidTo"] != null) { cols["ValidTo"].HeaderText = "Продление"; cols["ValidTo"].MinimumWidth = 55; cols["ValidTo"].DisplayIndex = 7; }
-            if (cols["Solution"] != null) { cols["Solution"].HeaderText = "Тех. решение"; cols["Solution"].MinimumWidth = 60; cols["Solution"].DisplayIndex = 8; }
-            if (cols["IsGun"] != null) { cols["IsGun"].HeaderText = "ГАН"; cols["IsGun"].MinimumWidth = 60; cols["IsGun"].Visible = false; cols["IsGun"].DisplayIndex = 9; }
-            if (cols["Status"] != null) { cols["Status"].HeaderText = "Состояние"; cols["Status"].MinimumWidth = 60; cols["Status"].Visible = false; cols["Status"].DisplayIndex = 10; }
-            if (cols["DateOfTechnicalInspection"] != null) { cols["DateOfTechnicalInspection"].HeaderText = "Дата Тех. Осв."; cols["DateOfTechnicalInspection"].MinimumWidth = 60; cols["DateOfTechnicalInspection"].DisplayIndex = 11; }
+            if (cols["PassportId"] != null) { cols["PassportId"].HeaderText = "Паспорт. №"; cols["PassportId"].MinimumWidth = 30; cols["PassportId"].DisplayIndex = 0; }
+            if (cols["Id"] != null) { cols["Id"].HeaderText = "Таб. №"; cols["Id"].MinimumWidth = 30; cols["Id"].DisplayIndex = 1; }
+            if (cols["SerialId"] != null) { cols["SerialId"].HeaderText = "Завод. №"; cols["SerialId"].MinimumWidth = 30; cols["SerialId"].DisplayIndex = 2; }
+            if (cols["DeviceTypeName"] != null) { cols["DeviceTypeName"].HeaderText = "Тип устройства"; cols["DeviceTypeName"].MinimumWidth = 40; cols["DeviceTypeName"].DisplayIndex = 3; }
+            if (cols["ReleaseYear"] != null) { cols["ReleaseYear"].HeaderText = "Год выпуска"; cols["ReleaseYear"].MinimumWidth = 40; cols["ReleaseYear"].DisplayIndex = 4; }
+            if (cols["DateOfShipment"] != null) { cols["DateOfShipment"].HeaderText = "Дата отправки"; cols["DateOfShipment"].DisplayIndex = 5; }
+            if (cols["DateCheck"] != null) { cols["DateCheck"].HeaderText = "Дата ГП"; cols["DateCheck"].DisplayIndex = 6; }
+            if (cols["Loaction"] != null) { cols["Loaction"].HeaderText = "Расположение"; cols["Loaction"].MinimumWidth = 50; cols["Loaction"].DisplayIndex = 7; }
+            if (cols["SphereSREUMId"] != null) { cols["SphereSREUMId"].HeaderText = "ГРОЕИ ID"; cols["SphereSREUMId"].MinimumWidth = 30; cols["SphereSREUMId"].DisplayIndex = 8; }
+            if (cols["SphereSREUMName"] != null) { cols["SphereSREUMName"].HeaderText = "Сфера ГРОЕИ"; cols["SphereSREUMName"].MinimumWidth = 60; cols["SphereSREUMName"].DisplayIndex = 9; }
+            if (cols["ValidTo"] != null) { cols["ValidTo"].HeaderText = "Продление"; cols["ValidTo"].MinimumWidth = 55; cols["ValidTo"].DisplayIndex = 10; }
+            if (cols["Solution"] != null) { cols["Solution"].HeaderText = "Тех. решение"; cols["Solution"].MinimumWidth = 60; cols["Solution"].DisplayIndex = 11; }
+            if (cols["MetrologicalControlInterval"] != null) { cols["MetrologicalControlInterval"].HeaderText = "М/П Инт."; cols["MetrologicalControlInterval"].MinimumWidth = 30; cols["MetrologicalControlInterval"].DisplayIndex = 12; }
+            if (cols["IsGun"] != null) { cols["IsGun"].HeaderText = "ГАН"; cols["IsGun"].MinimumWidth = 60; cols["IsGun"].Visible = false; cols["IsGun"].DisplayIndex = 13; }
+            if (cols["Status"] != null) { cols["Status"].HeaderText = "Состояние"; cols["Status"].MinimumWidth = 60; cols["Status"].Visible = false; cols["Status"].DisplayIndex = 14; }
+            if (cols["DateOfTechnicalInspection"] != null) { cols["DateOfTechnicalInspection"].HeaderText = "Дата Тех. Осв."; cols["DateOfTechnicalInspection"].MinimumWidth = 60; cols["DateOfTechnicalInspection"].DisplayIndex = 15; }
         }
 
         private void UpdateVisibleCountLabel()
@@ -333,16 +294,9 @@ namespace LazyStaff
             }
             finally
             {
-                PrintPdfFile();
+                PrintDeviceHelper.PrintPdfFile();
+                listMarking.Start(this);
             }
-        }
-        //---------------------------------------------------
-        // Метод вывода на печать
-        //---------------------------------------------------
-        public void PrintPdfFile()
-        {
-            PrintDeviceHelper.PrintPdfFile();
-            listMarking.Start(this);
         }
 
         //---------------------------------------

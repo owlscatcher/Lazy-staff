@@ -28,143 +28,95 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.save_button = new System.Windows.Forms.Button();
-            this.cancel_button = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.solutionNunber_textBox = new System.Windows.Forms.TextBox();
-            this.verifiedTo_textBox = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.deviceType_comboBox = new System.Windows.Forms.ComboBox();
-            this.deviceLocation_textBox = new System.Windows.Forms.TextBox();
-            this.yearOfIssue_textBox = new System.Windows.Forms.TextBox();
-            this.factoryNumber_textBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.personnelNumber_textBox = new System.Windows.Forms.TextBox();
-            this.verifiedToY_textBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.factoryNumber_textBox = new System.Windows.Forms.TextBox();
+            this.yearOfIssue_textBox = new System.Windows.Forms.TextBox();
+            this.deviceLocation_textBox = new System.Windows.Forms.TextBox();
+            this.deviceType_comboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.verifiedToQuarter_comboBox = new System.Windows.Forms.ComboBox();
+            this.solutionNunber_textBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cancel_button = new System.Windows.Forms.Button();
+            this.save_button = new System.Windows.Forms.Button();
             this.gan_checkBox = new System.Windows.Forms.CheckBox();
-            this.StateConservation_radioButton = new System.Windows.Forms.RadioButton();
-            this.StateStorage_radioButton = new System.Windows.Forms.RadioButton();
-            this.StateOverdue_radioButton = new System.Windows.Forms.RadioButton();
             this.StateSend_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateOverdue_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateStorage_radioButton = new System.Windows.Forms.RadioButton();
+            this.StateConservation_radioButton = new System.Windows.Forms.RadioButton();
             this.StateNormal_radioButton = new System.Windows.Forms.RadioButton();
             this.decommissioned_checkBox = new System.Windows.Forms.CheckBox();
+            this.verifiedToYear_comboBox = new System.Windows.Forms.ComboBox();
             this.sentDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.verificationDate_dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.passport_id_textBox = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.mc_interval_comboBox = new System.Windows.Forms.ComboBox();
+            this.sphere_sreum_id_textBox = new System.Windows.Forms.TextBox();
+            this.sphere_sreum_name_textBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // save_button
+            // personnelNumber_textBox
             // 
-            this.save_button.Location = new System.Drawing.Point(578, 101);
-            this.save_button.Name = "save_button";
-            this.save_button.Size = new System.Drawing.Size(116, 23);
-            this.save_button.TabIndex = 47;
-            this.save_button.Text = "Добавить";
-            this.save_button.UseVisualStyleBackColor = true;
-            this.save_button.Click += new System.EventHandler(this.save_button_Click);
+            this.personnelNumber_textBox.Location = new System.Drawing.Point(6, 32);
+            this.personnelNumber_textBox.Name = "personnelNumber_textBox";
+            this.personnelNumber_textBox.Size = new System.Drawing.Size(100, 20);
+            this.personnelNumber_textBox.TabIndex = 0;
             // 
-            // cancel_button
+            // label1
             // 
-            this.cancel_button.Location = new System.Drawing.Point(465, 101);
-            this.cancel_button.Name = "cancel_button";
-            this.cancel_button.Size = new System.Drawing.Size(106, 23);
-            this.cancel_button.TabIndex = 46;
-            this.cancel_button.Text = "Отмена";
-            this.cancel_button.UseVisualStyleBackColor = true;
-            this.cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Табульный №:";
             // 
-            // label9
+            // label2
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(351, 59);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(78, 13);
-            this.label9.TabIndex = 45;
-            this.label9.Text = "Тех. решение:";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(109, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(79, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Заводской №:";
             // 
-            // label8
+            // factoryNumber_textBox
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(221, 59);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(69, 13);
-            this.label8.TabIndex = 44;
-            this.label8.Text = "Продлен до:";
+            this.factoryNumber_textBox.Location = new System.Drawing.Point(112, 32);
+            this.factoryNumber_textBox.Name = "factoryNumber_textBox";
+            this.factoryNumber_textBox.Size = new System.Drawing.Size(100, 20);
+            this.factoryNumber_textBox.TabIndex = 3;
             // 
-            // solutionNunber_textBox
+            // yearOfIssue_textBox
             // 
-            this.solutionNunber_textBox.Location = new System.Drawing.Point(351, 75);
-            this.solutionNunber_textBox.Name = "solutionNunber_textBox";
-            this.solutionNunber_textBox.Size = new System.Drawing.Size(220, 20);
-            this.solutionNunber_textBox.TabIndex = 39;
+            this.yearOfIssue_textBox.Location = new System.Drawing.Point(112, 71);
+            this.yearOfIssue_textBox.Name = "yearOfIssue_textBox";
+            this.yearOfIssue_textBox.Size = new System.Drawing.Size(100, 20);
+            this.yearOfIssue_textBox.TabIndex = 4;
             // 
-            // verifiedTo_textBox
+            // deviceLocation_textBox
             // 
-            this.verifiedTo_textBox.AutoCompleteCustomSource.AddRange(new string[] {
-            "1 кв. 2019",
-            "2 кв. 2019",
-            "3 кв. 2019",
-            "4 кв. 2019"});
-            this.verifiedTo_textBox.FormattingEnabled = true;
-            this.verifiedTo_textBox.Items.AddRange(new object[] {
-            "1 кв.",
-            "2 кв.",
-            "3 кв. ",
-            "4 кв."});
-            this.verifiedTo_textBox.Location = new System.Drawing.Point(224, 75);
-            this.verifiedTo_textBox.Name = "verifiedTo_textBox";
-            this.verifiedTo_textBox.Size = new System.Drawing.Size(59, 21);
-            this.verifiedTo_textBox.TabIndex = 38;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 59);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(85, 13);
-            this.label7.TabIndex = 37;
-            this.label7.Text = "Расположение:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(574, 7);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 13);
-            this.label6.TabIndex = 36;
-            this.label6.Text = "Дата ГП:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(454, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(97, 13);
-            this.label5.TabIndex = 35;
-            this.label5.Text = "Дата отпр. на ГП:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(351, 7);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 13);
-            this.label4.TabIndex = 34;
-            this.label4.Text = "Год выпуска:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(221, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 13);
-            this.label3.TabIndex = 33;
-            this.label3.Text = "Тип прибора:";
+            this.deviceLocation_textBox.Location = new System.Drawing.Point(340, 32);
+            this.deviceLocation_textBox.Name = "deviceLocation_textBox";
+            this.deviceLocation_textBox.Size = new System.Drawing.Size(251, 20);
+            this.deviceLocation_textBox.TabIndex = 7;
             // 
             // deviceType_comboBox
             // 
@@ -205,6 +157,7 @@
             "УИМ2-2Д",
             "УИМ2-2И",
             "EPD-G"});
+            this.deviceType_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.deviceType_comboBox.FormattingEnabled = true;
             this.deviceType_comboBox.Items.AddRange(new object[] {
             "альфа-радиометр",
@@ -242,63 +195,214 @@
             "УИМ2-2",
             "УИМ2-2Д",
             "УИМ2-2И",
-            "EPD-G"});
-            this.deviceType_comboBox.Location = new System.Drawing.Point(224, 25);
+            "EPD-G",
+            "Canberra"});
+            this.deviceType_comboBox.Location = new System.Drawing.Point(6, 71);
             this.deviceType_comboBox.Name = "deviceType_comboBox";
-            this.deviceType_comboBox.Size = new System.Drawing.Size(121, 21);
-            this.deviceType_comboBox.TabIndex = 32;
+            this.deviceType_comboBox.Size = new System.Drawing.Size(100, 21);
+            this.deviceType_comboBox.TabIndex = 8;
             // 
-            // deviceLocation_textBox
+            // label3
             // 
-            this.deviceLocation_textBox.Location = new System.Drawing.Point(12, 75);
-            this.deviceLocation_textBox.Name = "deviceLocation_textBox";
-            this.deviceLocation_textBox.Size = new System.Drawing.Size(206, 20);
-            this.deviceLocation_textBox.TabIndex = 31;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Тип прибора:";
             // 
-            // yearOfIssue_textBox
+            // label4
             // 
-            this.yearOfIssue_textBox.Location = new System.Drawing.Point(351, 26);
-            this.yearOfIssue_textBox.Name = "yearOfIssue_textBox";
-            this.yearOfIssue_textBox.Size = new System.Drawing.Size(100, 20);
-            this.yearOfIssue_textBox.TabIndex = 28;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(109, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Год выпуска:";
             // 
-            // factoryNumber_textBox
+            // label5
             // 
-            this.factoryNumber_textBox.Location = new System.Drawing.Point(118, 25);
-            this.factoryNumber_textBox.Name = "factoryNumber_textBox";
-            this.factoryNumber_textBox.Size = new System.Drawing.Size(100, 20);
-            this.factoryNumber_textBox.TabIndex = 27;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Дата отпр. на ГП:";
             // 
-            // label2
+            // label6
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(115, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 13);
-            this.label2.TabIndex = 26;
-            this.label2.Text = "Заводской №:";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(133, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Дата ГП:";
             // 
-            // label1
+            // label7
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Табульный №:";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(340, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Расположение:";
             // 
-            // personnelNumber_textBox
+            // verifiedToQuarter_comboBox
             // 
-            this.personnelNumber_textBox.Location = new System.Drawing.Point(12, 25);
-            this.personnelNumber_textBox.Name = "personnelNumber_textBox";
-            this.personnelNumber_textBox.Size = new System.Drawing.Size(100, 20);
-            this.personnelNumber_textBox.TabIndex = 24;
-            this.personnelNumber_textBox.TextChanged += new System.EventHandler(this.PersonnelNumber_textBox_TextChanged);
+            this.verifiedToQuarter_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
+            "1 кв. 2019",
+            "2 кв. 2019",
+            "3 кв. 2019",
+            "4 кв. 2019"});
+            this.verifiedToQuarter_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.verifiedToQuarter_comboBox.FormattingEnabled = true;
+            this.verifiedToQuarter_comboBox.Items.AddRange(new object[] {
+            "1 кв. ",
+            "2 кв. ",
+            "3 кв. ",
+            "4 кв. "});
+            this.verifiedToQuarter_comboBox.Location = new System.Drawing.Point(9, 71);
+            this.verifiedToQuarter_comboBox.Name = "verifiedToQuarter_comboBox";
+            this.verifiedToQuarter_comboBox.Size = new System.Drawing.Size(59, 21);
+            this.verifiedToQuarter_comboBox.TabIndex = 14;
             // 
-            // verifiedToY_textBox
+            // solutionNunber_textBox
             // 
-            this.verifiedToY_textBox.FormattingEnabled = true;
-            this.verifiedToY_textBox.Items.AddRange(new object[] {
+            this.solutionNunber_textBox.Location = new System.Drawing.Point(136, 72);
+            this.solutionNunber_textBox.Name = "solutionNunber_textBox";
+            this.solutionNunber_textBox.Size = new System.Drawing.Size(121, 20);
+            this.solutionNunber_textBox.TabIndex = 15;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 55);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "Продлен до:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(136, 56);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 13);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Тех. решение:";
+            // 
+            // cancel_button
+            // 
+            this.cancel_button.Location = new System.Drawing.Point(409, 235);
+            this.cancel_button.Name = "cancel_button";
+            this.cancel_button.Size = new System.Drawing.Size(92, 23);
+            this.cancel_button.TabIndex = 22;
+            this.cancel_button.Text = "Отмена";
+            this.cancel_button.UseVisualStyleBackColor = true;
+            this.cancel_button.Click += new System.EventHandler(this.cancel_button_Click);
+            // 
+            // save_button
+            // 
+            this.save_button.Location = new System.Drawing.Point(507, 235);
+            this.save_button.Name = "save_button";
+            this.save_button.Size = new System.Drawing.Size(114, 23);
+            this.save_button.TabIndex = 23;
+            this.save_button.Text = "Сохранить";
+            this.save_button.UseVisualStyleBackColor = true;
+            this.save_button.Click += new System.EventHandler(this.save_button_Click);
+            // 
+            // gan_checkBox
+            // 
+            this.gan_checkBox.AutoSize = true;
+            this.gan_checkBox.Location = new System.Drawing.Point(9, 98);
+            this.gan_checkBox.Name = "gan_checkBox";
+            this.gan_checkBox.Size = new System.Drawing.Size(173, 17);
+            this.gan_checkBox.TabIndex = 24;
+            this.gan_checkBox.Text = "Прибор входит в списки ГАН";
+            this.gan_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // StateSend_radioButton
+            // 
+            this.StateSend_radioButton.AutoSize = true;
+            this.StateSend_radioButton.Location = new System.Drawing.Point(6, 19);
+            this.StateSend_radioButton.Name = "StateSend_radioButton";
+            this.StateSend_radioButton.Size = new System.Drawing.Size(80, 17);
+            this.StateSend_radioButton.TabIndex = 25;
+            this.StateSend_radioButton.TabStop = true;
+            this.StateSend_radioButton.Text = "Отправлен";
+            this.StateSend_radioButton.UseVisualStyleBackColor = true;
+            this.StateSend_radioButton.CheckedChanged += new System.EventHandler(this.StateSend_radioButton_CheckedChanged);
+            // 
+            // StateOverdue_radioButton
+            // 
+            this.StateOverdue_radioButton.AutoSize = true;
+            this.StateOverdue_radioButton.Location = new System.Drawing.Point(92, 19);
+            this.StateOverdue_radioButton.Name = "StateOverdue_radioButton";
+            this.StateOverdue_radioButton.Size = new System.Drawing.Size(80, 17);
+            this.StateOverdue_radioButton.TabIndex = 26;
+            this.StateOverdue_radioButton.TabStop = true;
+            this.StateOverdue_radioButton.Text = "Просрочен";
+            this.StateOverdue_radioButton.UseVisualStyleBackColor = true;
+            this.StateOverdue_radioButton.CheckedChanged += new System.EventHandler(this.StateOverdue_radioButton_CheckedChanged);
+            // 
+            // StateStorage_radioButton
+            // 
+            this.StateStorage_radioButton.AutoSize = true;
+            this.StateStorage_radioButton.Location = new System.Drawing.Point(6, 42);
+            this.StateStorage_radioButton.Name = "StateStorage_radioButton";
+            this.StateStorage_radioButton.Size = new System.Drawing.Size(78, 17);
+            this.StateStorage_radioButton.TabIndex = 27;
+            this.StateStorage_radioButton.TabStop = true;
+            this.StateStorage_radioButton.Text = "На складе";
+            this.StateStorage_radioButton.UseVisualStyleBackColor = true;
+            this.StateStorage_radioButton.CheckedChanged += new System.EventHandler(this.StateStorage_radioButton_CheckedChanged);
+            // 
+            // StateConservation_radioButton
+            // 
+            this.StateConservation_radioButton.AutoSize = true;
+            this.StateConservation_radioButton.Location = new System.Drawing.Point(175, 19);
+            this.StateConservation_radioButton.Name = "StateConservation_radioButton";
+            this.StateConservation_radioButton.Size = new System.Drawing.Size(101, 17);
+            this.StateConservation_radioButton.TabIndex = 28;
+            this.StateConservation_radioButton.TabStop = true;
+            this.StateConservation_radioButton.Text = "В консервации";
+            this.StateConservation_radioButton.UseVisualStyleBackColor = true;
+            this.StateConservation_radioButton.CheckedChanged += new System.EventHandler(this.StateConservation_radioButton_CheckedChanged);
+            // 
+            // StateNormal_radioButton
+            // 
+            this.StateNormal_radioButton.AutoSize = true;
+            this.StateNormal_radioButton.Location = new System.Drawing.Point(92, 42);
+            this.StateNormal_radioButton.Name = "StateNormal_radioButton";
+            this.StateNormal_radioButton.Size = new System.Drawing.Size(125, 17);
+            this.StateNormal_radioButton.TabIndex = 29;
+            this.StateNormal_radioButton.TabStop = true;
+            this.StateNormal_radioButton.Text = "Смонтирован на ТК";
+            this.StateNormal_radioButton.UseVisualStyleBackColor = true;
+            this.StateNormal_radioButton.CheckedChanged += new System.EventHandler(this.StateNormal_radioButton_CheckedChanged);
+            // 
+            // decommissioned_checkBox
+            // 
+            this.decommissioned_checkBox.AutoSize = true;
+            this.decommissioned_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.decommissioned_checkBox.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.decommissioned_checkBox.Location = new System.Drawing.Point(9, 121);
+            this.decommissioned_checkBox.Name = "decommissioned_checkBox";
+            this.decommissioned_checkBox.Size = new System.Drawing.Size(116, 17);
+            this.decommissioned_checkBox.TabIndex = 30;
+            this.decommissioned_checkBox.Text = "Прибор списан";
+            this.decommissioned_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // verifiedToYear_comboBox
+            // 
+            this.verifiedToYear_comboBox.AutoCompleteCustomSource.AddRange(new string[] {
+            "1 кв. 2019",
+            "2 кв. 2019",
+            "3 кв. 2019",
+            "4 кв. 2019"});
+            this.verifiedToYear_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.verifiedToYear_comboBox.FormattingEnabled = true;
+            this.verifiedToYear_comboBox.Items.AddRange(new object[] {
             "2017",
             "2018",
             "2019",
@@ -323,183 +427,283 @@
             "2038",
             "2039",
             "2040"});
-            this.verifiedToY_textBox.Location = new System.Drawing.Point(286, 75);
-            this.verifiedToY_textBox.Name = "verifiedToY_textBox";
-            this.verifiedToY_textBox.Size = new System.Drawing.Size(59, 21);
-            this.verifiedToY_textBox.TabIndex = 48;
-            // 
-            // gan_checkBox
-            // 
-            this.gan_checkBox.AutoSize = true;
-            this.gan_checkBox.Location = new System.Drawing.Point(12, 102);
-            this.gan_checkBox.Name = "gan_checkBox";
-            this.gan_checkBox.Size = new System.Drawing.Size(173, 17);
-            this.gan_checkBox.TabIndex = 49;
-            this.gan_checkBox.Text = "Прибор входит в списки ГАН";
-            this.gan_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // StateConservation_radioButton
-            // 
-            this.StateConservation_radioButton.AutoSize = true;
-            this.StateConservation_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateConservation_radioButton.Location = new System.Drawing.Point(627, 65);
-            this.StateConservation_radioButton.Name = "StateConservation_radioButton";
-            this.StateConservation_radioButton.Size = new System.Drawing.Size(18, 30);
-            this.StateConservation_radioButton.TabIndex = 53;
-            this.StateConservation_radioButton.TabStop = true;
-            this.StateConservation_radioButton.Text = "К";
-            this.StateConservation_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // StateStorage_radioButton
-            // 
-            this.StateStorage_radioButton.AutoSize = true;
-            this.StateStorage_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateStorage_radioButton.Location = new System.Drawing.Point(651, 65);
-            this.StateStorage_radioButton.Name = "StateStorage_radioButton";
-            this.StateStorage_radioButton.Size = new System.Drawing.Size(18, 30);
-            this.StateStorage_radioButton.TabIndex = 52;
-            this.StateStorage_radioButton.TabStop = true;
-            this.StateStorage_radioButton.Text = "С";
-            this.StateStorage_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // StateOverdue_radioButton
-            // 
-            this.StateOverdue_radioButton.AutoSize = true;
-            this.StateOverdue_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateOverdue_radioButton.Location = new System.Drawing.Point(602, 65);
-            this.StateOverdue_radioButton.Name = "StateOverdue_radioButton";
-            this.StateOverdue_radioButton.Size = new System.Drawing.Size(19, 30);
-            this.StateOverdue_radioButton.TabIndex = 51;
-            this.StateOverdue_radioButton.TabStop = true;
-            this.StateOverdue_radioButton.Text = "П";
-            this.StateOverdue_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // StateSend_radioButton
-            // 
-            this.StateSend_radioButton.AutoSize = true;
-            this.StateSend_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateSend_radioButton.Location = new System.Drawing.Point(577, 65);
-            this.StateSend_radioButton.Name = "StateSend_radioButton";
-            this.StateSend_radioButton.Size = new System.Drawing.Size(19, 30);
-            this.StateSend_radioButton.TabIndex = 50;
-            this.StateSend_radioButton.TabStop = true;
-            this.StateSend_radioButton.Text = "О";
-            this.StateSend_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // StateNormal_radioButton
-            // 
-            this.StateNormal_radioButton.AutoSize = true;
-            this.StateNormal_radioButton.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.StateNormal_radioButton.Location = new System.Drawing.Point(675, 65);
-            this.StateNormal_radioButton.Name = "StateNormal_radioButton";
-            this.StateNormal_radioButton.Size = new System.Drawing.Size(19, 30);
-            this.StateNormal_radioButton.TabIndex = 54;
-            this.StateNormal_radioButton.TabStop = true;
-            this.StateNormal_radioButton.Text = "Н";
-            this.StateNormal_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // decommissioned_checkBox
-            // 
-            this.decommissioned_checkBox.AutoSize = true;
-            this.decommissioned_checkBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.decommissioned_checkBox.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.decommissioned_checkBox.Location = new System.Drawing.Point(224, 102);
-            this.decommissioned_checkBox.Name = "decommissioned_checkBox";
-            this.decommissioned_checkBox.Size = new System.Drawing.Size(116, 17);
-            this.decommissioned_checkBox.TabIndex = 55;
-            this.decommissioned_checkBox.Text = "Прибор списан";
-            this.decommissioned_checkBox.UseVisualStyleBackColor = true;
+            this.verifiedToYear_comboBox.Location = new System.Drawing.Point(71, 71);
+            this.verifiedToYear_comboBox.Name = "verifiedToYear_comboBox";
+            this.verifiedToYear_comboBox.Size = new System.Drawing.Size(59, 21);
+            this.verifiedToYear_comboBox.TabIndex = 31;
             // 
             // sentDate_dateTimePicker
             // 
             this.sentDate_dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.sentDate_dateTimePicker.Location = new System.Drawing.Point(457, 26);
+            this.sentDate_dateTimePicker.Location = new System.Drawing.Point(9, 33);
             this.sentDate_dateTimePicker.Name = "sentDate_dateTimePicker";
             this.sentDate_dateTimePicker.ShowCheckBox = true;
-            this.sentDate_dateTimePicker.Size = new System.Drawing.Size(114, 20);
-            this.sentDate_dateTimePicker.TabIndex = 56;
+            this.sentDate_dateTimePicker.Size = new System.Drawing.Size(121, 20);
+            this.sentDate_dateTimePicker.TabIndex = 32;
             // 
             // verificationDate_dateTimePicker
             // 
             this.verificationDate_dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.verificationDate_dateTimePicker.Location = new System.Drawing.Point(577, 26);
+            this.verificationDate_dateTimePicker.Location = new System.Drawing.Point(136, 33);
             this.verificationDate_dateTimePicker.Name = "verificationDate_dateTimePicker";
             this.verificationDate_dateTimePicker.ShowCheckBox = true;
-            this.verificationDate_dateTimePicker.Size = new System.Drawing.Size(114, 20);
-            this.verificationDate_dateTimePicker.TabIndex = 57;
+            this.verificationDate_dateTimePicker.Size = new System.Drawing.Size(121, 20);
+            this.verificationDate_dateTimePicker.TabIndex = 33;
             // 
-            // Add_device
+            // passport_id_textBox
+            // 
+            this.passport_id_textBox.Location = new System.Drawing.Point(218, 32);
+            this.passport_id_textBox.Name = "passport_id_textBox";
+            this.passport_id_textBox.Size = new System.Drawing.Size(100, 20);
+            this.passport_id_textBox.TabIndex = 34;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(215, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(64, 13);
+            this.label10.TabIndex = 35;
+            this.label10.Text = "Паспорт №";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(218, 55);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(79, 13);
+            this.label11.TabIndex = 36;
+            this.label11.Text = "М/П интервал";
+            // 
+            // mc_interval_comboBox
+            // 
+            this.mc_interval_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mc_interval_comboBox.FormattingEnabled = true;
+            this.mc_interval_comboBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60"});
+            this.mc_interval_comboBox.Location = new System.Drawing.Point(218, 71);
+            this.mc_interval_comboBox.Name = "mc_interval_comboBox";
+            this.mc_interval_comboBox.Size = new System.Drawing.Size(100, 21);
+            this.mc_interval_comboBox.TabIndex = 37;
+            // 
+            // sphere_sreum_id_textBox
+            // 
+            this.sphere_sreum_id_textBox.Location = new System.Drawing.Point(6, 111);
+            this.sphere_sreum_id_textBox.Name = "sphere_sreum_id_textBox";
+            this.sphere_sreum_id_textBox.Size = new System.Drawing.Size(100, 20);
+            this.sphere_sreum_id_textBox.TabIndex = 38;
+            // 
+            // sphere_sreum_name_textBox
+            // 
+            this.sphere_sreum_name_textBox.Location = new System.Drawing.Point(112, 111);
+            this.sphere_sreum_name_textBox.Name = "sphere_sreum_name_textBox";
+            this.sphere_sreum_name_textBox.Size = new System.Drawing.Size(206, 20);
+            this.sphere_sreum_name_textBox.TabIndex = 39;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 95);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(57, 13);
+            this.label12.TabIndex = 40;
+            this.label12.Text = "ГРОЕИ №";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(109, 95);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(78, 13);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "ГРОЕИ сфера";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.personnelNumber_textBox);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.sphere_sreum_name_textBox);
+            this.groupBox1.Controls.Add(this.factoryNumber_textBox);
+            this.groupBox1.Controls.Add(this.sphere_sreum_id_textBox);
+            this.groupBox1.Controls.Add(this.yearOfIssue_textBox);
+            this.groupBox1.Controls.Add(this.mc_interval_comboBox);
+            this.groupBox1.Controls.Add(this.deviceType_comboBox);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.passport_id_textBox);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(328, 142);
+            this.groupBox1.TabIndex = 42;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Информация по паспорту";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.decommissioned_checkBox);
+            this.groupBox2.Controls.Add(this.verifiedToYear_comboBox);
+            this.groupBox2.Controls.Add(this.verificationDate_dateTimePicker);
+            this.groupBox2.Controls.Add(this.sentDate_dateTimePicker);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.verifiedToQuarter_comboBox);
+            this.groupBox2.Controls.Add(this.solutionNunber_textBox);
+            this.groupBox2.Controls.Add(this.gan_checkBox);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Location = new System.Drawing.Point(346, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(275, 142);
+            this.groupBox2.TabIndex = 43;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Метрологический учет СИ";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.StateSend_radioButton);
+            this.groupBox3.Controls.Add(this.StateOverdue_radioButton);
+            this.groupBox3.Controls.Add(this.StateStorage_radioButton);
+            this.groupBox3.Controls.Add(this.StateNormal_radioButton);
+            this.groupBox3.Controls.Add(this.StateConservation_radioButton);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.deviceLocation_textBox);
+            this.groupBox3.Location = new System.Drawing.Point(12, 160);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(609, 69);
+            this.groupBox3.TabIndex = 44;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Состояние";
+            // 
+            // Change_device
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(701, 135);
-            this.Controls.Add(this.verificationDate_dateTimePicker);
-            this.Controls.Add(this.sentDate_dateTimePicker);
-            this.Controls.Add(this.decommissioned_checkBox);
-            this.Controls.Add(this.StateNormal_radioButton);
-            this.Controls.Add(this.StateConservation_radioButton);
-            this.Controls.Add(this.StateStorage_radioButton);
-            this.Controls.Add(this.StateOverdue_radioButton);
-            this.Controls.Add(this.StateSend_radioButton);
-            this.Controls.Add(this.gan_checkBox);
-            this.Controls.Add(this.verifiedToY_textBox);
+            this.ClientSize = new System.Drawing.Size(633, 268);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.save_button);
             this.Controls.Add(this.cancel_button);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.solutionNunber_textBox);
-            this.Controls.Add(this.verifiedTo_textBox);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.deviceType_comboBox);
-            this.Controls.Add(this.deviceLocation_textBox);
-            this.Controls.Add(this.yearOfIssue_textBox);
-            this.Controls.Add(this.factoryNumber_textBox);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.personnelNumber_textBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Add_device";
-            this.ShowInTaskbar = false;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Change_device";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Добавить прибор:";
+            this.Text = "Редактирование записи:";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button save_button;
-        private System.Windows.Forms.Button cancel_button;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox solutionNunber_textBox;
-        private System.Windows.Forms.ComboBox verifiedTo_textBox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox deviceType_comboBox;
-        private System.Windows.Forms.TextBox deviceLocation_textBox;
-        private System.Windows.Forms.TextBox yearOfIssue_textBox;
-        private System.Windows.Forms.TextBox factoryNumber_textBox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox personnelNumber_textBox;
-        private System.Windows.Forms.ComboBox verifiedToY_textBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox factoryNumber_textBox;
+        private System.Windows.Forms.TextBox yearOfIssue_textBox;
+        private System.Windows.Forms.TextBox deviceLocation_textBox;
+        private System.Windows.Forms.ComboBox deviceType_comboBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox verifiedToQuarter_comboBox;
+        private System.Windows.Forms.TextBox solutionNunber_textBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button cancel_button;
+        private System.Windows.Forms.Button save_button;
         private System.Windows.Forms.CheckBox gan_checkBox;
-        private System.Windows.Forms.RadioButton StateConservation_radioButton;
-        private System.Windows.Forms.RadioButton StateStorage_radioButton;
-        private System.Windows.Forms.RadioButton StateOverdue_radioButton;
         private System.Windows.Forms.RadioButton StateSend_radioButton;
+        private System.Windows.Forms.RadioButton StateOverdue_radioButton;
+        private System.Windows.Forms.RadioButton StateStorage_radioButton;
+        private System.Windows.Forms.RadioButton StateConservation_radioButton;
         private System.Windows.Forms.RadioButton StateNormal_radioButton;
         private System.Windows.Forms.CheckBox decommissioned_checkBox;
+        private System.Windows.Forms.ComboBox verifiedToYear_comboBox;
         private System.Windows.Forms.DateTimePicker sentDate_dateTimePicker;
         private System.Windows.Forms.DateTimePicker verificationDate_dateTimePicker;
+        private System.Windows.Forms.TextBox passport_id_textBox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox mc_interval_comboBox;
+        private System.Windows.Forms.TextBox sphere_sreum_id_textBox;
+        private System.Windows.Forms.TextBox sphere_sreum_name_textBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

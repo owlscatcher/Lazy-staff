@@ -34,6 +34,9 @@ namespace LazyStaff.Models
         public bool IsGun { get; set; }
         public string DateOfTechnicalInspection { get; set; }
         public int MetrologicalControlInterval { get; set; }
+        public int SphereSREUMId { get; set; }
+        public string SphereSREUMName { get; set; }
+        public int PassportId { get; set; }
 
         public Device()
 		{

@@ -125,10 +125,12 @@ namespace LazyStaff.Helpers
 
             Spire.Pdf.PdfDocument pdfdocument = new Spire.Pdf.PdfDocument();                                    // создаём экземпляр
             pdfdocument.LoadFromFile(newFile);                                                                  // загружаем файл
-            //pdfdocument.PrinterName = "My Printer";
+                                                                                                                //pdfdocument.PrinterName = "My Printer";
 
+#pragma warning disable CS0618 // Тип или член устарел
             pdfdocument.PrintDocument.PrinterSettings.Copies = 1;                                               // количество копий (можно не указывать)
             pdfdocument.PrintDocument.Print();
+#pragma warning restore CS0618 // Тип или член устарел
             pdfdocument.Dispose();
         }
     }

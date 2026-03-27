@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
 using System.Windows.Forms;
-using LazyStaff.Helpers;
 using LazyStaff.Models;
 
 namespace LazyStaff.Classes
@@ -35,7 +33,8 @@ namespace LazyStaff.Classes
                         gridView.Rows[i].Visible = true;
                         continue;
                     }
-                    bool match = (device.Id.ToString().Contains(search)) ||
+                    bool match = (device.PassportId.ToString().Contains(search)) || 
+                                (device.Id.ToString().Contains(search)) ||
                                 (device.SerialId.ToString().Contains(search)) ||
                                 (device.Loaction != null && device.Loaction.Contains(search)) ||
                                 (device.ValidTo != default && device.ValidTo.Contains(search));

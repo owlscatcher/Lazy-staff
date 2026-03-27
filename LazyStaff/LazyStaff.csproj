@@ -157,12 +157,6 @@
     <Compile Include="Models\DeviceType.cs" />
     <Compile Include="Repositories\DeviceRepository.cs" />
     <Compile Include="Repositories\IDeviceRepository.cs" />
-    <Compile Include="PasswordInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PasswordInput.Designer.cs">
-      <DependentUpon>PasswordInput.cs</DependentUpon>
-    </Compile>
     <Compile Include="ReplaceDevice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,9 +186,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PasswordInput.resx">
-      <DependentUpon>PasswordInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ReplaceDevice.resx">
       <DependentUpon>ReplaceDevice.cs</DependentUpon>

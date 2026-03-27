@@ -29,8 +29,7 @@ namespace LazyStaff.Classes
                 string selectedType = staff_MainForm.TreeView.SelectedNode?.Text ?? "";
                 ApplyFilter(staff_MainForm, grid, row =>
                 {
-                    var device = row.DataBoundItem as Device;
-                    return device != null && device.DeviceTypeName.ToString().Contains(selectedType);
+                    return row.DataBoundItem is Device device && device.DeviceTypeName.ToString().Contains(selectedType);
                 });
                 return;
             }

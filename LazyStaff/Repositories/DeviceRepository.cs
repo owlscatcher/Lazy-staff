@@ -66,8 +66,8 @@ namespace LazyStaff.Repositories
 
             var sql =
                 $"INSERT INTO {_tableName} " +
-                "(personnelnumber, factorynumber, devicetype, yearofissue, sentdate, verificationdate, devicelocation, verifiedto, solutionnunber, gan, state, techdate, mc_interval) " +
-                "VALUES (@personnelNumber, @factoryNumber, @deviceType, @yearOfIssue, @sentDate, @verificationDate, @deviceLocation, @verifiedTo, @solutionNumber, @gan, @state, @techdate, @mc_interval)";
+                "(personnelnumber, factorynumber, devicetype, yearofissue, sentdate, verificationdate, devicelocation, verifiedto, solutionnunber, gan, state, techdate, mc_interval, sphere_sreum_id, sphere_sreum_name, passport_id) " +
+                "VALUES (@personnelNumber, @factoryNumber, @deviceType, @yearOfIssue, @sentDate, @verificationDate, @deviceLocation, @verifiedTo, @solutionNumber, @gan, @state, @techdate, @mc_interval, @sphere_sreum_id, @sphere_sreum_name, @passport_id)";
 
             using (var command = new NpgsqlCommand(sql, connection))
             {
@@ -95,7 +95,10 @@ namespace LazyStaff.Repositories
                 "gan = @gan, " +
                 "state = @state, " +
                 "techdate = @techdate, " +
-                "mc_interval = @mc_interval " +
+                "mc_interval = @mc_interval, " +
+                "sphere_sreum_id = @sphere_sreum_id, " + 
+                "sphere_sreum_name = @sphere_sreum_name, " +
+                "passport_id = @passport_id " +
                 "WHERE personnelnumber = @personnelNumber";
 
             using (var command = new NpgsqlCommand(sql, connection))
@@ -157,9 +160,18 @@ namespace LazyStaff.Repositories
                 DateOfTechnicalInspection = reader.IsDBNull(reader.GetOrdinal("techdate"))
                     ? String.Empty
                     : reader.GetString(reader.GetOrdinal("techdate")),
-                MetrologicalControlInterval = reader.GetInt32(reader.GetOrdinal("mc_interval"))
+                MetrologicalControlInterval = reader.GetInt32(reader.GetOrdinal("mc_interval")),
+                SphereSREUMId = reader.IsDBNull(reader.GetOrdinal("sphere_sreum_id"))
+                    ? 0
+                    : reader.GetInt32(reader.GetOrdinal("sphere_sreum_id")),
+                SphereSREUMName = reader.IsDBNull(reader.GetOrdinal("sphere_sreum_name"))
+                    ? String.Empty
+                    : reader.GetString(reader.GetOrdinal("sphere_sreum_name")),
+                PassportId = reader.IsDBNull(reader.GetOrdinal("passport_id"))
+                    ? 0
+                    : reader.GetInt32(reader.GetOrdinal("passport_id"))
             };
-        }
+    }
 
         private static void FillCommandParameters(NpgsqlCommand command, Device device)
         {
@@ -183,6 +195,10 @@ namespace LazyStaff.Repositories
             command.Parameters.AddWithValue("@techdate",
                 string.IsNullOrWhiteSpace(device.DateOfTechnicalInspection) ? (object)DBNull.Value : device.DateOfTechnicalInspection);
             command.Parameters.AddWithValue("@mc_interval", device.MetrologicalControlInterval);
+            command.Parameters.AddWithValue("@sphere_sreum_id", device.SphereSREUMId);
+            command.Parameters.AddWithValue("@sphere_sreum_name", 
+                string.IsNullOrWhiteSpace(device.SphereSREUMName) ? (object)DBNull.Value : device.SphereSREUMName);
+            command.Parameters.AddWithValue("@passport_id", device.PassportId);
         }
     }
 }

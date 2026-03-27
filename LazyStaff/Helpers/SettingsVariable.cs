@@ -22,7 +22,7 @@ namespace LazyStaff.Helpers
             {
                 return EnvirovmentHelper.GetEnvirovmentVariable(variable);
             }
-            catch (EnvirovmentVariableException ex)
+            catch (EnvirovmentVariableException _ex)
             {
                 return null;
             }
