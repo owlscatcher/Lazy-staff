@@ -2,11 +2,11 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
 using ExcelDLL = Microsoft.Office.Interop.Excel;
 using LazyStaff.Classes;
-using System.Collections.Generic;
 using System.ComponentModel;
 using LazyStaff.Helpers;
 using LazyStaff.Models;
@@ -219,10 +219,67 @@ namespace LazyStaff
             {
                 dataGridView1.DataSource = _devices;
                 ConfigureGridColumns();
+                PopulateDeviceTypeTreeNodes();
             });
 
             listMarking.Start(this);
             SyncStatusLabel_StatusPanel.Text = "Последняя синхронизация: " + DateTime.Now.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>Дочерние узлы «Все приборы» — уникальные типы из загруженной коллекции.</summary>
+        private void PopulateDeviceTypeTreeNodes()
+        {
+            const string nodeAll = "All";
+            TreeNode allNode = null;
+            foreach (TreeNode n in treeView1.Nodes)
+            {
+                if (string.Equals(n.Name, nodeAll, StringComparison.Ordinal))
+                {
+                    allNode = n;
+                    break;
+                }
+            }
+            if (allNode == null) return;
+
+            string prevTypeText = null;
+            var sel = treeView1.SelectedNode;
+            if (sel != null && sel.Parent != null && string.Equals(sel.Parent.Name, nodeAll, StringComparison.Ordinal))
+                prevTypeText = sel.Text;
+
+            treeView1.BeginUpdate();
+            try
+            {
+                if (prevTypeText != null)
+                    treeView1.SelectedNode = allNode;
+
+                allNode.Nodes.Clear();
+
+                var types = _devices
+                    .Select(d => d.DeviceTypeName?.Trim())
+                    .Where(s => !string.IsNullOrEmpty(s))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(s => s, StringComparer.CurrentCultureIgnoreCase)
+                    .ToList();
+
+                foreach (var t in types)
+                    allNode.Nodes.Add(new TreeNode(t) { Name = t });
+            }
+            finally
+            {
+                treeView1.EndUpdate();
+            }
+
+            if (prevTypeText != null)
+            {
+                foreach (TreeNode child in allNode.Nodes)
+                {
+                    if (string.Equals(child.Text, prevTypeText, StringComparison.OrdinalIgnoreCase))
+                    {
+                        treeView1.SelectedNode = child;
+                        return;
+                    }
+                }
+            }
         }
 
         private void ConfigureGridColumns()
@@ -344,11 +401,8 @@ namespace LazyStaff
 
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            int level = e.Node.Level;
-            int index = e.Node.Index;
-
-            Classes.TreeViewFilter treeViewFilter = new Classes.TreeViewFilter();
-            treeViewFilter.Filter(this, level, index);
+            var treeViewFilter = new Classes.TreeViewFilter();
+            treeViewFilter.Filter(this);
         }
 
         //---------------------------------------

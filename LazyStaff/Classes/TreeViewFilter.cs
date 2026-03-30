@@ -4,89 +4,107 @@ using LazyStaff.Models;
 
 namespace LazyStaff.Classes
 {
+    /// <summary>
+    /// Фильтрация грида по выбранному узлу TreeView (имя типа прибора, статус, особые списки).
+    /// Узел «Все приборы» (Name = All) и служебные узлы — в Designer; типы приборов под All заполняются при загрузке данных.
+    /// </summary>
     class TreeViewFilter
     {
-        private const int TreeIndexAll = 0;
-        private const int TreeIndexPreparing = 1;
-        private const int TreeIndexOverdue = 2;
-        private const int TreeIndexCanned = 3;
-        private const int TreeIndexSent = 4;
-        private const int TreeIndexStorage = 5;
-        private const int TreeIndexSpecial = 6;
-        private const int TreeIndexGan = 0;
-        private const int TreeIndexNotGan = 1;
-        private const int TreeIndexDecommissioned = 2;
+        /// <summary>Родительский узел «Все приборы» — дочерние узлы это типы (УИМ, БДАС, …).</summary>
+        private const string NodeAllDevices = "All";
 
-        private const int RootLevel = 0;
+        private const string NodePreparing = "PREPROSROCH";
+        private const string NodeOverdue = "PROSROCH";
+        private const string NodeCanned = "KONSERV";
+        private const string NodeSent = "OTPRAVLENNIE";
+        private const string NodeStorage = "SKLAD";
+        private const string NodeSpecialLists = "lists";
+        private const string NodeGan = "gan";
+        private const string NodeNotGan = "notgan";
+        private const string NodeDecommissioned = "decommissioned";
 
-        public void Filter(Staff_MainForm staff_MainForm, int level, int index)
+        public void Filter(Staff_MainForm staff_MainForm)
         {
             DataGridView grid = staff_MainForm.dataGridView1;
-            TreeNodeCollection rootNodes = staff_MainForm.TreeView.Nodes;
+            TreeNode node = staff_MainForm.TreeView.SelectedNode;
+            if (node == null) return;
 
-            if (level != RootLevel)
+            // Тип прибора: дочерние узлы под «Все приборы» (уровень 1, родитель Name = All)
+            if (node.Level == 1 && node.Parent != null && string.Equals(node.Parent.Name, NodeAllDevices, StringComparison.Ordinal))
             {
-                string selectedType = staff_MainForm.TreeView.SelectedNode?.Text ?? "";
-                ApplyFilter(staff_MainForm, grid, row =>
-                {
-                    return row.DataBoundItem is Device device && device.DeviceTypeName.ToString().Contains(selectedType);
-                });
+                ApplyFilterByDeviceTypeName(staff_MainForm, grid, node);
                 return;
             }
 
-            if (rootNodes[TreeIndexAll].IsSelected)
+            switch (node.Name)
             {
-                ApplyFilter(staff_MainForm, grid, _ => true);
-                return;
-            }
+                case NodeAllDevices:
+                    ApplyFilter(staff_MainForm, grid, _ => true);
+                    break;
 
-            if (rootNodes[TreeIndexCanned].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Canned);
-                return;
-            }
+                case NodePreparing:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.PreparingForSend, (int)Status.PreparingForSendAndInStock);
+                    break;
 
-            if (rootNodes[TreeIndexPreparing].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.PreparingForSend, (int)Status.PreparingForSendAndInStock);
-                return;
-            }
+                case NodeOverdue:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Overdue, (int)Status.OverdueAndInStock);
+                    break;
 
-            if (rootNodes[TreeIndexSent].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Sended);
-                return;
-            }
+                case NodeCanned:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Canned);
+                    break;
 
-            if (rootNodes[TreeIndexOverdue].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Overdue, (int)Status.OverdueAndInStock);
-                return;
-            }
+                case NodeSent:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.Sended);
+                    break;
 
-            if (rootNodes[TreeIndexStorage].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.InStock, (int)Status.OverdueAndInStock, (int)Status.PreparingForSendAndInStock);
-                return;
-            }
+                case NodeStorage:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.InStock, (int)Status.OverdueAndInStock, (int)Status.PreparingForSendAndInStock);
+                    break;
 
-            TreeNodeCollection specialNodes = rootNodes[TreeIndexSpecial].Nodes;
-            if (specialNodes[TreeIndexGan].IsSelected)
-            {
-                ApplyFilterByGan(staff_MainForm, grid, isGan: true);
-                return;
-            }
+                case NodeSpecialLists:
+                    // Клик по родителю «Особые списки» без выбора дочернего — показываем весь список
+                    ApplyFilter(staff_MainForm, grid, _ => true);
+                    break;
 
-            if (specialNodes[TreeIndexNotGan].IsSelected)
-            {
-                ApplyFilterByGan(staff_MainForm, grid, isGan: false);
-                return;
-            }
+                case NodeGan:
+                    ApplyFilterByGan(staff_MainForm, grid, isGan: true);
+                    break;
 
-            if (specialNodes[TreeIndexDecommissioned].IsSelected)
-            {
-                ApplyFilterByStatus(staff_MainForm, grid, (int)Status.WrittenOff);
+                case NodeNotGan:
+                    ApplyFilterByGan(staff_MainForm, grid, isGan: false);
+                    break;
+
+                case NodeDecommissioned:
+                    ApplyFilterByStatus(staff_MainForm, grid, (int)Status.WrittenOff);
+                    break;
+
+                default:
+                    ApplyFilter(staff_MainForm, grid, _ => true);
+                    break;
             }
+        }
+
+        private static void ApplyFilterByDeviceTypeName(Staff_MainForm form, DataGridView grid, TreeNode typeNode)
+        {
+            string typeText = typeNode.Text?.Trim() ?? "";
+            string typeCode = typeNode.Name?.Trim() ?? "";
+
+            ApplyFilter(form, grid, row =>
+            {
+                var device = row.DataBoundItem as Device;
+                if (device == null) return false;
+
+                string dt = device.DeviceTypeName?.Trim();
+                if (string.IsNullOrEmpty(dt)) return false;
+
+                if (typeText.Length > 0 && dt.IndexOf(typeText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+                if (typeCode.Length > 0 && dt.IndexOf(typeCode, StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+
+                return false;
+            });
         }
 
         private static void ApplyFilter(Staff_MainForm form, DataGridView grid, Func<DataGridViewRow, bool> isVisible)

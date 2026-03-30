@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace LazyStaff
 {
@@ -31,21 +31,7 @@ namespace LazyStaff
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("УИМ");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("БДАС");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("БДГБ");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("БДМГ");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("УДАБ");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("УДАС");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("ДКГ");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Все приборы", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode7});
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Все приборы");
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Подготовить на отпр.");
             System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Просроченные приборы");
             System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Консервация");
