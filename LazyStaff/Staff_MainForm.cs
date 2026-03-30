@@ -31,8 +31,8 @@ namespace LazyStaff
         /// <summary>Коллекция устройств — единственный источник данных для грида.</summary>
         public IList<Device> Devices => _devices;
 
-        ListMarking listMarking = new ListMarking();
-        Search Search = new Search();
+        readonly ListMarking listMarking = new ListMarking();
+        readonly Search Search = new Search();
 
         //-----------------------------------
         // Кнопка экспорта из DGV в Excel
@@ -100,7 +100,7 @@ namespace LazyStaff
         //-----------------------------------
         // Событие изменение select состояния строки || количество выделенных приборов
         //-----------------------------------
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        private void DataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             int visibleRowCount = dataGridView1.SelectedRows.OfType<DataGridViewRow>().Where(row => row.Visible).Count();
             CountStatusLabel_StatusPanel.Text = "Количество выделенных приборов: " + visibleRowCount.ToString();
@@ -109,7 +109,7 @@ namespace LazyStaff
         //-----------------------------------
         // Событие окончания сортировки, обновление маркеровки
         //-----------------------------------
-        private void dataGridView1_Sorted(object sender, EventArgs e)
+        private void DataGridView1_Sorted(object sender, EventArgs e)
         {
             listMarking.Start(this);
         }
@@ -117,7 +117,7 @@ namespace LazyStaff
         //---------------------------------
         // Замена устройства
         //---------------------------------
-        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ReplaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var device = CurrentDevice;
             if (device == null) return;
@@ -130,7 +130,7 @@ namespace LazyStaff
         //-----------------------------------
         // Изменение устройства
         //-----------------------------------
-        private void changeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var device = CurrentDevice;
             if (device == null) return;
@@ -154,7 +154,7 @@ namespace LazyStaff
         //------------------------------------
         // Выделение Row по ПКМ
         //------------------------------------
-        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void DataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (!e.RowIndex.Equals(-1) && !e.ColumnIndex.Equals(-1) && e.Button.Equals(MouseButtons.Right))
             {
@@ -166,7 +166,7 @@ namespace LazyStaff
         //-----------------------------------
         // Удаление устройства
         //-----------------------------------
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var device = CurrentDevice;
             if (device == null) return;
@@ -244,7 +244,7 @@ namespace LazyStaff
             if (cols["MetrologicalControlInterval"] != null) { cols["MetrologicalControlInterval"].HeaderText = "М/П Инт."; cols["MetrologicalControlInterval"].MinimumWidth = 30; cols["MetrologicalControlInterval"].DisplayIndex = 12; }
             if (cols["IsGun"] != null) { cols["IsGun"].HeaderText = "ГАН"; cols["IsGun"].MinimumWidth = 60; cols["IsGun"].Visible = false; cols["IsGun"].DisplayIndex = 13; }
             if (cols["Status"] != null) { cols["Status"].HeaderText = "Состояние"; cols["Status"].MinimumWidth = 60; cols["Status"].Visible = false; cols["Status"].DisplayIndex = 14; }
-            if (cols["DateOfTechnicalInspection"] != null) { cols["DateOfTechnicalInspection"].HeaderText = "Дата Тех. Осв."; cols["DateOfTechnicalInspection"].MinimumWidth = 60; cols["DateOfTechnicalInspection"].DisplayIndex = 15; }
+            if (cols["DateOfTechnicalInspection"] != null) { cols["DateOfTechnicalInspection"].HeaderText = "Дата Т/Осв."; cols["DateOfTechnicalInspection"].MinimumWidth = 60; cols["DateOfTechnicalInspection"].DisplayIndex = 15; }
         }
 
         private void UpdateVisibleCountLabel()
@@ -302,34 +302,34 @@ namespace LazyStaff
         //---------------------------------------
         // получаем индекс выделенной строки
         //---------------------------------------
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             index = dataGridView1.CurrentRow.Index;
         }
         //------------------------------------
         // фильтр поиска в datagridview
         //------------------------------------
-        private void search_textBox_TextChanged(object sender, EventArgs e)
+        private void Search_textBox_TextChanged(object sender, EventArgs e)
         {
             Search.Start(this, dataGridView1, search_textBox);
         }
         //------------------------------------
         // Удаление подсказки из textbox
         //------------------------------------
-        private void search_textBox_Enter(object sender, EventArgs e)
+        private void Search_textBox_Enter(object sender, EventArgs e)
         {
             if (search_textBox.Text == "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор (пр.: 1 кв. 2020)")
             {
-                search_textBox.TextChanged -= new System.EventHandler(search_textBox_TextChanged);      // Отписываемся от события TextChanged, что бы не дёргало таблицу
+                search_textBox.TextChanged -= new System.EventHandler(Search_textBox_TextChanged);      // Отписываемся от события TextChanged, что бы не дёргало таблицу
                 search_textBox.Text = "";                                                               // Очищаем TextBox
                 search_textBox.ForeColor = Color.Black;                                                 // Возвращаем системный текст
-                search_textBox.TextChanged += new System.EventHandler(search_textBox_TextChanged);      // Подписываемся обратно после завершения очистки TextBox
+                search_textBox.TextChanged += new System.EventHandler(Search_textBox_TextChanged);      // Подписываемся обратно после завершения очистки TextBox
             }
         }
         //------------------------------------
         // Добавление подсказки из textbox
         //------------------------------------
-        private void search_textBox_Leave(object sender, EventArgs e)
+        private void Search_textBox_Leave(object sender, EventArgs e)
         {
             if (search_textBox.Text == "")
             {
@@ -342,7 +342,7 @@ namespace LazyStaff
         // Фильтрация по ThreeView
         //---------------------------------------
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             int level = e.Node.Level;
             int index = e.Node.Index;

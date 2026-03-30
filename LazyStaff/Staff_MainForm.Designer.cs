@@ -451,7 +451,7 @@ namespace LazyStaff
             treeNode17});
             this.treeView1.Size = new System.Drawing.Size(164, 199);
             this.treeView1.TabIndex = 0;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             // 
             // StatusPanel
             // 
@@ -494,9 +494,9 @@ namespace LazyStaff
             this.search_textBox.TabIndex = 2;
             this.search_textBox.Text = "Введите: Табельный номер, заводской номер или квартал, до которого продлён прибор" +
     " (пр.: 1 кв. 2020)";
-            this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
-            this.search_textBox.Enter += new System.EventHandler(this.search_textBox_Enter);
-            this.search_textBox.Leave += new System.EventHandler(this.search_textBox_Leave);
+            this.search_textBox.TextChanged += new System.EventHandler(this.Search_textBox_TextChanged);
+            this.search_textBox.Enter += new System.EventHandler(this.Search_textBox_Enter);
+            this.search_textBox.Leave += new System.EventHandler(this.Search_textBox_Leave);
             // 
             // dataGridView1
             // 
@@ -517,10 +517,10 @@ namespace LazyStaff
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1190, 698);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
-            this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellClick);
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView1_CellMouseDown);
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.DataGridView1_SelectionChanged);
+            this.dataGridView1.Sorted += new System.EventHandler(this.DataGridView1_Sorted);
             // 
             // dataGrid_contextMenuStrip
             // 
@@ -538,14 +538,14 @@ namespace LazyStaff
             this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
             this.changeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.changeToolStripMenuItem.Text = "Изменить";
-            this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
+            this.changeToolStripMenuItem.Click += new System.EventHandler(this.ChangeToolStripMenuItem_Click);
             // 
             // replaceToolStripMenuItem
             // 
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
             this.replaceToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.replaceToolStripMenuItem.Text = "Заменить";
-            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
+            this.replaceToolStripMenuItem.Click += new System.EventHandler(this.ReplaceToolStripMenuItem_Click);
             // 
             // separateToolStripMenuItem
             // 
@@ -567,7 +567,7 @@ namespace LazyStaff
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.deleteToolStripMenuItem.Text = "Удалить";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // Staff_MainForm
             // 
